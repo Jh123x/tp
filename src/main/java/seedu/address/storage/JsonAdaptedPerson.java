@@ -15,6 +15,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -28,6 +29,7 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String email;
     private final String address;
+    private String remark = "";
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
 
     /**
@@ -41,6 +43,7 @@ class JsonAdaptedPerson {
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.remark = "";
         if (tagged != null) {
             this.tagged.addAll(tagged);
         }
@@ -101,9 +104,10 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         }
         final Address modelAddress = new Address(address);
-
+        final Remark modelRemark = new Remark(remark);
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags);
+
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelRemark);
     }
 
 }
