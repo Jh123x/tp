@@ -14,6 +14,13 @@ public class Remark {
     /**
      * Constructs a {@code Remark}
      *
+     */
+    public Remark() {
+        value = "";
+    }
+    /**
+     * Constructs a {@code Remark}
+     *
      * @param remark A remark for the person
      */
     public Remark(String remark) {

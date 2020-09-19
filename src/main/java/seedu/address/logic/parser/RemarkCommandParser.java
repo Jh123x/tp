@@ -22,15 +22,15 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
                 PREFIX_REMARK);
 
         Index index;
-        Remark remark;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
-            remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     RemarkCommand.MESSAGE_USAGE), ive);
         }
 
-        return new RemarkCommand(index, remark);
+        String remark = argMultimap.getValue(PREFIX_REMARK).orElse("");
+
+        return new RemarkCommand(index, new Remark(remark));
     }
 }
