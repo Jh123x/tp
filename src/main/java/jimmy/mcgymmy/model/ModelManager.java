@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import jimmy.mcgymmy.commons.core.GuiSettings;
 import jimmy.mcgymmy.commons.core.LogsCenter;
+import jimmy.mcgymmy.commons.core.index.Index;
 import jimmy.mcgymmy.commons.util.CollectionUtil;
 import jimmy.mcgymmy.model.food.Food;
 
@@ -96,8 +97,8 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void deleteFood(Food target) {
-        mcGymmy.removeFood(target);
+    public void deleteFood(Index index) {
+        mcGymmy.removeFood(index);
     }
 
     @Override
@@ -107,10 +108,10 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void setFood(Food target, Food editedFood) {
-        CollectionUtil.requireAllNonNull(target, editedFood);
+    public void setFood(Index index, Food editedFood) {
+        CollectionUtil.requireAllNonNull(index, editedFood);
 
-        mcGymmy.setFood(target, editedFood);
+        mcGymmy.setFood(index, editedFood);
     }
 
     //=========== Filtered Food List Accessors =============================================================

@@ -29,14 +29,15 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Food foodToDelete = model.getFilteredFoodList().get(TypicalIndexes.INDEX_FIRST_FOOD.getZeroBased());
+        Index index = TypicalIndexes.INDEX_FIRST_FOOD;
+        Food foodToDelete = model.getFilteredFoodList().get(index.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand();
-        deleteCommand.setParameters(new CommandParserTestUtil.ParameterStub<>("", TypicalIndexes.INDEX_FIRST_FOOD));
+        deleteCommand.setParameters(new CommandParserTestUtil.ParameterStub<>("", index));
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_FOOD_SUCCESS, foodToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getMcGymmy(), new UserPrefs());
-        expectedModel.deleteFood(foodToDelete);
+        expectedModel.deleteFood(index);
 
         CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -52,16 +53,17 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        CommandTestUtil.showFoodAtIndex(model, TypicalIndexes.INDEX_FIRST_FOOD);
+        Index index = TypicalIndexes.INDEX_FIRST_FOOD;
+        CommandTestUtil.showFoodAtIndex(model, index);
 
-        Food foodToDelete = model.getFilteredFoodList().get(TypicalIndexes.INDEX_FIRST_FOOD.getZeroBased());
+        Food foodToDelete = model.getFilteredFoodList().get(index.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand();
-        deleteCommand.setParameters(new CommandParserTestUtil.ParameterStub<>("", TypicalIndexes.INDEX_FIRST_FOOD));
+        deleteCommand.setParameters(new CommandParserTestUtil.ParameterStub<>("", index));
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_FOOD_SUCCESS, foodToDelete);
 
         Model expectedModel = new ModelManager(model.getMcGymmy(), new UserPrefs());
-        expectedModel.deleteFood(foodToDelete);
+        expectedModel.deleteFood(index);
         showNoFood(expectedModel);
 
         CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);

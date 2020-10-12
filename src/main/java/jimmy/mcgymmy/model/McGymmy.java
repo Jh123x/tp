@@ -5,9 +5,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import javafx.collections.ObservableList;
+import jimmy.mcgymmy.commons.core.index.Index;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.food.Fridge;
-import jimmy.mcgymmy.model.food.exceptions.DuplicateFoodException;
 
 /**
  * Wraps all data at mcgymmy level
@@ -44,16 +44,6 @@ public class McGymmy implements ReadOnlyMcGymmy {
      */
     public void resetData(ReadOnlyMcGymmy newData) {
         requireNonNull(newData);
-        for (Food food : newData.getFoodList()) {
-            for (Food comp : newData.getFoodList()) {
-                if (food.hashCode() == comp.hashCode()) {
-                    continue;
-                }
-                if (food.equals(comp)) {
-                    throw new DuplicateFoodException();
-                }
-            }
-        }
         setFoodItems(newData.getFoodList());
     }
 
@@ -77,21 +67,20 @@ public class McGymmy implements ReadOnlyMcGymmy {
 
     /**
      * Replaces the given Food {@code target} in the list with {@code editedFood}.
-     * {@code target} must exist in mcgymmy.
-     * The Food identity of {@code editedFood} must not be the same as another existing Food in mcgymmy.
+     * {@code index} must be valid.
      */
-    public void setFood(Food target, Food editedFood) {
+    public void setFood(Index index, Food editedFood) {
         requireNonNull(editedFood);
 
-        foodItems.setFood(target, editedFood);
+        foodItems.setFood(index, editedFood);
     }
 
     /**
      * Removes {@code key} from this {@code McGymmy}.
-     * {@code key} must exist in mcgymmy.
+     * {@code index} must be valid.
      */
-    public void removeFood(Food key) {
-        foodItems.remove(key);
+    public void removeFood(Index index) {
+        foodItems.remove(index);
     }
 
     // util methods

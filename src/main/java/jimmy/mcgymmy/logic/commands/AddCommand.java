@@ -2,7 +2,6 @@ package jimmy.mcgymmy.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
 import jimmy.mcgymmy.logic.parser.ParserUtil;
 import jimmy.mcgymmy.logic.parser.parameter.OptionalParameter;
 import jimmy.mcgymmy.logic.parser.parameter.Parameter;
@@ -12,6 +11,7 @@ import jimmy.mcgymmy.model.food.Fat;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.food.Name;
 import jimmy.mcgymmy.model.food.Protein;
+import jimmy.mcgymmy.model.tag.Tag;
 
 /**
  * Adds a food to mcgymmy.
@@ -19,8 +19,7 @@ import jimmy.mcgymmy.model.food.Protein;
 public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_SUCCESS = "New food added: %1$s";
-    public static final String MESSAGE_DUPLICATE_FOOD = "This food already exists in McGymmy";
+    public static final String MESSAGE_SUCCESS = "New food added: \n%1$s";
 
     private Parameter<Name> nameParameter = this.addParameter(
             "name",
@@ -50,17 +49,26 @@ public class AddCommand extends Command {
             "10",
             ParserUtil::parseCarb
     );
+    private OptionalParameter<Tag> tagParameter = this.addOptionalParameter(
+            "tag",
+            "t",
+            "Tag associated with the Food",
+            "Lunch",
+            ParserUtil::parseTag
+    );
 
     void setParameters(Parameter<Name> nameParameter, OptionalParameter<Protein> proteinParameter,
-                       OptionalParameter<Fat> fatParameter, OptionalParameter<Carbohydrate> carbParameter) {
+                       OptionalParameter<Fat> fatParameter, OptionalParameter<Carbohydrate> carbParameter,
+                       OptionalParameter<Tag> tagParameter) {
         this.nameParameter = nameParameter;
         this.proteinParameter = proteinParameter;
         this.fatParameter = fatParameter;
         this.carbParameter = carbParameter;
+        this.tagParameter = tagParameter;
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model) {
         requireNonNull(model);
         // rewriting this class as an example, tags not implemented.
         Name newName = nameParameter.consume();
@@ -69,8 +77,9 @@ public class AddCommand extends Command {
         Carbohydrate newCarb = this.carbParameter.getValue().orElse(new Carbohydrate(0));
         Food toAdd = new Food(newName, newProtein, newFat, newCarb);
 
-        if (model.hasFood(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_FOOD);
+        if (this.tagParameter.getValue().isPresent()) {
+            Tag newTag = this.tagParameter.getValue().get();
+            toAdd.addTag(newTag);
         }
 
         model.addFood(toAdd);

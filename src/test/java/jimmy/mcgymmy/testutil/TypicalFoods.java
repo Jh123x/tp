@@ -50,10 +50,25 @@ public class TypicalFoods {
     } // prevents instantiation
 
     /**
-     * Returns an {@code McGymmy} with all the typical persons.
+     * Returns an {@code McGymmy} with all the typical foods.
      */
     public static McGymmy getTypicalMcGymmy() {
         McGymmy mg = new McGymmy();
+        for (Food food : getTypicalFoodItems()) {
+            mg.addFood(food);
+        }
+        return mg;
+    }
+
+    /**
+     * Returns an {@code McGymmy} with each of the typical food duplicated once.
+     */
+    public static McGymmy getTypicalDuplicateMcGymmy() {
+        McGymmy mg = new McGymmy();
+        // each item is duplicated once
+        for (Food food : getTypicalFoodItems()) {
+            mg.addFood(food);
+        }
         for (Food food : getTypicalFoodItems()) {
             mg.addFood(food);
         }

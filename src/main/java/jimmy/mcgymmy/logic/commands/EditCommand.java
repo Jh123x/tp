@@ -3,6 +3,7 @@ package jimmy.mcgymmy.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Set;
 
 import jimmy.mcgymmy.commons.core.Messages;
 import jimmy.mcgymmy.commons.core.index.Index;
@@ -16,6 +17,7 @@ import jimmy.mcgymmy.model.food.Fat;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.food.Name;
 import jimmy.mcgymmy.model.food.Protein;
+import jimmy.mcgymmy.model.tag.Tag;
 
 /**
  * Edits the details of an existing food in mcgymmy.
@@ -25,7 +27,6 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_EDIT_FOOD_SUCCESS = "Edited Food: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_FOOD = "This food already exists in McGymmy.";
 
     private Parameter<Index> indexParameter = this.addParameter(
             "index",
@@ -85,18 +86,20 @@ public class EditCommand extends Command {
 
         Food foodToEdit = lastShownList.get(index.getZeroBased());
 
+        if (nameParameter.getValue().isEmpty() && proteinParameter.getValue().isEmpty()
+                && fatParameter.getValue().isEmpty() && carbParameter.getValue().isEmpty()) {
+            throw new CommandException(MESSAGE_NOT_EDITED);
+        }
+
         Name newName = this.nameParameter.getValue().orElseGet(foodToEdit::getName);
         Protein newProtein = this.proteinParameter.getValue().orElseGet(foodToEdit::getProtein);
         Fat newFat = this.fatParameter.getValue().orElseGet(foodToEdit::getFat);
         Carbohydrate newCarb = this.carbParameter.getValue().orElseGet(foodToEdit::getCarbs);
+        Set<Tag> tags = foodToEdit.getTags();
 
-        Food editedFood = new Food(newName, newProtein, newFat, newCarb);
+        Food editedFood = new Food(newName, newProtein, newFat, newCarb, tags);
 
-        if (!(foodToEdit.equals(editedFood)) && model.hasFood(editedFood)) {
-            throw new CommandException(MESSAGE_DUPLICATE_FOOD);
-        }
-
-        model.setFood(foodToEdit, editedFood);
+        model.setFood(index, editedFood);
         model.updateFilteredFoodList(Model.PREDICATE_SHOW_ALL_FOODS);
         return new CommandResult(String.format(MESSAGE_EDIT_FOOD_SUCCESS, editedFood));
     }

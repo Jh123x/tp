@@ -5,17 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import jimmy.mcgymmy.model.food.Food;
-import jimmy.mcgymmy.model.food.exceptions.DuplicateFoodException;
 import jimmy.mcgymmy.testutil.FoodBuilder;
 import jimmy.mcgymmy.testutil.TypicalFoods;
 
@@ -41,13 +35,12 @@ public class McGymmyTest {
     }
 
     @Test
-    public void resetData_withDuplicateFoods_throwsDuplicateFoodException() {
+    public void resetData_withDuplicateFoods_replacesData() {
         // Two foods with the same identity fields
-        Food editedFood = new FoodBuilder(TypicalFoods.CHICKEN_RICE).build();
-        List<Food> newFoods = Arrays.asList(TypicalFoods.CHICKEN_RICE, editedFood);
-        McGymmyStub newData = new McGymmyStub(newFoods);
+        McGymmy newData = TypicalFoods.getTypicalDuplicateMcGymmy();
+        mcGymmy.resetData(newData);
 
-        assertThrows(DuplicateFoodException.class, () -> mcGymmy.resetData(newData));
+        assertEquals(mcGymmy, newData);
     }
 
     @Test
@@ -77,21 +70,4 @@ public class McGymmyTest {
     public void getFoodList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> mcGymmy.getFoodList().remove(0));
     }
-
-    /**
-     * A stub ReadOnlyMcGymmy whose foods list can violate interface constraints.
-     */
-    private static class McGymmyStub implements ReadOnlyMcGymmy {
-        private final ObservableList<Food> foods = FXCollections.observableArrayList();
-
-        McGymmyStub(Collection<Food> foods) {
-            this.foods.setAll(foods);
-        }
-
-        @Override
-        public ObservableList<Food> getFoodList() {
-            return foods;
-        }
-    }
-
 }

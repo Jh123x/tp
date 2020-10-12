@@ -1,7 +1,6 @@
 package jimmy.mcgymmy.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static jimmy.mcgymmy.testutil.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import jimmy.mcgymmy.commons.core.GuiSettings;
-import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
+import jimmy.mcgymmy.commons.core.index.Index;
 import jimmy.mcgymmy.logic.parser.CommandParserTestUtil;
 import jimmy.mcgymmy.model.McGymmy;
 import jimmy.mcgymmy.model.Model;
@@ -32,28 +31,14 @@ public class AddCommandTest {
                 new CommandParserTestUtil.ParameterStub<>("n", validFood.getName()),
                 new CommandParserTestUtil.OptionalParameterStub<>("p", validFood.getProtein()),
                 new CommandParserTestUtil.OptionalParameterStub<>("f", validFood.getFat()),
-                new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs())
+                new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs()),
+                new CommandParserTestUtil.OptionalParameterStub<>("t")
         );
 
         CommandResult commandResult = command.execute(modelStub);
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validFood), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validFood), modelStub.foodAdded);
-    }
-
-    @Test
-    public void execute_duplicateFood_throwsCommandException() {
-        Food validFood = new FoodBuilder().withCarb("12345").build();
-        AddCommand addCommand = new AddCommand();
-        addCommand.setParameters(
-                new CommandParserTestUtil.ParameterStub<>("n", validFood.getName()),
-                new CommandParserTestUtil.OptionalParameterStub<>("p", validFood.getProtein()),
-                new CommandParserTestUtil.OptionalParameterStub<>("f", validFood.getFat()),
-                new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs())
-        );
-        ModelStub modelStub = new ModelStubWithFood(validFood);
-
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_FOOD, () -> addCommand.execute(modelStub));
     }
 
     /**
@@ -111,12 +96,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void deleteFood(Food target) {
+        public void deleteFood(Index target) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setFood(Food target, Food editedFood) {
+        public void setFood(Index index, Food editedFood) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -128,24 +113,6 @@ public class AddCommandTest {
         @Override
         public void updateFilteredFoodList(Predicate<Food> predicate) {
             throw new AssertionError("This method should not be called.");
-        }
-    }
-
-    /**
-     * A Model stub that contains a single food.
-     */
-    private class ModelStubWithFood extends ModelStub {
-        private final Food food;
-
-        ModelStubWithFood(Food food) {
-            requireNonNull(food);
-            this.food = food;
-        }
-
-        @Override
-        public boolean hasFood(Food food) {
-            requireNonNull(food);
-            return this.food.equals(food);
         }
     }
 

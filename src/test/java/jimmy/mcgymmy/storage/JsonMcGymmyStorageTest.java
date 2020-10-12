@@ -1,7 +1,6 @@
 package jimmy.mcgymmy.storage;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
-import static jimmy.mcgymmy.testutil.TypicalFoods.CHICKEN_RICE;
 import static jimmy.mcgymmy.testutil.TypicalFoods.HOT_PLATE;
 import static jimmy.mcgymmy.testutil.TypicalFoods.INDOMEE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +13,7 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import jimmy.mcgymmy.commons.core.index.Index;
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
 import jimmy.mcgymmy.model.McGymmy;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
@@ -73,7 +73,7 @@ public class JsonMcGymmyStorageTest {
 
         // Modify data, overwrite exiting file, and read back
         original.addFood(HOT_PLATE);
-        original.removeFood(CHICKEN_RICE);
+        original.removeFood(Index.fromZeroBased(0));
         jsonMcGymmyStorage.saveMcGymmy(original, filePath);
         readBack = jsonMcGymmyStorage.readMcGymmy(filePath).get();
         assertEquals(original, new McGymmy(readBack));

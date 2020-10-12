@@ -9,8 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import jimmy.mcgymmy.commons.core.index.Index;
 import jimmy.mcgymmy.commons.util.CollectionUtil;
-import jimmy.mcgymmy.model.food.exceptions.DuplicateFoodException;
-import jimmy.mcgymmy.model.food.exceptions.FoodNotFoundException;
 
 /**
  * A list of food items that allows repeated elements and does not allow nulls.
@@ -38,26 +36,6 @@ public class Fridge implements Iterable<Food> {
     }
 
     /**
-     * Replaces the food {@code target} in the list with {@code editedPerson}.
-     * {@code target} must exist in the list.
-     * The food identity of {@code editedPerson} must not be the same as another existing food in the list.
-     */
-    public void setFood(Food target, Food editedFood) {
-        CollectionUtil.requireAllNonNull(target, editedFood);
-
-        int index = internalList.indexOf(target);
-        if (index == -1) {
-            throw new FoodNotFoundException();
-        }
-
-        if (!target.equals(editedFood) && contains(editedFood)) {
-            throw new DuplicateFoodException();
-        }
-
-        internalList.set(index, editedFood);
-    }
-
-    /**
      * Replaces the food item at the {@code index} position in the list with {@code editedFood}.
      * {@code target} must exist in the list.
      */
@@ -73,16 +51,6 @@ public class Fridge implements Iterable<Food> {
     public void remove(Index removeIndex) {
         requireNonNull(removeIndex);
         internalList.remove(removeIndex.getZeroBased());
-    }
-
-    /**
-     * Remove the food item from the list.
-     *
-     * @param food Food item to be removed.
-     */
-    public void remove(Food food) {
-        requireNonNull(food);
-        internalList.remove(internalList.indexOf(food));
     }
 
     public void setFoods(Fridge replacement) {
