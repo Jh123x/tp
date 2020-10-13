@@ -1,32 +1,21 @@
 package jimmy.mcgymmy.logic.commands;
 
-import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
 import jimmy.mcgymmy.logic.parser.exceptions.ParameterConflictException;
 import jimmy.mcgymmy.logic.parser.parameter.AbstractParameter;
 import jimmy.mcgymmy.logic.parser.parameter.OptionalParameter;
 import jimmy.mcgymmy.logic.parser.parameter.Parameter;
 import jimmy.mcgymmy.logic.parser.parameter.ParameterConverter;
 import jimmy.mcgymmy.logic.parser.parameter.ParameterSet;
-import jimmy.mcgymmy.model.Model;
 
 /**
  * Represents a command with hidden internal logic and the ability to be executed.
  */
-public abstract class Command {
+public abstract class Command implements CommandExecutable {
     private final ParameterSet parameterSet;
 
     protected Command() {
         this.parameterSet = new ParameterSet();
     }
-
-    /**
-     * Executes the command and returns the result message.
-     *
-     * @param model {@code Model} which the command should operate on.
-     * @return feedback message of the operation result for display
-     * @throws CommandException If an error occurs during command execution.
-     */
-    public abstract CommandResult execute(Model model) throws CommandException;
 
     /**
      * Registers a parameter for use in the parameter set.

@@ -5,11 +5,12 @@ import static java.util.Objects.requireNonNull;
 import jimmy.mcgymmy.model.Model;
 
 /**
- * Lists all persons in mcgymmy to the user.
+ * Lists all food items in mcgymmy to the user.
  */
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
+    public static final String SHORT_DESCRIPTION = "Display all food items.";
 
     public static final String MESSAGE_SUCCESS = "Listed all food";
 

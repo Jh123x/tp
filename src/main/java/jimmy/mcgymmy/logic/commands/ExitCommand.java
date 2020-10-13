@@ -8,6 +8,7 @@ import jimmy.mcgymmy.model.Model;
 public class ExitCommand extends Command {
 
     public static final String COMMAND_WORD = "exit";
+    public static final String SHORT_DESCRIPTION = "Exit McGymmy.";
 
     public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT = "Exiting McGymmy as requested ...";
 

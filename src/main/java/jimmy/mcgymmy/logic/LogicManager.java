@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import jimmy.mcgymmy.commons.core.GuiSettings;
 import jimmy.mcgymmy.commons.core.LogsCenter;
-import jimmy.mcgymmy.logic.commands.Command;
+import jimmy.mcgymmy.logic.commands.CommandExecutable;
 import jimmy.mcgymmy.logic.commands.CommandResult;
 import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
 import jimmy.mcgymmy.logic.parser.McGymmyParser;
@@ -42,8 +42,8 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = mcGymmyParser.parse(commandText);
-        commandResult = command.execute(model);
+        CommandExecutable executable = mcGymmyParser.parse(commandText);
+        commandResult = executable.execute(model);
 
         try {
             storage.saveMcGymmy(model.getMcGymmy());

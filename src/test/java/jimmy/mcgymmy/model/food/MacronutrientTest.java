@@ -1,6 +1,7 @@
 package jimmy.mcgymmy.model.food;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,8 +36,16 @@ class MacronutrientTest {
         // different type -> return false
         assertFalse(DEFAULT_FAT_1.equals(DEFAULT_PROTEIN_1));
 
+        // not instanceof Macronutrient -> return false
+        assertFalse(DEFAULT_FAT_1.equals("dummy string object"));
+
         // same type, same totalCalories, different amount -> return false
         assertFalse(MACRONUTRIENT_1.equals(MACRONUTRIENT_2));
+    }
+
+    @Test
+    public void getTotalCalories() {
+        assertEquals(new MacronutrientStub(4, 4).getTotalCalories(), 16);
     }
 
     private static class MacronutrientStub extends Macronutrient {

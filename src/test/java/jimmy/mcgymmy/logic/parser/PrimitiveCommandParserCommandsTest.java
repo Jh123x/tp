@@ -16,17 +16,16 @@ import jimmy.mcgymmy.logic.commands.DeleteCommand;
 import jimmy.mcgymmy.logic.commands.EditCommand;
 import jimmy.mcgymmy.logic.commands.ExitCommand;
 import jimmy.mcgymmy.logic.commands.FindCommand;
-import jimmy.mcgymmy.logic.commands.HelpCommand;
 import jimmy.mcgymmy.logic.commands.ListCommand;
 import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
 
-public class McGymmyParserCommandsTest {
-    private final McGymmyParser parser = new McGymmyParser();
+public class PrimitiveCommandParserCommandsTest {
+    private final PrimitiveCommandParser parser = new PrimitiveCommandParser();
 
     @Test
     public void defaultCommands_added() {
         // if this breaks, you need to add the command in McGymmyParser.addDefaultCommands
-        String[] commands = {"add", "edit", "delete", "clear", "find", "delete", "help", "list"};
+        String[] commands = {"add", "edit", "delete", "clear", "find", "delete", "list"};
         Set<String> registeredCommands = parser.getRegisteredCommands();
         for (String command : commands) {
             assertTrue(registeredCommands.contains(command));
@@ -49,14 +48,9 @@ public class McGymmyParserCommandsTest {
     }
 
     @Test
-    public void parseCommand_help() throws Exception {
-        assertTrue(parser.parse(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
-    }
-
-    @Test
     public void parseCommand_find() throws Exception {
         String searchString = "haiufas iuaohbfiasduo";
-        Command command = parser.parse(FindCommand.COMMAND_WORD + " " + searchString);
+        Command command = (Command) parser.parse(FindCommand.COMMAND_WORD + " " + searchString);
         assertTrue(command instanceof FindCommand);
         assertEquals(CommandParserTestUtil.commandParameterValue(command, ""), Optional.of(searchString));
     }
@@ -69,7 +63,7 @@ public class McGymmyParserCommandsTest {
     @Test
     public void parseCommand_delete() throws Exception {
         String indexString = "68";
-        Command command = parser.parse(DeleteCommand.COMMAND_WORD + " " + indexString);
+        Command command = (Command) parser.parse(DeleteCommand.COMMAND_WORD + " " + indexString);
         assertTrue(command instanceof DeleteCommand);
         assertEquals(CommandParserTestUtil.commandParameterValue(command, ""), Optional.of(indexString));
     }
@@ -91,7 +85,7 @@ public class McGymmyParserCommandsTest {
                 proteinString,
                 fatString,
                 carbString);
-        Command command = parser.parse(commandString);
+        Command command = (Command) parser.parse(commandString);
         assertTrue(command instanceof AddCommand);
         assertEquals(CommandParserTestUtil.commandParameterValue(command, "n"), Optional.of(nameString));
         assertEquals(CommandParserTestUtil.commandParameterValue(command, "p"), Optional.of(proteinString));
@@ -117,7 +111,7 @@ public class McGymmyParserCommandsTest {
                 proteinString,
                 fatString,
                 carbString);
-        Command command = parser.parse(commandString);
+        Command command = (Command) parser.parse(commandString);
         assertTrue(command instanceof EditCommand);
         assertEquals(CommandParserTestUtil.commandParameterValue(command, ""), Optional.of(indexString));
         assertEquals(CommandParserTestUtil.commandParameterValue(command, "n"), Optional.empty());

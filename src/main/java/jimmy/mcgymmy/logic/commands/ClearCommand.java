@@ -11,6 +11,7 @@ import jimmy.mcgymmy.model.Model;
 public class ClearCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";
+    public static final String SHORT_DESCRIPTION = "Deletes all food items in McGymmy.";
     public static final String MESSAGE_SUCCESS = "McGymmy has been cleared!";
 
 

@@ -18,7 +18,7 @@ import jimmy.mcgymmy.model.tag.Tag;
  */
 public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
-
+    public static final String SHORT_DESCRIPTION = "adds a new food item to McGymmy";
     public static final String MESSAGE_SUCCESS = "New food added: \n%1$s";
 
     private Parameter<Name> nameParameter = this.addParameter(

@@ -15,6 +15,7 @@ import jimmy.mcgymmy.model.tag.Tag;
 
 public class TagCommand extends Command {
     public static final String COMMAND_WORD = "tag";
+    public static final String SHORT_DESCRIPTION = "Add tags to the selected food item.";
 
     public static final String MESSAGE_SUCCESS = "New tag added: %s";
     public static final String MESSAGE_DUPLICATE_TAG = "Tag %s already exists in %s";

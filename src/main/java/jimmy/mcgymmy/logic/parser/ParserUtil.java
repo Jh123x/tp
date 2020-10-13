@@ -2,9 +2,15 @@ package jimmy.mcgymmy.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 
 import jimmy.mcgymmy.commons.core.index.Index;
 import jimmy.mcgymmy.commons.util.StringUtil;
@@ -130,5 +136,83 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Helper function for commons-cli's HelpFormatter.
+     * Generates the usage string from commons-cli options.
+     *
+     * @param commandName name of the command.
+     * @param header extra text to be included before usage statement.
+     * @param options commons-cli options to format.
+     * @return usage string.
+     */
+    public static String getUsageFromHelpFormatter(String commandName, String header, Options options) {
+        HelpFormatter formatter = new HelpFormatter();
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        formatter.printHelp(
+            printWriter,
+            formatter.getWidth(),
+            commandName,
+            header,
+            options,
+            formatter.getLeftPadding(),
+            formatter.getDescPadding(),
+            "");
+        return stringWriter.toString();
+    }
+
+    /**
+     * Because Java does not support tuples/pairs.
+     * Also a ton of boilerplate because module guidelines
+     * doesn't let me use public variables even here.
+     */
+    public static class HeadTailString {
+        // mandated private fields from the Church of OOP.
+        private final String head;
+        private final String[] tail;
+
+        // package private because it can only be created here
+        HeadTailString(String head, String[] tail) {
+            this.head = head;
+            this.tail = tail;
+        }
+
+        /**
+         * Splits a string using the delimiter,
+         * storing the first string as the head, and the rest as the tail.
+         *
+         * @param input raw input string.
+         * @param delimiter Java regex string to split the string by.
+         * @return HeadTailString object which is essentially a pair (String, String[]) but with Java cruft.
+         */
+        public static HeadTailString splitString(String input, String delimiter) {
+            try {
+                String[] headTail = input.split(delimiter);
+                return new HeadTailString(headTail[0], Arrays.copyOfRange(headTail, 1, headTail.length));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return new HeadTailString("", new String[]{""});
+            }
+        }
+
+        /**
+         * Splits a string by whitespaces,
+         * storing the first string as the head, and the rest as the tail.
+         *
+         * @param input raw input string.
+         * @return HeadTailString object which is essentially a pair (String, String[]) but with Java cruft.
+         */
+        public static HeadTailString splitString(String input) {
+            return HeadTailString.splitString(input, "\\s+");
+        }
+
+        public String getHead() {
+            return head;
+        }
+
+        public String[] getTail() {
+            return tail;
+        }
     }
 }

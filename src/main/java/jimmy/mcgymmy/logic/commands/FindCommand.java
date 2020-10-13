@@ -15,6 +15,7 @@ import jimmy.mcgymmy.model.food.NameContainsKeywordsPredicate;
  */
 public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
+    public static final String SHORT_DESCRIPTION = "Filters the displayed list by a given keyword.";
 
     private Parameter<NameContainsKeywordsPredicate> predicateParameter = this.addParameter(
             "keyword",
