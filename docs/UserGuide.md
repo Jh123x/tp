@@ -31,7 +31,7 @@ Refer to the features below for details of each command.
 
    * **`list`** : Lists all food items.
 
-   * **`add`**`potato -p 100 -c 5 -f 0` : Adds a food item named `potato` with `100` proteins, `5` carbs, and `0` fats.
+   * **`add`**`-n potato -p 100 -c 5 -f 0` : Adds a food item named `potato` with `100` proteins, `5` carbs, and `0` fats.
 
    * **`delete`**`3` : Deletes the 3rd food item shown in the current list.
 
@@ -48,7 +48,7 @@ Refer to the features below for details of each command.
 **:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add NAME -p PROTEIN`, `NAME` and `PROTEIN` are parameters which can be used as `add bacon -p 200`.
+  e.g. in `add -n NAME -p PROTEIN`, `NAME` and `PROTEIN` are parameters which can be used as `add bacon -p 200`.
 
 * Items in square brackets are optional.<br>
   e.g `-n NAME [-f FATS]` can be used as `-n bacon -f 10` or as `-n bacon`.
@@ -74,28 +74,60 @@ Format: `help`
 
 Add food item to McGymmy
 
-Format: `add NAME [-p Proteins] [-f Fats] [-c carbs]`
+Format: `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS]`
 
 Examples:
-* `add potato -p 100 -c 5 -f 0`
-* `add McSpicy`
-* `add Wonton Mee -c 10`
+* `add -n potato -p 100 -c 5 -f 0`
+* `add -n McSpicy`
+* `add -n Wonton Mee -c 10`
 
 ![add command example](images/CommandImagesForUG/Add.png)
+
+### Tagging food items : `tag`
+
+Tags a food item in McGymmy.
+
+* Tags `TAG_NAME` for food item at the specified `INDEX`. The index refers to the index number shown in the displayed food list. The index **must be a positive integer** 1, 2, 3, …​
+
+Format: `tag INDEX -t TAG_NAME`
+
+![tag command example](images/CommandImagesForUG/Tag.png)
+
+### Tagging food items : `untag`
+
+Untags a food item in McGymmy.
+
+* Untags `TAG_NAME` for food item at the specified `INDEX`. The index refers to the index number shown in the displayed food list. The index **must be a positive integer** 1, 2, 3, …​
+
+Format: `untag INDEX -t TAG_NAME`
+
+![untag command example](images/CommandImagesForUG/Untag.png)
+
+### Finding a food item: `find`
+
+Find specified foods within McGymmy with a keyword
+
+* Finds all food within McGymmy with a keyword
+
+Format: `find KEYWORDS`
+
+![find_command_example](images/CommandImagesForUG/Find.png)
 
 ### Listing all food items : `list`
 
 Shows a list of all food items in McGymmy.
 
+* List all food items in McGymmy
+
 Format: `list`
 
-![list command example]()
+![list command example](images/CommandImagesForUG/List.png)
 
-### Updating a food item : `update`
+### Editing a food item : `edit`
 
-Update the food item details based on the index.
+Edit the food item details based on the index.
 
-Format: `update 5 [-n foodItem] [-p protein] [-c carbs] [-f fats]`
+Format: `edit INDEX [-n NAME] [-p PROTEIN] [-c CARBS] [-f FATS]`
 
 Examples: 
 
@@ -104,9 +136,9 @@ Examples:
 * Existing values will be updated to the input values.
 
 Examples:
-*  `update 3 -n banana -p 120` Changes the `name` and `protein` values of the 3rd item in the list to `banana` and `120` respectively.
+*  `edit 3 -n banana -p 120` Changes the `name` and `protein` values of the 3rd item in the list to `banana` and `120` respectively.
 
-![update command example](images/CommandImagesForUG/Update.png)
+![edit command example](images/CommandImagesForUG/Edit.png)
 
 ### Deleting a food item: `delete`
 
@@ -125,15 +157,19 @@ Examples:
 
 ### Creating a macro command : `macro`
 
-Creates an Alias macro in McGymmy.
+Creates a macro in McGymmy.
 
-Format: `Alias SHORTCUT; COMMAND_1; [COMMAND_2;] …​`
+* Creates a macro with name `SHORTCUT` which executes `COMMAND_1; COMMAND_2; ...`.
 
-![Alias command example](images/CommandImagesForUG/Alias.png)
+Format: `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​`
+
+![Alias command example](images/CommandImagesForUG/Macro.png)
 
 ### Exiting the program : `exit`
 
 Exits the program.
+
+* Exits McGymmy
 
 Format: `exit`
 
@@ -158,9 +194,13 @@ _{explain the feature here}_
 
 Action     | Format, Examples
 -----------|------------------
-**Add**    | `add NAME [-p Proteins] [-f Fats] [-c carbs]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23`
+**Add**    | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Update** | `update INDEX [-n NAME] [-p Proteins] [-f Fats] [-c carbs]`<br> e.g.,`update 2 -n Chicken Rice -p 30 -f 50 -c 60`
+**edit**   | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60`
 **List**   | `list`
 **Help**   | `help`
-**Macro**  | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​`
+**Find**   | `find KEYWORDS` <br> e.g., `find chicken`
+**Tag**    | `tag INDEX -t TAG_NAME` <br> e.g., `tag 1 -t Lunch`
+**UnTag**  | `untag INDEX -t TAG_NAME` <br> e.g., `untag 1 -t Lunch`
+**Macro**  | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​` <br> e.g., `macro lunch; add Chicken
+**Exit**   | `exit`

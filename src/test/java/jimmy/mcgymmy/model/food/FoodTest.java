@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import jimmy.mcgymmy.testutil.Assert;
 import jimmy.mcgymmy.testutil.FoodBuilder;
 
+
 public class FoodTest {
     public static final Name VALID_FOOD_NAME = new Name("test food");
     public static final Name VALID_FOOD_NAME_2 = new Name("test food 2");
@@ -51,6 +52,30 @@ public class FoodTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new Food(new Name(INVALID_FOOD_NAME), PROTEIN, FAT, CARBOHYDRATE));
     }
+
+    @Test
+    public void toStringTest() {
+        String expected1 = "Food:test food\n"
+                + "protein: 2\n"
+                + "carbs: 3\n"
+                + "fat: 4\n";
+        assertEquals(COMPARED_FOOD.toString(), expected1);
+        String expected2 = "Food:test food2\n"
+                + "protein: 100\n"
+                + "carbs: 20\n"
+                + "fat: 10\n";
+        assertEquals(new Food("test food2", 100, 10, 20).toString(), expected2);
+    }
+
+    @Test
+    public void getCaloriesTest() {
+        assertEquals(new Food("water", 0, 0, 0).getCalories(), 0);
+        assertEquals(new Food("chimkenbreast", 30, 0, 0).getCalories(), 120);
+        assertEquals(new Food("chimkenRice", 0, 0, 30).getCalories(), 120);
+        assertEquals(new Food("sesameOil", 0, 10, 0).getCalories(), 90);
+        assertEquals(new Food("chimkenRiceSet", 30, 10, 30).getCalories(), 330);
+    }
+
 
     @Test
     public void equals() {
