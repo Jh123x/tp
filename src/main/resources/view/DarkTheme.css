@@ -346,3 +346,14 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+
+#date {
+    -fx-text-fill: white;
+    -fx-background-color: #913e7b;
+    -fx-padding: 4 3 4 3;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 11;
+    -fx-border-insets: 3 0;
+    -fx-background-insets: 3 0;
+}

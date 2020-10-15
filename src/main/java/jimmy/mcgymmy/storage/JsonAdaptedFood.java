@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+import jimmy.mcgymmy.model.date.Date;
 import jimmy.mcgymmy.model.food.Carbohydrate;
 import jimmy.mcgymmy.model.food.Fat;
 import jimmy.mcgymmy.model.food.Food;
@@ -28,6 +29,7 @@ class JsonAdaptedFood {
     private final String protein;
     private final String fat;
     private final String carbs;
+    private final String date;
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
 
     /**
@@ -36,11 +38,12 @@ class JsonAdaptedFood {
     @JsonCreator
     public JsonAdaptedFood(@JsonProperty("name") String name, @JsonProperty("protein") String protein,
                            @JsonProperty("fat") String fat, @JsonProperty("carbs") String carbs,
-                           @JsonProperty("tagged") List<JsonAdaptedTag> tagged) {
+                           @JsonProperty("date") String date, @JsonProperty("tagged") List<JsonAdaptedTag> tagged) {
         this.name = name;
         this.protein = protein;
         this.fat = fat;
         this.carbs = carbs;
+        this.date = date;
         if (tagged != null) {
             this.tagged.addAll(tagged);
         }
@@ -54,6 +57,7 @@ class JsonAdaptedFood {
         protein = Integer.toString(source.getProtein().getAmount());
         fat = Integer.toString(source.getFat().getAmount());
         carbs = Integer.toString(source.getCarbs().getAmount());
+        date = source.getDate().toString();
         tagged.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -103,8 +107,20 @@ class JsonAdaptedFood {
         }
         final Carbohydrate modelCarbohydrate = new Carbohydrate(Integer.parseInt(carbs));
 
+        if (date == null) {
+            throw new IllegalValueException(
+                String.format(MISSING_FIELD_MESSAGE_FORMAT, Date.class.getSimpleName()));
+        }
+
+        final Date modelDate;
+        try {
+            modelDate = new Date(date);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
+        }
+
         final Set<Tag> modelTags = new HashSet<>(foodTags);
-        return new Food(modelName, modelProtein, modelFat, modelCarbohydrate, modelTags);
+        return new Food(modelName, modelProtein, modelFat, modelCarbohydrate, modelTags, modelDate);
     }
 
 }
