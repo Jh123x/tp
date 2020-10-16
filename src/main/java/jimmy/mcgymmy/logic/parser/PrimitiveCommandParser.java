@@ -163,4 +163,13 @@ public class PrimitiveCommandParser {
     public Boolean hasCommand(String command) {
         return this.getRegisteredCommands().contains(command);
     }
+
+    // for testing
+    Map<String, Supplier<Command>> getCommandTable() {
+        return commandTable;
+    }
+
+    Map<String, String> getCommandDescriptionTable() {
+        return commandDescriptionTable;
+    }
 }

@@ -17,7 +17,7 @@ import jimmy.mcgymmy.model.food.Food;
  */
 public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
-    public static final String SHORT_DESCRIPTION = "Deletes the selected food item.";
+    public static final String SHORT_DESCRIPTION = "Delete the selected food item.";
 
     public static final String MESSAGE_DELETE_FOOD_SUCCESS = "Deleted Food: %1$s";
 

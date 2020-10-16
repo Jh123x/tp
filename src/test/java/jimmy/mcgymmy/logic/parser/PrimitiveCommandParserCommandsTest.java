@@ -18,6 +18,8 @@ import jimmy.mcgymmy.logic.commands.ExitCommand;
 import jimmy.mcgymmy.logic.commands.FindCommand;
 import jimmy.mcgymmy.logic.commands.ListCommand;
 import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
+import jimmy.mcgymmy.model.Model;
+import jimmy.mcgymmy.model.ModelManager;
 
 public class PrimitiveCommandParserCommandsTest {
     private final PrimitiveCommandParser parser = new PrimitiveCommandParser();
@@ -124,5 +126,30 @@ public class PrimitiveCommandParserCommandsTest {
     public void parseCommand_editMissingIndex_failure() {
         String commandString = String.format("%s -n poop", EditCommand.COMMAND_WORD);
         assertThrows(ParseException.class, () -> parser.parse(commandString));
+    }
+
+    @Test
+    public void parseCommand_helpNoArguments() throws Exception {
+        Model model = new ModelManager();
+        PrimitiveCommandHelpUtil helpUtil = new PrimitiveCommandHelpUtil(
+                parser.getCommandTable(),
+                parser.getCommandDescriptionTable());
+        assertEquals(parser.parse("help").execute(model) , helpUtil.newHelpCommand().execute(model));
+    }
+
+    @Test
+    public void parseCommand_helpCommands() throws Exception {
+        // Should suffice to check "help [COMMAND]" works.
+        Model model = new ModelManager();
+        PrimitiveCommandHelpUtil helpUtil = new PrimitiveCommandHelpUtil(
+                parser.getCommandTable(),
+                parser.getCommandDescriptionTable());
+        for (String commandName : parser.getRegisteredCommands()) {
+            if (commandName.equals("help")) {
+                continue;
+            }
+            assertEquals(parser.parse("help " + commandName).execute(model),
+                    helpUtil.newHelpCommand(commandName).execute(model));
+        }
     }
 }
