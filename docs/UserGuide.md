@@ -67,7 +67,11 @@ Shows all help commands in the terminal.
 
 ![help message](images/CommandImagesForUG/Help.png)
 
-Format: `help`
+Format: `help [COMMAND]`
+
+Examples:
+* `help add`
+* `help`
 
 
 ### Adding a food item: `add`
@@ -198,7 +202,7 @@ Action     | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **edit**   | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60`
 **List**   | `list`
-**Help**   | `help`
+**Help**   | `help [COMMAND]`
 **Find**   | `find KEYWORDS` <br> e.g., `find chicken`
 **Tag**    | `tag INDEX -t TAG_NAME` <br> e.g., `tag 1 -t Lunch`
 **UnTag**  | `untag INDEX -t TAG_NAME` <br> e.g., `untag 1 -t Lunch`
