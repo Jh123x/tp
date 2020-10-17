@@ -1,10 +1,9 @@
-package jimmy.mcgymmy.logic.predicate;
+package jimmy.mcgymmy.model.food;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 import jimmy.mcgymmy.commons.util.StringUtil;
-import jimmy.mcgymmy.model.food.Food;
 
 /**
  * Tests that a {@code Food}'s {@code Name} matches any of the keywords given.

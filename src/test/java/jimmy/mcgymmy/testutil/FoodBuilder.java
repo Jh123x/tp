@@ -3,7 +3,6 @@ package jimmy.mcgymmy.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import jimmy.mcgymmy.model.date.Date;
 import jimmy.mcgymmy.model.food.Carbohydrate;
 import jimmy.mcgymmy.model.food.Fat;
 import jimmy.mcgymmy.model.food.Food;
@@ -26,7 +25,6 @@ public class FoodBuilder {
     private Protein protein;
     private Fat fat;
     private Carbohydrate carbohydrate;
-    private Date date;
     private Set<Tag> tags;
 
     /**
@@ -38,7 +36,6 @@ public class FoodBuilder {
         fat = new Fat(DEFAULT_FAT);
         carbohydrate = new Carbohydrate(DEFAULT_CARB);
         tags = new HashSet<>();
-        date = Date.currentDate();
     }
 
     /**
@@ -50,7 +47,6 @@ public class FoodBuilder {
         fat = foodToCopy.getFat();
         carbohydrate = foodToCopy.getCarbs();
         tags = new HashSet<>(foodToCopy.getTags());
-        date = foodToCopy.getDate();
     }
 
     /**
@@ -93,16 +89,8 @@ public class FoodBuilder {
         return this;
     }
 
-    /**
-     * Sets the {@code Date} of the {@code Food} that we are building.
-     */
-    public FoodBuilder withDate(String date) {
-        this.date = new Date(date);
-        return this;
-    }
-
     public Food build() {
-        return new Food(name, protein, fat, carbohydrate, tags, date);
+        return new Food(name, protein, fat, carbohydrate, tags);
     }
 
 }

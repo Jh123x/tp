@@ -6,7 +6,6 @@ import java.util.Set;
 
 import jimmy.mcgymmy.commons.util.AppUtil;
 import jimmy.mcgymmy.commons.util.CollectionUtil;
-import jimmy.mcgymmy.model.date.Date;
 import jimmy.mcgymmy.model.tag.Tag;
 
 
@@ -27,22 +26,20 @@ public class Food {
     private final Protein protein;
     private final Carbohydrate carbs;
     private final Fat fat;
-    private final Date date;
     private final Set<Tag> tags = new HashSet<>();
 
 
     /**
      * Every field must be present and not null.
      */
-    public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs, Set<Tag> tags, Date date) {
-        CollectionUtil.requireAllNonNull(name, protein, carbs, fat, date);
+    public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs, Set<Tag> tags) {
+        CollectionUtil.requireAllNonNull(name, protein, carbs, fat);
         AppUtil.checkArgument(isValidName(name.toString()), FOOD_NAME_MESSAGE_CONSTRAINT);
         this.name = name;
         this.protein = protein;
         this.carbs = carbs;
         this.fat = fat;
         this.tags.addAll(tags);
-        this.date = date;
     }
 
     // Constructor for convenience
@@ -63,20 +60,6 @@ public class Food {
         this(name, protein, fat, carbs, new HashSet<Tag>());
     }
 
-    /**
-     * Every field must be present and not null.
-     */
-    public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs, Date date) {
-        this(name, protein, fat, carbs, new HashSet<Tag>(), date);
-    }
-
-    /**
-     * Every field must be present and not null.
-     */
-    public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs, Set<Tag> tags) {
-        this(name, protein, fat, carbs, tags, Date.currentDate());
-    }
-
     private boolean isValidName(String test) {
         return test.matches(VALIDATION_REGEX);
     }
@@ -90,6 +73,7 @@ public class Food {
                 + this.getFat().getTotalCalories();
     }
 
+    // getters : make when needed
     public Name getName() {
         return this.name;
     }
@@ -118,10 +102,6 @@ public class Food {
         tags.remove(tag);
     }
 
-    public Date getDate() {
-        return date;
-    }
-
     @Override
     public boolean equals(Object other) {
         CollectionUtil.requireAllNonNull(protein, carbs, fat);
@@ -140,8 +120,7 @@ public class Food {
                 && this.getName().equals(otherFood.getName())
                 && this.getProtein().equals(otherFood.getProtein())
                 && this.getCarbs().equals(otherFood.getCarbs())
-                && this.getFat().equals(otherFood.getFat())
-                && this.getDate().equals(otherFood.getDate());
+                && this.getFat().equals(otherFood.getFat());
     }
 
     // Displays

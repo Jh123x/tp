@@ -41,8 +41,6 @@ public class FoodCard extends UiPart<Region> {
     @FXML
     private Label totalCalories;
     @FXML
-    private Label date;
-    @FXML
     private FlowPane tags;
 
     /**
@@ -57,7 +55,6 @@ public class FoodCard extends UiPart<Region> {
         fat.setText(food.getFat().toString());
         carb.setText(food.getCarbs().toString());
         totalCalories.setText(String.format("Calories: %d", food.getCalories()));
-        date.setText(food.getDate().toString());
         food.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
