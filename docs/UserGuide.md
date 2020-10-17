@@ -78,17 +78,12 @@ Examples:
 
 Add food item to McGymmy
 
-Format: `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]`
+Format: `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS]`
 
 Examples:
 * `add -n potato -p 100 -c 5 -f 0`
 * `add -n McSpicy`
 * `add -n Wonton Mee -c 10`
-* `add -n Sushi -d 20/04/2020`
-
-*__NOTE:__* The default value for protein, fats and carbs is 0. The default date is the day in which the food item is added
-
-*__NOTE:__* To view a list of supported day format, see *Appendix A*
 
 ![add command example](images/CommandImagesForUG/Add.png)
 
@@ -136,7 +131,7 @@ Format: `list`
 
 Edit the food item details based on the index.
 
-Format: `edit INDEX [-n NAME] [-p PROTEIN] [-c CARBS] [-f FATS] [-d DATE]`
+Format: `edit INDEX [-n NAME] [-p PROTEIN] [-c CARBS] [-f FATS]`
 
 Examples: 
 
@@ -146,8 +141,6 @@ Examples:
 
 Examples:
 *  `edit 3 -n banana -p 120` Changes the `name` and `protein` values of the 3rd item in the list to `banana` and `120` respectively.
-
-*__NOTE:__* To view a list of supported day format, see *Appendix A*
 
 ![edit command example](images/CommandImagesForUG/Edit.png)
 
@@ -225,7 +218,7 @@ _{explain the feature here}_
 
 Action     | Format, Examples
 -----------|------------------
-**Add**    | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23 -d 20/04/2020`
+**Add**    | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60`
 **List**   | `list`
@@ -235,20 +228,3 @@ Action     | Format, Examples
 **UnTag**  | `untag INDEX -t TAG_NAME` <br> e.g., `untag 1 -t Lunch`
 **Macro**  | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​` <br> e.g., `macro lunch; add Chicken
 **Exit**   | `exit`
-
-## Appendix A
-List of supported input date formats, sorted from highest parsing priority to lowest parsing priority
-
-Format       | Example
------------- | --------
-*yyyy-MM-dd* | 2020-09-02
-*yyyy-M-dd*  | 2020-9-02
-*yyyy-M-d*   | 2020-9-2
-*dd-MM-yyyy* | 02-09-2020
-*dd-M-yyyy*  | 02-9-2020
-*d-M-yyyy*   | 2-9-2020
-*yyyy/MM/dd* | 2020/09/02
-*dd/MM/yyyy* | 02/09/2020
-*dd/M/yyyy*  | 02/9/2020
-*d/M/yyyy*   | 2/9/2020
-*d MMM yyyy* | 2 Sep 2020
