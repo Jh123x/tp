@@ -220,9 +220,9 @@ Action     | Format, Examples
 -----------|------------------
 **Add**    | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**edit**   | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60`
+**Edit**   | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60`
 **List**   | `list`
-**Help**   | `help [COMMAND]`
+**Help**   | `help [COMMAND]` <br> e.g., `help add`
 **Find**   | `find KEYWORDS` <br> e.g., `find chicken`
 **Tag**    | `tag INDEX -t TAG_NAME` <br> e.g., `tag 1 -t Lunch`
 **UnTag**  | `untag INDEX -t TAG_NAME` <br> e.g., `untag 1 -t Lunch`
