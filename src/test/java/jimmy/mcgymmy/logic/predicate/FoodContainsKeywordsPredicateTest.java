@@ -41,28 +41,28 @@ class FoodContainsKeywordsPredicateTest {
     @Test
     public void test_nameFoundTagNotFound_returnsTrue() {
         FoodContainsKeywordsPredicate predicate =
-                new FoodContainsKeywordsPredicate(Arrays.asList("Alice", "Dinner"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Alice Bob")).withTags("Lunch").build()));
+                new FoodContainsKeywordsPredicate(Arrays.asList("Chicken", "Dinner"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Chicken McWing")).withTags("Lunch").build()));
     }
 
     @Test
     public void test_nameFoundTagFound_returnsTrue() {
         FoodContainsKeywordsPredicate predicate =
-                new FoodContainsKeywordsPredicate(Arrays.asList("Alice", "Dinner"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Alice Bob")).withTags("Dinner").build()));
+                new FoodContainsKeywordsPredicate(Arrays.asList("Chicken", "Dinner"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Chicken McWing")).withTags("Dinner").build()));
     }
 
     @Test
     public void test_nameNotFoundTagFound_returnsTrue() {
         FoodContainsKeywordsPredicate predicate =
-                new FoodContainsKeywordsPredicate(Arrays.asList("Alice", "Dinner"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Bob the barber")).withTags("Dinner").build()));
+                new FoodContainsKeywordsPredicate(Arrays.asList("Chicken", "Dinner"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Big Mac")).withTags("Dinner").build()));
     }
 
     @Test
     public void test_nameNotFoundTagNotFound_returnsFalse() {
         FoodContainsKeywordsPredicate predicate =
-                new FoodContainsKeywordsPredicate(Arrays.asList("Alice", "Lunch"));
-        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Bob the barber")).withTags("Dinner").build()));
+                new FoodContainsKeywordsPredicate(Arrays.asList("Chicken", "Lunch"));
+        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Big Mac")).withTags("Dinner").build()));
     }
 }
