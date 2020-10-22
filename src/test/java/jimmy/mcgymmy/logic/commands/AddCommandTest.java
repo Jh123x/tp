@@ -123,6 +123,12 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+
+        @Override
+        public void clearFilteredFood() {
+            throw new AssertionError("This method should not be called.");
+        }
+
         @Override
         public ReadOnlyUserPrefs getUserPrefs() {
             throw new AssertionError("This method should not be called.");
@@ -180,6 +186,17 @@ public class AddCommandTest {
 
         @Override
         public void setFood(Index index, Food editedFood) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean canUndo() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+
+        @Override
+        public void undo() {
             throw new AssertionError("This method should not be called.");
         }
 

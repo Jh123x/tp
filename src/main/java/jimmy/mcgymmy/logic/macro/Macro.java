@@ -22,6 +22,7 @@ import jimmy.mcgymmy.model.Model;
 public class Macro {
     private final String name;
     private final String[] rawCommands;
+    private final String[] macroArguments;
     private final Options options;
 
     /**
@@ -34,13 +35,14 @@ public class Macro {
      */
     public Macro(String name, String[] macroArguments, String[] commands) throws ParseException {
         // TODO: use these strings to serialize macro
-        this(name, Macro.parseOptions(macroArguments), commands);
+        this(name, Macro.parseOptions(macroArguments), macroArguments, commands);
     }
 
-    Macro(String name, Options options, String[] commands) {
+    Macro(String name, Options options, String[] macroArguments, String[] commands) {
         this.name = name;
         this.options = options;
         this.rawCommands = commands;
+        this.macroArguments = macroArguments;
     }
 
     public String getName() {
@@ -49,6 +51,14 @@ public class Macro {
 
     public Options getOptions() {
         return this.options;
+    }
+
+    public String[] getRawCommands() {
+        return rawCommands;
+    }
+
+    public String[] getMacroArguments() {
+        return macroArguments;
     }
 
     public CommandExecutable commandInstance(CommandLine args) {

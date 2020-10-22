@@ -167,10 +167,30 @@ public class EditCommandTest {
     }
 
     @Test
+    public void execute_editedFoodSameAsInitialFood_returnsFoodNoChangeMessage() {
+        Food foodInList =
+                model.getMcGymmy().getFoodList().get(INDEX_FIRST_FOOD.getZeroBased());
+        EditCommand editCommand = new EditCommand();
+        editCommand.setParameters(
+                new CommandParserTestUtil.ParameterStub<>("", INDEX_FIRST_FOOD),
+                new CommandParserTestUtil.OptionalParameterStub<>("n"),
+                new CommandParserTestUtil.OptionalParameterStub<>("p", foodInList.getProtein()),
+                new CommandParserTestUtil.OptionalParameterStub<>("f"),
+                new CommandParserTestUtil.OptionalParameterStub<>("c"),
+                new CommandParserTestUtil.OptionalParameterStub<>("d")
+        );
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_FOOD_NO_CHANGE, foodInList);
+        Model expectedModel = new ModelManager(new McGymmy(model.getMcGymmy()), new UserPrefs());
+        expectedModel.setFood(INDEX_FIRST_FOOD, foodInList);
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_duplicateFoodFilteredList_success() {
         showFoodAtIndex(model, INDEX_FIRST_FOOD);
 
-        // edit food in filtered list into a duplicate in address book
+        // edit food in filtered list into a duplicate in fridge
         Food foodInList =
                 model.getMcGymmy().getFoodList().get(INDEX_SECOND_FOOD.getZeroBased());
         EditCommand editCommand = new EditCommand();

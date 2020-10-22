@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import jimmy.mcgymmy.commons.core.LogsCenter;
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
+import jimmy.mcgymmy.logic.macro.MacroList;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
@@ -18,14 +19,17 @@ public class StorageManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private McGymmyStorage mcGymmyStorage;
+    private MacroListStorage macroListStorage;
     private UserPrefsStorage userPrefsStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code McGymmyStorage} and {@code UserPrefStorage}.
      */
-    public StorageManager(McGymmyStorage mcGymmyStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(McGymmyStorage mcGymmyStorage, MacroListStorage macroListStorage,
+                          UserPrefsStorage userPrefsStorage) {
         super();
         this.mcGymmyStorage = mcGymmyStorage;
+        this.macroListStorage = macroListStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -46,6 +50,23 @@ public class StorageManager implements Storage {
         userPrefsStorage.saveUserPrefs(userPrefs);
     }
 
+    // ================ MacroList methods ==============================
+
+
+    @Override
+    public Path getMacroListFilePath() {
+        return macroListStorage.getMacroListFilePath();
+    }
+
+    @Override
+    public Optional<MacroList> readMacroList() throws DataConversionException, IOException {
+        return macroListStorage.readMacroList();
+    }
+
+    @Override
+    public void saveMacroList(MacroList macroList) throws IOException {
+        macroListStorage.saveMacroList(macroList);
+    }
 
     // ================ McGymmy methods ==============================
 

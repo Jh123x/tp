@@ -18,7 +18,8 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [portfolio](team/sean.md)
 
 * Role: Team Lead
-* Responsibilities: 
+
+* Responsibilities:
 
 ### Kamil Gimik
 
@@ -28,19 +29,19 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [portfolio](team/kamil.md)
 
 * Role: Team Lead
-* Responsibilities: 
+* Responsibilities:
 
 ### Joey Chen De'en
 
 <img src="images/joeychensmart.png" width="200px">
 
-[github](https://github.com/JoeyChenSmart) 
+[github](https://github.com/JoeyChenSmart)
 [portfolio](team/joey.md)
 
 * Role: Developer
-* Responsibilities: 
+* Responsibilities:
 
-### Huynh Thai Duong 
+### Huynh Thai Duong
 
 <img src="images/aidoxe-123.png" width="200px">
 
@@ -48,7 +49,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [portfolio](team/duong.md)
 
 * Role: Developer
-* Responsibilities: 
+* Responsibilities:
 
 ### Wen Junhua
 
@@ -58,4 +59,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [portfolio](team/junhua.md)
 
 * Role: Developer
-* Responsibilities: 
+* Responsibilities:

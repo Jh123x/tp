@@ -1,0 +1,22 @@
+@startuml
+!include style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Command "add -n Rice ...", after adding
+
+package Stack {
+    class State1 as "__copy0:ReadOnlyMcGymmy__"
+    class State2 as "__copy1:ReadOnlyMcGymmy__"
+    class State3 as "__copy2:AddressBook__"
+}
+
+
+State1 -[hidden]up-> State2
+State2 -[hidden]up-> State3
+
+hide State3
+
+class McGymmy as "Updated McGymmy" #FFFFF
+McGymmy -[hidden]left-> State3
+@end

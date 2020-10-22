@@ -15,6 +15,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
 
     private GuiSettings guiSettings = new GuiSettings();
     private Path mcGymmyFilePath = Paths.get("data", "mcgymmy.json");
+    private Path macroListFilePath = Paths.get("data", "macrolist.json");
 
     /**
      * Creates a {@code UserPrefs} with default values.
@@ -37,6 +38,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         requireNonNull(newUserPrefs);
         setGuiSettings(newUserPrefs.getGuiSettings());
         setMcGymmyFilePath(newUserPrefs.getMcGymmyFilePath());
+        setMacroListFilePath(newUserPrefs.getMacroListFilePath());
     }
 
     public GuiSettings getGuiSettings() {
@@ -57,6 +59,15 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         this.mcGymmyFilePath = mcGymmyFilePath;
     }
 
+    public Path getMacroListFilePath() {
+        return macroListFilePath;
+    }
+
+    public void setMacroListFilePath(Path macroListFilePath) {
+        requireNonNull(macroListFilePath);
+        this.macroListFilePath = macroListFilePath;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -69,12 +80,13 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         UserPrefs o = (UserPrefs) other;
 
         return guiSettings.equals(o.guiSettings)
-                && mcGymmyFilePath.equals(o.mcGymmyFilePath);
+                && mcGymmyFilePath.equals(o.mcGymmyFilePath)
+                && macroListFilePath.equals(o.macroListFilePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, mcGymmyFilePath);
+        return Objects.hash(guiSettings, mcGymmyFilePath, macroListFilePath);
     }
 
     @Override
@@ -82,6 +94,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         StringBuilder sb = new StringBuilder();
         sb.append("Gui Settings : " + guiSettings);
         sb.append("\nLocal data file location : " + mcGymmyFilePath);
+        sb.append("\nLocal macro file location : " + macroListFilePath);
         return sb.toString();
     }
 

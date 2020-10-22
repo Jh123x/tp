@@ -27,7 +27,8 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
     public static final String SHORT_DESCRIPTION = "Edit the selected food item.";
 
-    public static final String MESSAGE_EDIT_FOOD_SUCCESS = "Edited Food: %1$s";
+    public static final String MESSAGE_FOOD_NO_CHANGE = "The food item does not change:\n%1$s";
+    public static final String MESSAGE_EDIT_FOOD_SUCCESS = "Edited Food:\n%1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
 
     private Parameter<Index> indexParameter = this.addParameter(
@@ -111,8 +112,11 @@ public class EditCommand extends Command {
 
         Food editedFood = new Food(newName, newProtein, newFat, newCarb, tags, newDate);
 
+        if (foodToEdit.equals(editedFood)) {
+            return new CommandResult(String.format(MESSAGE_FOOD_NO_CHANGE, editedFood));
+        }
+
         model.setFood(index, editedFood);
-        model.updateFilteredFoodList(Model.PREDICATE_SHOW_ALL_FOODS);
         return new CommandResult(String.format(MESSAGE_EDIT_FOOD_SUCCESS, editedFood));
     }
 }

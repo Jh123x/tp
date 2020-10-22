@@ -22,8 +22,10 @@ import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
 import jimmy.mcgymmy.model.util.SampleDataUtil;
+import jimmy.mcgymmy.storage.JsonMacroListStorage;
 import jimmy.mcgymmy.storage.JsonMcGymmyStorage;
 import jimmy.mcgymmy.storage.JsonUserPrefsStorage;
+import jimmy.mcgymmy.storage.MacroListStorage;
 import jimmy.mcgymmy.storage.McGymmyStorage;
 import jimmy.mcgymmy.storage.Storage;
 import jimmy.mcgymmy.storage.StorageManager;
@@ -56,7 +58,8 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         McGymmyStorage mcGymmyStorage = new JsonMcGymmyStorage(userPrefs.getMcGymmyFilePath());
-        storage = new StorageManager(mcGymmyStorage, userPrefsStorage);
+        MacroListStorage macroListStorage = new JsonMacroListStorage(userPrefs.getMacroListFilePath());
+        storage = new StorageManager(mcGymmyStorage, macroListStorage, userPrefsStorage);
 
         initLogging(config);
 

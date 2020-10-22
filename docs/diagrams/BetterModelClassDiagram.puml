@@ -4,18 +4,19 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-AddressBook *-right-> "1" UniquePersonList
-AddressBook *-right-> "1" UniqueTagList
-UniqueTagList -[hidden]down- UniquePersonList
-UniqueTagList -[hidden]down- UniquePersonList
+McGymmy *-down-> "1" Fridge
+TagSet -[hidden]down- Fridge
+TagSet -[hidden]down- Fridge
 
-UniqueTagList *-right-> "*" Tag
-UniquePersonList o-right-> Person
 
-Person -up-> "*" Tag
+Fridge o-down-> Food
 
-Person *--> Name
-Person *--> Phone
-Person *--> Email
-Person *--> Address
+
+Food *--> "1" Name
+Food *--> "1" Protein
+Food *--> "1" Carbohydrate
+Food *--> "1" Fat
+Food *--> "1" Date
+Food *--> "1" TagSet
+TagSet *-right-> "*" Tag
 @enduml

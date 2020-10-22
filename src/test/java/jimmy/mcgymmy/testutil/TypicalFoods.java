@@ -60,6 +60,7 @@ public class TypicalFoods {
      */
     public static McGymmy getTypicalMcGymmy() {
         McGymmy mg = new McGymmy();
+
         for (Food food : getTypicalFoodItems()) {
             mg.addFood(food);
         }

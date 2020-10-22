@@ -3,7 +3,9 @@ package jimmy.mcgymmy.model.food;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import jimmy.mcgymmy.commons.core.LogsCenter;
 import jimmy.mcgymmy.commons.util.AppUtil;
 import jimmy.mcgymmy.commons.util.CollectionUtil;
 import jimmy.mcgymmy.model.date.Date;
@@ -21,6 +23,8 @@ public class Food {
      * otherwise " " (a blank string) becomes a valid input.
      */
     public static final String VALIDATION_REGEX = "[^\\s].*";
+
+    private static final Logger logger = LogsCenter.getLogger(Food.class);
 
     // Identity field names
     private final Name name;
@@ -43,6 +47,18 @@ public class Food {
         this.fat = fat;
         this.tags.addAll(tags);
         this.date = date;
+        // logging
+        logger.finer("Creating food item: ");
+        logger.finer("With name: " + name.toString());
+        logger.finer("With protein: " + protein.toString());
+        logger.finer("With fat: " + fat.toString());
+        logger.finer("With carbs: " + carbs.toString());
+        logger.finer("With date: " + date.toString());
+        logger.finer("With tag(s): ");
+        for (Tag tag : tags) {
+            logger.finer(tag.toString());
+        }
+        logger.finer("==============[Create food done]==============");
     }
 
     // Constructor for convenience
@@ -148,7 +164,7 @@ public class Food {
     // name + PCF details + total calories
     @Override
     public String toString() {
-        return "Food:" + this.getName() + "\n"
+        return "Food: " + this.getName() + "\n"
                 + "protein: " + protein.getAmount() + "\n"
                 + "carbs: " + carbs.getAmount() + "\n"
                 + "fat: " + fat.getAmount() + "\n";

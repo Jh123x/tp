@@ -1,0 +1,58 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":McGymmyParser" as McGymmyParser LOGIC_COLOR
+participant "executable:UntagCommand" as UntagCommand LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Food" as Food MODEL_COLOR
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("untag 1 -t Lunch")
+activate LogicManager
+
+LogicManager -> McGymmyParser : parseCommand("untag 1 -t Lunch")
+activate McGymmyParser
+
+McGymmyParser --> LogicManager : executable
+deactivate McGymmyParser
+
+LogicManager -> UntagCommand : execute()
+activate UntagCommand
+
+UntagCommand -> Model : getFilteredFoodList()
+activate Model
+
+Model --> UntagCommand : filteredFoodList
+deactivate Model
+
+UntagCommand -> Food : getTags()
+activate Food
+
+Food -> UntagCommand : List<Tags>
+deactivate Food
+
+UntagCommand -> Food : removeTag(tag)
+activate Food
+
+Food --> UntagCommand
+deactivate Food
+
+create CommandResult
+UntagCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> UntagCommand
+deactivate CommandResult
+
+UntagCommand --> LogicManager : result
+deactivate UntagCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

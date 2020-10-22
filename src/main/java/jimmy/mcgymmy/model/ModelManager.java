@@ -3,6 +3,9 @@ package jimmy.mcgymmy.model;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -20,6 +23,8 @@ import jimmy.mcgymmy.model.food.Food;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+
+    private final Stack<ReadOnlyMcGymmy> mcGymmyStack = new Stack<>();
 
     private final McGymmy mcGymmy;
     private final UserPrefs userPrefs;
@@ -87,6 +92,7 @@ public class ModelManager implements Model {
 
     @Override
     public void setMcGymmy(ReadOnlyMcGymmy mcGymmy) {
+        addCurrentStateToHistory();
         this.mcGymmy.resetData(mcGymmy);
     }
 
@@ -98,11 +104,15 @@ public class ModelManager implements Model {
 
     @Override
     public void deleteFood(Index index) {
+        logger.fine("Delete food at index: " + index.getOneBased());
+        addCurrentStateToHistory();
         mcGymmy.removeFood(index);
     }
 
     @Override
     public void addFood(Food food) {
+        logger.fine("Add food:\n" + food.toString());
+        addCurrentStateToHistory();
         mcGymmy.addFood(food);
         updateFilteredFoodList(PREDICATE_SHOW_ALL_FOODS);
     }
@@ -110,8 +120,47 @@ public class ModelManager implements Model {
     @Override
     public void setFood(Index index, Food editedFood) {
         CollectionUtil.requireAllNonNull(index, editedFood);
-
+        logger.fine("Change food at index " + index.getOneBased() + "to food:\n" + editedFood.toString());
+        addCurrentStateToHistory();
         mcGymmy.setFood(index, editedFood);
+        updateFilteredFoodList(PREDICATE_SHOW_ALL_FOODS);
+    }
+
+    @Override
+    public boolean canUndo() {
+        return !mcGymmyStack.empty();
+    }
+
+    /**
+     * Undo the previous change to mcGymmy
+     */
+    @Override
+    public void undo() {
+        if (canUndo()) {
+            assert mcGymmyStack.size() > 0 : "McGymmyStack is empty";
+            mcGymmy.resetData(mcGymmyStack.pop());
+            updateFilteredFoodList(PREDICATE_SHOW_ALL_FOODS);
+        }
+    }
+
+    private void addCurrentStateToHistory() {
+        mcGymmyStack.push(new McGymmy(mcGymmy));
+    }
+
+    @Override
+    public void clearFilteredFood() {
+        addCurrentStateToHistory();
+        Predicate<? super Food> filterPredicate = filteredFoodItems.getPredicate();
+        List<Food> lst = new ArrayList<>();
+        // prevent traversal error
+        for (Food filteredFood : mcGymmy.getFoodList()) {
+            if (!filterPredicate.test(filteredFood)) {
+                lst.add(filteredFood);
+            }
+        }
+        mcGymmy.setFoodItems(lst);
+
+        filteredFoodItems.clear();
     }
 
     //=========== Filtered Food List Accessors =============================================================
@@ -128,6 +177,7 @@ public class ModelManager implements Model {
     @Override
     public void updateFilteredFoodList(Predicate<Food> predicate) {
         requireNonNull(predicate);
+        logger.fine("Update predicate for filtered food list");
         filteredFoodItems.setPredicate(predicate);
     }
 

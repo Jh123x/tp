@@ -65,6 +65,7 @@ public interface Model {
     /**
      * Deletes the given food.
      * The index must be valid
+     *
      * @param index
      */
     void deleteFood(Index index);
@@ -80,6 +81,21 @@ public interface Model {
      * The index must be valid
      */
     void setFood(Index index, Food editedFood);
+
+    /**
+     * Removes all filtered food from Fridge and clears filtered food list
+     */
+    void clearFilteredFood();
+
+    /**
+     * Check if McGymmy can undoi
+     */
+    boolean canUndo();
+
+    /**
+     * Undo the previous change to mcGymmy
+     */
+    void undo();
 
     /**
      * Returns an unmodifiable view of the filtered food list

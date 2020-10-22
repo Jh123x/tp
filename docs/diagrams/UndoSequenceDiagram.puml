@@ -3,47 +3,46 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
 participant "u:UndoCommand" as UndoCommand LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant ":Model" as Model MODEL_COLOR
-participant ":VersionedAddressBook" as VersionedAddressBook MODEL_COLOR
+participant ":ModelManager" as Model MODEL_COLOR
+participant ":Stack<ReadOnlyMcGymmy>" as McGymmyStack MODEL_COLOR
 end box
+
 [-> LogicManager : execute(undo)
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand(undo)
-activate AddressBookParser
-
 create UndoCommand
-AddressBookParser -> UndoCommand
+LogicManager -> UndoCommand : Parser::parse(undo)**
 activate UndoCommand
 
-UndoCommand --> AddressBookParser
+UndoCommand -> LogicManager : u
 deactivate UndoCommand
 
-AddressBookParser --> LogicManager : u
-deactivate AddressBookParser
-
-LogicManager -> UndoCommand : execute()
+LogicManager -> UndoCommand : execute(model)
 activate UndoCommand
 
-UndoCommand -> Model : undoAddressBook()
+UndoCommand -> Model : undo()
 activate Model
 
-Model -> VersionedAddressBook : undo()
-activate VersionedAddressBook
+Model -> McGymmyStack :pop()
+activate McGymmyStack
 
-VersionedAddressBook -> VersionedAddressBook :resetData(ReadOnlyAddressBook)
-VersionedAddressBook --> Model :
-deactivate VersionedAddressBook
+McGymmyStack -> Model : m:ReadOnlyMcGymmy
+deactivate McGymmyStack
+
+Model -> Model: resetData(m)
+activate Model
+
+Model -> Model
+deactivate Model
 
 Model --> UndoCommand
 deactivate Model
 
-UndoCommand --> LogicManager : result
+UndoCommand --> LogicManager : :CommandResult
 deactivate UndoCommand
 UndoCommand -[hidden]-> LogicManager : result
 destroy UndoCommand

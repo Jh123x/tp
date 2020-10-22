@@ -3,8 +3,8 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
+participant ":McGymmyParser" as McGymmyParser LOGIC_COLOR
+participant ":PrimitiveCommandParser" as PrimitiveCommandParser LOGIC_COLOR
 participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
 end box
@@ -16,34 +16,38 @@ end box
 [-> LogicManager : execute("delete 1")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("delete 1")
-activate AddressBookParser
+LogicManager -> McGymmyParser : parse("delete 1")
+activate McGymmyParser
 
-create DeleteCommandParser
-AddressBookParser -> DeleteCommandParser
-activate DeleteCommandParser
-
-DeleteCommandParser --> AddressBookParser
-deactivate DeleteCommandParser
-
-AddressBookParser -> DeleteCommandParser : parse("1")
-activate DeleteCommandParser
+McGymmyParser -> PrimitiveCommandParser : parsePrimitiveCommand("delete", ["1"])
+activate PrimitiveCommandParser
 
 create DeleteCommand
-DeleteCommandParser -> DeleteCommand
+PrimitiveCommandParser -> DeleteCommand
 activate DeleteCommand
 
-DeleteCommand --> DeleteCommandParser : d
+DeleteCommand --> PrimitiveCommandParser : d
 deactivate DeleteCommand
 
-DeleteCommandParser --> AddressBookParser : d
-deactivate DeleteCommandParser
-'Hidden arrow to position the destroy marker below the end of the activation bar.
-DeleteCommandParser -[hidden]-> AddressBookParser
-destroy DeleteCommandParser
+|||
 
-AddressBookParser --> LogicManager : d
-deactivate AddressBookParser
+PrimitiveCommandParser -> DeleteCommand : getParameterSet
+activate DeleteCommand
+DeleteCommand --> PrimitiveCommandParser
+deactivate DeleteCommand
+
+|||
+
+PrimitiveCommandParser -> PrimitiveCommandParser : provideValuesToParameterSet
+activate PrimitiveCommandParser
+PrimitiveCommandParser --> PrimitiveCommandParser
+deactivate PrimitiveCommandParser
+
+PrimitiveCommandParser --> McGymmyParser : d
+deactivate PrimitiveCommandParser
+
+McGymmyParser --> LogicManager : d
+deactivate McGymmyParser
 
 LogicManager -> DeleteCommand : execute()
 activate DeleteCommand
@@ -53,6 +57,8 @@ activate Model
 
 Model --> DeleteCommand
 deactivate Model
+
+|||
 
 create CommandResult
 DeleteCommand -> CommandResult

@@ -35,13 +35,4 @@ public class JsonSerializableMcGymmyTest {
                 JsonSerializableMcGymmy.class).get();
         assertThrows(IllegalValueException.class, dataFromFile::toModelType);
     }
-
-    @Test
-    public void toModelType_duplicateFood_throwsIllegalValueException() throws Exception {
-        JsonSerializableMcGymmy dataFromFile = JsonUtil.readJsonFile(DUPLICATE_FOOD_FILE,
-                JsonSerializableMcGymmy.class).get();
-        assertThrows(IllegalValueException.class, JsonSerializableMcGymmy.MESSAGE_DUPLICATE_FOOD,
-                dataFromFile::toModelType);
-    }
-
 }

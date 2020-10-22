@@ -12,7 +12,7 @@ import jimmy.mcgymmy.model.UserPrefs;
 /**
  * API of the Storage component
  */
-public interface Storage extends McGymmyStorage, UserPrefsStorage {
+public interface Storage extends McGymmyStorage, UserPrefsStorage, MacroListStorage {
 
     @Override
     Optional<UserPrefs> readUserPrefs() throws DataConversionException, IOException;

@@ -1,0 +1,66 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":McGymmyParser" as McGymmyParser LOGIC_COLOR
+participant "executable:TagCommand" as TagCommand LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "tag:Tag" as Tag MODEL_COLOR
+participant ":Food" as Food MODEL_COLOR
+participant "model:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("tag 1 -t Lunch")
+activate LogicManager
+
+LogicManager -> McGymmyParser : parseCommand("tag 1 -t Lunch")
+activate McGymmyParser
+
+McGymmyParser --> LogicManager : executable
+deactivate McGymmyParser
+
+LogicManager -> TagCommand : execute()
+activate TagCommand
+
+TagCommand -> Model : getFilteredFoodList()
+activate Model
+
+Model --> TagCommand : filteredFoodList
+deactivate Model
+
+TagCommand -> Food : getTags()
+activate Food
+
+Food -> TagCommand : List<Tags>
+deactivate Food
+
+create Tag
+TagCommand -> Tag
+activate Tag
+
+Tag --> TagCommand
+deactivate Tag
+
+TagCommand -> Food : addTag(tag)
+activate Food
+
+Food --> TagCommand
+deactivate Food
+
+create CommandResult
+TagCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> TagCommand
+deactivate CommandResult
+
+TagCommand --> LogicManager : result
+deactivate TagCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

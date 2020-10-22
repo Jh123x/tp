@@ -15,7 +15,12 @@ Open this document in a modern internet browser (Mozilla Firefox, Google Chrome,
 :bulb: **Tip:** This indicates that the following text consists of tips to better utilise MG
 
 </div>
-:information_source:  :This indicates important notes for current feature we are looking at<br>
+
+<div markdown="block" class="alert alert-info">
+
+:information_source: This indicates important notes for current feature we are looking at<br>
+
+</div>
 
 ## A little note from the developers
 
@@ -122,9 +127,13 @@ Examples:
 * `add -n Wonton Mee -c 10`
 * `add -n Sushi -d 20/04/2020`
 
-:information_source:  The default value for protein, fats and carbs is 0. The default date is the day in which the food item is added.<br>
+<div markdown="block" class="alert alert-info">
 
-:information_source:  To view the list of supported date formats, see *Appendix A*.<br>
+:information_source:
+ * The default value for protein, fats and carbs is 0. The default date is the day in which the food item is added.<br>
+ * To view the list of supported date formats, see *Appendix A*.<br>
+
+</div>
 
 ![add command example](images/CommandImagesForUG/Add.png)
 
@@ -132,10 +141,16 @@ Examples:
 
 Removes all food items in McGymmy.
 
+Format: `clear`
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Items are removed permanently.
 * All additional input after the *command word* `clear` will be ignored. E.g. `clear` and `clear 123` will have the same effect.
 
-Format: `clear`
+</div>
 
 ![clear command example](images/CommandImagesForUG/Clear.png)
 
@@ -143,11 +158,17 @@ Format: `clear`
 
 Tags a food item in McGymmy.
 
+Format: `tag INDEX -t TAG_NAME`
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Tags `TAG_NAME` for food item at the specified `INDEX`.
 * The index refers to the index number shown in the displayed food list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
-Format: `tag INDEX -t TAG_NAME`
+</div>
 
 ![tag command example](images/CommandImagesForUG/Tag.png)
 
@@ -155,11 +176,17 @@ Format: `tag INDEX -t TAG_NAME`
 
 Untags a food item in McGymmy.
 
+Format: `untag INDEX -t TAG_NAME`
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Untags `TAG_NAME` for food item at the specified `INDEX`.
 * The index refers to the index number shown in the displayed food list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
-Format: `untag INDEX -t TAG_NAME`
+</div>
 
 ![untag command example](images/CommandImagesForUG/Untag.png)
 
@@ -167,9 +194,15 @@ Format: `untag INDEX -t TAG_NAME`
 
 Finds food items based on the keywords supplied.
 
+Format: `find KEYWORDS`
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Filters the displayed list of food items to only include food items containing the supplied keywords.
 
-Format: `find KEYWORDS`
+</div>
 
 ![find_command_example](images/CommandImagesForUG/Find.png)
 
@@ -177,10 +210,16 @@ Format: `find KEYWORDS`
 
 Shows a list of all food items in McGymmy.
 
+Format: `list`
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Lists all food items in McGymmy
 * All additional input after the *command word* `list` will be ignored. E.g. `list` and `list 123` will have the same effect.
 
-Format: `list`
+</div>
 
 ![list command example](images/CommandImagesForUG/List.png)
 
@@ -190,12 +229,16 @@ Edits the details of a food item at the specified index.
 
 Format: `edit INDEX [-n NAME] [-p PROTEIN] [-c CARBS] [-f FATS] [-d DATE]`
 
-Examples: 
+<div markdown="block" class="alert alert-info">
+
+:information_source:
 
 * Edits the food item at the specified `INDEX`. The index refers to the index number shown in the displayed food list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+
+</div>
 
 Examples:
 *  `edit 3 -n banana -p 120` Changes the `name` and `protein` values of the 3rd item in the list to `banana` and `120` respectively.
@@ -210,9 +253,15 @@ Deletes a food item at the specified index.
 
 Format: `delete INDEX`
 
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Deletes the food at the specified `INDEX`.
 * The index refers to the index number shown in the displayed food list.
 * The index **must be a positive integer** 1, 2, 3, …​
+
+</div>
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd food item in McGymmy.
@@ -225,17 +274,27 @@ Imports a previously saved file into McGymmy
 
 Format: `import FILEPATH`
 
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Imports the saved file at `FILEPATH`
+
+</div>
 
 Examples:
 * `import c:/mcgymmy/save_file.json` imports `save_file.json` into McGymmy
 
 ![Import command example](images/CommandImagesForUG/Import.png)
 
-For those who are more inclined to use a gui to import:
+<div markdown="span" class="alert alert-primary">
+
+:bulb: **Tip:** For those who are more inclined to use a gui to import:
 * Click on file
 * Click on Import
 * Navigate using the GUI to the save file
+
+</div>
 
 ![GUI import command example](images/CommandImagesForUG/ImportGUI.png)
 
@@ -245,8 +304,14 @@ Imports a previously saved file into McGymmy
 
 Format: `import DIRPATH [-o FILENAME]`
 
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Exports the saved file to `DIRPATH` with `FILENAME`
 * Default filename is `mcgymmy.json`
+
+</div>
 
 Examples:
 * `export c:/mcgymmy` exports the save file as `mcgymmy.json` to `c:/mcgymmy`
@@ -254,10 +319,14 @@ Examples:
 
 ![Export command example](images/CommandImagesForUG/Export.png)
 
-For those who are more inclined to use a gui to export:
+<div markdown="span" class="alert alert-primary">
+
+:bulb: **Tip:** For those who are more inclined to use a gui to export:
 * Click on file
 * Click on Export
 * Navigate using the GUI to the save file
+
+</div>
 
 ![GUI export command example](images/CommandImagesForUG/ExportGUI.png)
 
@@ -266,11 +335,17 @@ For those who are more inclined to use a gui to export:
 
 Exits the program.
 
+Format: `exit`
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Exits McGymmy and closes the McGymmy window.
 * Data will be automatically saved (see also section on *Saving the data* below).
 * All additional input after the *command word* `exit` will be ignored. E.g. `exit` and `exit 123` will have the same effect.
 
-Format: `exit`
+</div>
 
 
 ### Creating a macro command : `macro`
@@ -286,14 +361,20 @@ Unnamed arguments can be substituted using the syntax: \$
 
 Format: `macro SHORTCUT ARGUMENT_1 ARGUMENT_2 ... ; COMMAND_1 ARGUMENTS_TO_COMMAND \REUSED_ARGUMENT; [COMMAND_2; ...]` <br>
 
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
 * Create a macro with name `SHORTCUT` and arguments `ARGUMENT_1` and `ARGUMENT_2` which executes `COMMAND_1; COMMAND_2; ...`.
+
+</div>
 
 Examples:
 * `macro addWith100cal p ; add -n \$ -c 100 -p \p`
     * Example usage of this macro: `addWith100cal Banana -p 2000`
     * The following command will be executed by the macro: `add -n Banana -c 100 -p 2000`
     * i.e. in `add -n \$ -c 100 -p \p`, `\$` and `\p` will be substituted with Banana and 2000 respectively.
-    
+
 * `macro addFoodWithFries; add -n \$ ; add -n \$ With Fries`
     * Example usage of this macro: `addFoodWithFries Ice Cream`
     * The following commands will be executed by the macro: `add -n Ice Cream` and `add -n Ice Cream With Fries`.

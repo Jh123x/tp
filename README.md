@@ -7,7 +7,7 @@
 
 * McGymmy is a CLI based application for sedentary software engineers to manage their diet and stay healthy.
   * The CLI aspect of the application benefits the target audience (software engineers), as it is something often used by them.
-  
+
 * For the detailed documentation of this project, see the **[McGymmy Product Website](https://ay2021s1-cs2103t-w17-3.github.io/tp/)**.
 
 ## Extras
