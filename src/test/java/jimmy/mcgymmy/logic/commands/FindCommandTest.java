@@ -6,11 +6,10 @@ import static jimmy.mcgymmy.testutil.TypicalFoods.DANISH_COOKIES;
 import static jimmy.mcgymmy.testutil.TypicalFoods.NASI_LEMAK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -133,8 +132,7 @@ public class FindCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("d"));
         expectedModel.updateFilteredFoodList(tagPredicate);
         CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(expectedModel.getFilteredFoodList(), model.getFilteredFoodList());
-        List<Food> arrayList = model.getFilteredFoodList().stream().collect(Collectors.toList());
+        ArrayList<Food> arrayList = new ArrayList<>(model.getFilteredFoodList());
         assertEquals(Arrays.asList(CHICKEN_RICE, NASI_LEMAK, DANISH_COOKIES), arrayList);
     }
 }
