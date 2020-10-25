@@ -38,7 +38,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_validFoodWithoutDate_addSuccessfulAndSetCurrentDayAsDate() throws Exception {
+    public void execute_foodAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingFoodAdded modelStub = new ModelStubAcceptingFoodAdded();
         Food validFood = new FoodBuilder().withCarb("12345").build();
         AddCommand command = new AddCommand();
@@ -47,34 +47,13 @@ public class AddCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("p", validFood.getProtein()),
                 new CommandParserTestUtil.OptionalParameterStub<>("f", validFood.getFat()),
                 new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs()),
-                new CommandParserTestUtil.OptionalParameterStub<>("t"),
-                new CommandParserTestUtil.OptionalParameterStub<>("d")
+                new CommandParserTestUtil.OptionalParameterStub<>("t")
         );
 
         CommandResult commandResult = command.execute(modelStub);
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validFood), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validFood), modelStub.foodAdded);
-    }
-
-    @Test
-    public void execute_validFoodWithDate_addSuccessfulAndSetInputDateAsDate() throws Exception {
-        Food validFoodWithDate = new FoodBuilder().withCarb("12345").withDate("20/4/2020").build();
-        AddCommand command = new AddCommand();
-        command.setParameters(
-            new CommandParserTestUtil.ParameterStub<>("n", validFoodWithDate.getName()),
-            new CommandParserTestUtil.OptionalParameterStub<>("p", validFoodWithDate.getProtein()),
-            new CommandParserTestUtil.OptionalParameterStub<>("f", validFoodWithDate.getFat()),
-            new CommandParserTestUtil.OptionalParameterStub<>("c", validFoodWithDate.getCarbs()),
-            new CommandParserTestUtil.OptionalParameterStub<>("t"),
-            new CommandParserTestUtil.OptionalParameterStub<>("d", validFoodWithDate.getDate())
-        );
-
-        String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, validFoodWithDate);
-        Model expectedModel = new ModelManager(new McGymmy(model.getMcGymmy()), new UserPrefs());
-        expectedModel.addFood(validFoodWithDate);
-
-        CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -86,8 +65,7 @@ public class AddCommandTest {
             new CommandParserTestUtil.OptionalParameterStub<>("p", validFoodWithTag.getProtein()),
             new CommandParserTestUtil.OptionalParameterStub<>("f", validFoodWithTag.getFat()),
             new CommandParserTestUtil.OptionalParameterStub<>("c", validFoodWithTag.getCarbs()),
-            new CommandParserTestUtil.OptionalParameterStub<>("t", new Tag("hello")),
-            new CommandParserTestUtil.OptionalParameterStub<>("d")
+            new CommandParserTestUtil.OptionalParameterStub<>("t", new Tag("hello"))
         );
 
         String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, validFoodWithTag);
@@ -106,8 +84,7 @@ public class AddCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("p", validFood.getProtein()),
                 new CommandParserTestUtil.OptionalParameterStub<>("f", validFood.getFat()),
                 new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs()),
-                new CommandParserTestUtil.OptionalParameterStub<>("t"),
-                new CommandParserTestUtil.OptionalParameterStub<>("d")
+                new CommandParserTestUtil.OptionalParameterStub<>("t")
         );
 
         String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, validFood);

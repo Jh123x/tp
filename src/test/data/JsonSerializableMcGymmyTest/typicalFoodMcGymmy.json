@@ -6,7 +6,6 @@
       "protein": "94351253",
       "fat": "123",
       "carbs": "456",
-      "date": "20 Apr 2020",
       "tagged": [
         "lunch"
       ]
@@ -16,7 +15,6 @@
       "protein": "98765432",
       "fat": "321",
       "carbs": "123",
-      "date": "2 Sep 2020",
       "tagged": [
         "dinner",
         "lunch"
@@ -27,7 +25,6 @@
       "protein": "95352563",
       "fat": "456",
       "carbs": "654",
-      "date": "13 Oct 2020",
       "tagged": []
     },
     {
@@ -35,7 +32,6 @@
       "protein": "87652533",
       "fat": "654",
       "carbs": "456",
-      "date": "1 Jan 2020",
       "tagged": [
         "lunch"
       ]
@@ -45,7 +41,6 @@
       "protein": "9482224",
       "fat": "246",
       "carbs": "810",
-      "date": "7 Mar 2019",
       "tagged": []
     },
     {
@@ -53,7 +48,6 @@
       "protein": "9482427",
       "fat": "987",
       "carbs": "789",
-      "date": "3 Feb 1998",
       "tagged": []
     },
     {
@@ -61,7 +55,6 @@
       "protein": "9482442",
       "fat": "789",
       "carbs": "987",
-      "date": "5 May 1973",
       "tagged": []
     }
   ]
