@@ -23,6 +23,7 @@ import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
 import jimmy.mcgymmy.model.food.Food;
+import jimmy.mcgymmy.model.macro.MacroList;
 import jimmy.mcgymmy.model.tag.Tag;
 import jimmy.mcgymmy.testutil.FoodBuilder;
 
@@ -126,6 +127,16 @@ public class AddCommandTest {
 
         @Override
         public void clearFilteredFood() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public MacroList getMacroList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setMacroList(MacroList replacement) {
             throw new AssertionError("This method should not be called.");
         }
 

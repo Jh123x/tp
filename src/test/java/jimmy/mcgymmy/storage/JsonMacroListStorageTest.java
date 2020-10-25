@@ -12,8 +12,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
-import jimmy.mcgymmy.logic.macro.Macro;
-import jimmy.mcgymmy.logic.macro.MacroList;
+import jimmy.mcgymmy.model.macro.Macro;
+import jimmy.mcgymmy.model.macro.MacroList;
 
 public class JsonMacroListStorageTest {
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonMacroListStorageTest");

@@ -89,7 +89,7 @@ public class AddCommand extends Command {
 
         if (this.tagParameter.getValue().isPresent()) {
             Tag newTag = this.tagParameter.getValue().get();
-            toAdd.addTag(newTag);
+            toAdd = toAdd.addTag(newTag);
         }
 
         model.addFood(toAdd);

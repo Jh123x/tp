@@ -1,20 +1,19 @@
-package jimmy.mcgymmy.logic.macro;
+package jimmy.mcgymmy.model.macro;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import jimmy.mcgymmy.logic.macro.exceptions.DuplicateMacroException;
+import jimmy.mcgymmy.model.macro.exceptions.DuplicateMacroException;
 
 public class MacroListTest {
     @Test
     public void addDuplicate_throwsError() throws Exception {
-        MacroList macroList = new MacroList();
         Macro dummyMacro = new Macro("test2", new String[]{}, new String[]{});
+        MacroList macroList = (new MacroList()).withNewMacro(dummyMacro);
         Macro duplicateMacro1 = new Macro("help", new String[]{}, new String[]{});
         Macro duplicateMacro2 = new Macro("test2", new String[]{}, new String[]{});
-        macroList.addMacro(dummyMacro);
-        assertThrows(DuplicateMacroException.class, ()->macroList.addMacro(duplicateMacro1));
-        assertThrows(DuplicateMacroException.class, ()->macroList.addMacro(duplicateMacro2));
+        assertThrows(DuplicateMacroException.class, ()->macroList.withNewMacro(duplicateMacro1));
+        assertThrows(DuplicateMacroException.class, ()->macroList.withNewMacro(duplicateMacro2));
     }
 }

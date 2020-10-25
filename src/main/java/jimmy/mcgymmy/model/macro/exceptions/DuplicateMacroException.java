@@ -1,4 +1,4 @@
-package jimmy.mcgymmy.logic.macro.exceptions;
+package jimmy.mcgymmy.model.macro.exceptions;
 
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 

@@ -12,7 +12,7 @@ import jimmy.mcgymmy.commons.exceptions.DataConversionException;
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.commons.util.FileUtil;
 import jimmy.mcgymmy.commons.util.JsonUtil;
-import jimmy.mcgymmy.logic.macro.MacroList;
+import jimmy.mcgymmy.model.macro.MacroList;
 
 public class JsonMacroListStorage implements MacroListStorage {
 

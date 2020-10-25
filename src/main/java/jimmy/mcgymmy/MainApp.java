@@ -21,6 +21,7 @@ import jimmy.mcgymmy.model.ModelManager;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
+import jimmy.mcgymmy.model.macro.MacroList;
 import jimmy.mcgymmy.model.util.SampleDataUtil;
 import jimmy.mcgymmy.storage.JsonMacroListStorage;
 import jimmy.mcgymmy.storage.JsonMcGymmyStorage;
@@ -78,21 +79,25 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         Optional<ReadOnlyMcGymmy> mcGymmyOptional;
         ReadOnlyMcGymmy initialData;
+        MacroList macroList;
         try {
             mcGymmyOptional = storage.readMcGymmy();
             if (!mcGymmyOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with a sample McGymmy");
             }
             initialData = mcGymmyOptional.orElseGet(SampleDataUtil::getSampleMcGymmy);
+            macroList = storage.readMacroList().orElseGet(MacroList::new);
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty McGymmy");
             initialData = new McGymmy();
+            macroList = new MacroList();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty McGymmy");
             initialData = new McGymmy();
+            macroList = new MacroList();
         }
 
-        return new ModelManager(initialData, userPrefs);
+        return new ModelManager(initialData, userPrefs, macroList);
     }
 
     private void initLogging(Config config) {

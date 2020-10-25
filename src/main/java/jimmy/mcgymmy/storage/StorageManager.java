@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 
 import jimmy.mcgymmy.commons.core.LogsCenter;
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
-import jimmy.mcgymmy.logic.macro.MacroList;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
+import jimmy.mcgymmy.model.macro.MacroList;
 
 /**
  * Manages storage of McGymmy data in local storage.

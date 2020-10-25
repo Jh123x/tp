@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
-import jimmy.mcgymmy.logic.macro.Macro;
+import jimmy.mcgymmy.model.macro.Macro;
 
 public class JsonAdaptedMacroTest {
     @Test

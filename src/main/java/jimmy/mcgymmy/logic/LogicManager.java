@@ -12,12 +12,12 @@ import jimmy.mcgymmy.commons.exceptions.DataConversionException;
 import jimmy.mcgymmy.logic.commands.CommandExecutable;
 import jimmy.mcgymmy.logic.commands.CommandResult;
 import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
-import jimmy.mcgymmy.logic.macro.MacroList;
 import jimmy.mcgymmy.logic.parser.McGymmyParser;
 import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
 import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.food.Food;
+import jimmy.mcgymmy.model.macro.MacroList;
 import jimmy.mcgymmy.storage.Storage;
 
 /**
@@ -54,6 +54,7 @@ public class LogicManager implements Logic {
         CommandResult commandResult;
         CommandExecutable executable = mcGymmyParser.parse(commandText);
         commandResult = executable.execute(model);
+        mcGymmyParser.setMacroList(model.getMacroList());
 
         try {
             storage.saveMacroList(mcGymmyParser.getMacroList());

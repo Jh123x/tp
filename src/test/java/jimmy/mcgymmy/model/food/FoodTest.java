@@ -3,11 +3,14 @@ package jimmy.mcgymmy.model.food;
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.model.tag.Tag;
 import jimmy.mcgymmy.testutil.Assert;
 import jimmy.mcgymmy.testutil.FoodBuilder;
+import jimmy.mcgymmy.testutil.TypicalFoods;
 
 
 public class FoodTest {
@@ -99,6 +102,39 @@ public class FoodTest {
 
         // different type -> returns false
         assertFalse(COMPARED_FOOD.equals(PROTEIN));
+    }
+
+    @Test
+    public void hasTag_tagInFood_returnsTrue() {
+        Food testFood = new FoodBuilder(TypicalFoods.CHICKEN_RICE).withTags("Lunch").build();
+        assertTrue(testFood.hasTag(new Tag("Lunch")));
+    }
+
+    @Test
+    public void hasTag_tagNotInFood_returnsFalse() {
+        Food testFood = new FoodBuilder(TypicalFoods.CHICKEN_RICE).withTags("Lunch").build();
+        assertFalse(testFood.hasTag(new Tag("Dinner")));
+    }
+
+    @Test
+    public void addTag_returnsNewFoodWithTag_oldFoodUnChanged() {
+        Tag initialTag = new Tag("Lunch");
+        Tag toBeAdded = new Tag("Dinner");
+        Food testFood = new FoodBuilder(TypicalFoods.CHICKEN_RICE).withTags("Lunch").build();
+        Food newFood = testFood.addTag(toBeAdded);
+        assertTrue(newFood.hasTag(toBeAdded));
+        assertTrue(newFood.hasTag(initialTag));
+        assertTrue(testFood.hasTag(initialTag));
+        assertFalse(testFood.hasTag(toBeAdded));
+    }
+
+    @Test
+    public void removeTag_returnsNewFoodWithoutTag_oldFoodUnChanged() {
+        Tag initialTag = new Tag("Lunch");
+        Food testFood = new FoodBuilder(TypicalFoods.CHICKEN_RICE).withTags("Lunch").build();
+        Food newFood = testFood.removeTag(initialTag);
+        assertFalse(newFood.hasTag(initialTag));
+        assertTrue(testFood.hasTag(initialTag));
     }
 
     @Test

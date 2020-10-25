@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
-import jimmy.mcgymmy.logic.macro.Macro;
 import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
+import jimmy.mcgymmy.model.macro.Macro;
 
 /**
  * Jackson-friendly version of {@link Macro}.

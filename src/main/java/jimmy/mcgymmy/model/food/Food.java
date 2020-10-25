@@ -126,12 +126,32 @@ public class Food {
         return Collections.unmodifiableSet(tags);
     }
 
-    public void addTag(Tag tag) {
-        tags.add(tag);
+    /**
+     * Adds a new tag to food
+     * @return A new Food with the tag
+     */
+    public Food addTag(Tag tag) {
+        Set<Tag> newTags = new HashSet<>(tags);
+        newTags.add(tag);
+        return new Food(name, protein, fat, carbs, newTags, date);
     }
 
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
+    /**
+     * Removes a tag from food
+     * @return A new Food without the tag
+     */
+    public Food removeTag(Tag tag) {
+        Set<Tag> newTags = new HashSet<>(tags);
+        newTags.remove(tag);
+        return new Food(name, protein, fat, carbs, newTags, date);
+    }
+
+    /**
+     * Check if this food is already tagged with this tag
+     * @return True if this food is already tagged with this tag
+     */
+    public boolean hasTag(Tag tag) {
+        return tags.contains(tag);
     }
 
     public Date getDate() {

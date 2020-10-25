@@ -9,16 +9,17 @@ import org.apache.commons.cli.Options;
 
 import jimmy.mcgymmy.commons.core.Messages;
 import jimmy.mcgymmy.logic.commands.CommandExecutable;
-import jimmy.mcgymmy.logic.macro.Macro;
-import jimmy.mcgymmy.logic.macro.MacroList;
+import jimmy.mcgymmy.logic.macro.MacroRunner;
 import jimmy.mcgymmy.logic.macro.NewMacroCommand;
 import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
+import jimmy.mcgymmy.model.macro.Macro;
+import jimmy.mcgymmy.model.macro.MacroList;
 
 /**
  * Parser for all McGymmy commands.
  */
 public class McGymmyParser {
-    private final MacroList macroList;
+    private MacroList macroList;
     private final PrimitiveCommandParser primitiveCommandParser;
 
     /**
@@ -60,6 +61,10 @@ public class McGymmyParser {
         }
     }
 
+    public void setMacroList(MacroList macroList) {
+        this.macroList = macroList;
+    }
+
     public MacroList getMacroList() {
         return macroList;
     }
@@ -77,7 +82,7 @@ public class McGymmyParser {
         String[] tailWithoutBlanks = Arrays.stream(headTail.getTail())
                 .filter(s->!s.isBlank())
                 .toArray(String[]::new);
-        return new NewMacroCommand(this.macroList, headTail.getHead(), tailWithoutBlanks);
+        return new NewMacroCommand(headTail.getHead(), tailWithoutBlanks);
     }
 
     private CommandExecutable parseRunMacro(String commandName, String[] arguments) throws ParseException {
@@ -86,7 +91,7 @@ public class McGymmyParser {
         Options options = macro.getOptions();
         try {
             CommandLine args = commandLineParser.parse(options, arguments);
-            return macro.commandInstance(args);
+            return MacroRunner.asCommandInstance(macro, args);
         } catch (org.apache.commons.cli.ParseException e) {
             String formattedHelp = ParserUtil.getUsageFromHelpFormatter(commandName, "", options);
             throw new ParseException(formattedHelp);

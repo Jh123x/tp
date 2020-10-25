@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
-import jimmy.mcgymmy.logic.macro.MacroList;
+import jimmy.mcgymmy.model.macro.MacroList;
 
 public interface MacroListStorage {
 

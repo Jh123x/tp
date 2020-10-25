@@ -1,9 +1,9 @@
 package jimmy.mcgymmy.logic.macro;
 
 import static jimmy.mcgymmy.testutil.TypicalFoods.getTypicalMcGymmy;
+import static jimmy.mcgymmy.testutil.TypicalMacros.TEST_MACRO;
+import static jimmy.mcgymmy.testutil.TypicalMacros.UNNAMED_PARAMETER_TEST_MACRO;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -15,38 +15,19 @@ import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.ModelManager;
 import jimmy.mcgymmy.model.UserPrefs;
 import jimmy.mcgymmy.model.food.Food;
+import jimmy.mcgymmy.model.macro.Macro;
 
-public class MacroTest {
-    private final Macro testMacro;
-    private final Macro unnamedParameterTestMacro;
-
-    public MacroTest() throws Exception {
-        String addString = "add -n %s -c \\c -p \\p";
-        String[] statements = new String[]{String.format(addString, "first"), String.format(addString, "second")};
-        this.testMacro = new Macro("test", new String[]{"p", "c"}, statements);
-        this.unnamedParameterTestMacro = new Macro("test2", new String[]{"q"}, new String[]{"add -n \\$ -f \\q"});
-    }
-
-    @Test
-    void testMacro_createdWithCorrectOptions() {
-        assertTrue(testMacro.getOptions().hasOption("c"));
-        assertTrue(testMacro.getOptions().hasOption("p"));
-    }
-
-    @Test
-    void testMacro_noExtraOptions() {
-        assertEquals(testMacro.getOptions().getOptions().size(), 2);
-    }
+public class MacroRunnerTest {
 
     @Test
     void testMacro_addsToModel() throws Exception {
-        testMacroAdd(testMacro, "-p 20 -c 200", new String[]{"first", "second"});
+        testMacroAdd(TEST_MACRO, "-p 20 -c 200", new String[]{"first", "second"});
     }
 
     @Test
     void testMacroWithUnnamedParameter_addsToModel() throws Exception {
-        testMacroAdd(unnamedParameterTestMacro, "nababa -q 200", new String[]{"nababa"});
-        testMacroAdd(unnamedParameterTestMacro, "cockroach -q 9912629", new String[]{"cockroach"});
+        testMacroAdd(UNNAMED_PARAMETER_TEST_MACRO, "nababa -q 200", new String[]{"nababa"});
+        testMacroAdd(UNNAMED_PARAMETER_TEST_MACRO, "cockroach -q 9912629", new String[]{"cockroach"});
     }
 
     private void testMacroAdd(Macro toTest, String arguments, String[] itemsToCheckInModel) throws Exception {
@@ -54,7 +35,7 @@ public class MacroTest {
         CommandLineParser commandLineParser = new DefaultParser();
         Options options = toTest.getOptions();
         CommandLine args = commandLineParser.parse(options, arguments.split(" "));
-        toTest.executeWith(model, args);
+        MacroRunner.asCommandInstance(toTest, args).execute(model);
         boolean[] foundList = new boolean[itemsToCheckInModel.length];
         boolean[] allTrueList = new boolean[itemsToCheckInModel.length];
         for (int i = 0; i < itemsToCheckInModel.length; i++) {

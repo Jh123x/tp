@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
-import jimmy.mcgymmy.logic.macro.Macro;
-import jimmy.mcgymmy.logic.macro.MacroList;
-import jimmy.mcgymmy.logic.macro.exceptions.DuplicateMacroException;
+import jimmy.mcgymmy.model.macro.Macro;
+import jimmy.mcgymmy.model.macro.MacroList;
+import jimmy.mcgymmy.model.macro.exceptions.DuplicateMacroException;
 
 /**
  * An Immutable MacroList that is serializable to JSON format.
@@ -44,16 +44,15 @@ class JsonSerializableMacroList {
      * @throws IllegalValueException if there were any data constraints violated.
      */
     public MacroList toModelType() throws IllegalValueException {
-        MacroList macroList = new MacroList();
+        List<Macro> macrosToAdd = new ArrayList<>();
         for (JsonAdaptedMacro jsonAdaptedMacro : macros) {
-            try {
-                Macro macro = jsonAdaptedMacro.toMacro();
-                macroList.addMacro(macro);
-            } catch (DuplicateMacroException e) {
-                throw new IllegalValueException(e.getMessage());
-            }
+            macrosToAdd.add(jsonAdaptedMacro.toMacro());
         }
-        return macroList;
+        try {
+            return new MacroList(macrosToAdd);
+        } catch (DuplicateMacroException e) {
+            throw new IllegalValueException(e.getMessage());
+        }
     }
 
 }
