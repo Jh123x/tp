@@ -200,28 +200,21 @@
 }
 
 .menu .left-container {
-    -fx-background-color: black;
+    -fx-background-color: #989898;
 }
 
-/*
- * Metro style Push Button
- * Author: Pedro Duque Vieira
- * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
- */
 .button {
     -fx-padding: 5 22 5 22;
     -fx-border-color: #e2e2e2;
     -fx-border-width: 2;
     -fx-background-radius: 0;
-    -fx-background-color: #1d1d1d;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-background-color: TRANSPARENT;
     -fx-font-size: 11pt;
     -fx-text-fill: #d8d8d8;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
 }
 
 .button:hover {
-    -fx-background-color: #3a3a3a;
+    -fx-background-color: #bcbcbc;
 }
 
 .button:pressed, .button:default:hover:pressed {
@@ -324,7 +317,7 @@
     -fx-text-fill: white;
 }
 
-#filterField, #personListPanel, #personWebpage {
+#filterField, #foodListPanel {
     -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
 }
 
@@ -357,3 +350,131 @@
     -fx-border-insets: 3 0;
     -fx-background-insets: 3 0;
 }
+
+/* Graph CSS Design */
+
+chart-pie-label-line {
+    -fx-stroke: #ffffff;
+    -fx-fill: #ffffff;
+}
+
+.chart-pie-label {
+    -fx-stroke: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 1em;
+}
+.chart-legend {
+    -fx-alignment: CENTER;
+    -fx-stroke: WHITE;
+    -fx-text-fill: WHITE;
+    -fx-tile-alignment: CENTER;
+    -fx-tick-label-fill: white;
+    -fx-background-radius: 5px;
+}
+
+.chart-title {
+    -fx-text-fill: #ffffff;
+    -fx-alignment: CENTER;
+}
+
+/* DatePicker CSS Design */
+
+.date-picker-popup {
+    -fx-padding: 1;
+    -fx-background-color: #676767;
+}
+
+.date-picker-popup > .month-year-pane {
+    -fx-padding: 4;
+    -fx-background-color: #8d8d8d;
+    -fx-text-fill: WHITE;
+}
+
+.date-picker-popup > .month-year-pane > .spinner {
+    -fx-spacing: 4;
+    -fx-alignment: CENTER;
+    -fx-fill-height: false;
+}
+
+.date-picker-popup > .month-year-pane > .spinner > .spinner-label {
+    -fx-font-size: 1.083333em;
+    -fx-alignment: CENTER;
+    -fx-text-fill: #606060;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup > .month-year-pane > .spinner > .left-button {
+    -fx-padding: 4 6;
+    -fx-background-color: gray;
+}
+
+.date-picker-popup > .month-year-pane > .spinner > .right-button {
+    -fx-padding: 4 6;
+    -fx-background-color: gray;
+}
+
+.date-picker-popup > .month-year-pane > .spinner > .button > .left-arrow {
+    -fx-background-color: red;
+    -fx-background-insets: 0;
+    -fx-padding: 0.333em 0.167em 0.333em 0.167em;
+    -fx-shape: "M5.997,5.072L5.995,6.501l-2.998-4l2.998-4l0.002,1.43l-1.976,2.57L5.997,5.072z";
+    -fx-scale-shape: true;
+}
+
+.date-picker-popup > .month-year-pane > .spinner > .button > .right-arrow {
+    -fx-background-color: red;
+    -fx-background-insets: 0;
+    -fx-padding: 0.333em 0.167em 0.333em 0.167em;
+    -fx-shape: "M2.998-0.07L3-1.499l2.998,4L3,6.501l-0.002-1.43l1.976-2.57L2.998-0.07z";
+    -fx-scale-shape: true;
+}
+
+.date-picker-popup > * > .cell {
+    -fx-padding: 0 7;
+    -fx-alignment: BASELINE_CENTER;
+}
+
+.date-picker-popup > * > .week-number-header-cell,
+.date-picker-popup > * > .day-name-cell {
+    -fx-font-size: 0.833333em;
+    -fx-padding: 0;
+    -fx-text-fill: #0070C0;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup > * > .week-number-cell {
+    -fx-font-size: 0.75em;
+    -fx-padding: 0;
+}
+
+.date-picker-popup > * > .day-cell {
+    -fx-text-fill: black;
+    -fx-border-color: lightgray;
+    -fx-border-width: 1;
+    -fx-border-insets: 0;
+}
+
+.date-picker-popup > * > .today {
+    -fx-background-insets: 1;
+    -fx-border-color: #606060;
+    -fx-border-insets: 1;
+}
+
+.date-picker-popup > * > .today:focused {
+    -fx-background-color: #CCE8FF;
+}
+
+.date-picker-popup > * > .selected {
+    -fx-background-color: #CCE8FF;
+}
+
+.date-picker-popup > * > .previous-month,
+.date-picker-popup > * > .next-month {
+    -fx-text-fill: #aaaaaa;
+}
+
+.date-picker-popup > * > .previous-month > .secondary-text,
+.date-picker-popup > * > .next-month > .secondary-text {
+    -fx-fill: #aaaaaa;
+}
+

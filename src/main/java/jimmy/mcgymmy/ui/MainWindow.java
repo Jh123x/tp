@@ -1,6 +1,11 @@
 package jimmy.mcgymmy.ui;
 
+import java.io.File;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.logging.Logger;
+
+import com.jfoenix.controls.JFXDatePicker;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +14,8 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jimmy.mcgymmy.commons.core.GuiSettings;
 import jimmy.mcgymmy.commons.core.LogsCenter;
@@ -33,16 +40,23 @@ public class MainWindow extends UiPart<Stage> {
     // Independent Ui parts residing in this Ui container
     private FoodListPanel foodListPanel;
     private ResultDisplay resultDisplay;
-    private HelpWindow helpWindow;
+    private File file;
+    private File directory;
 
     @FXML
     private StackPane commandBoxPlaceholder;
 
     @FXML
-    private MenuItem helpMenuItem;
+    private CommandBox commandBox;
 
     @FXML
-    private StackPane personListPanelPlaceholder;
+    private JFXDatePicker datePicker;
+
+    @FXML
+    private StackPane foodListPanelPlaceholder;
+
+    @FXML
+    private MenuItem helpMenuItem;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -50,11 +64,21 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private StackPane statusbarPlaceholder;
 
+    @FXML
+    private StackPane summaryPanelPlaceholder;
+
+    @FXML
+    private SummaryDisplay summaryPanel;
+
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
      */
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
+
+        //Initialise values
+        file = null;
+        directory = null;
 
         // Set dependencies
         this.primaryStage = primaryStage;
@@ -62,10 +86,8 @@ public class MainWindow extends UiPart<Stage> {
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
-
         setAccelerators();
 
-        helpWindow = new HelpWindow();
     }
 
     public Stage getPrimaryStage() {
@@ -112,7 +134,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     void fillInnerParts() {
         foodListPanel = new FoodListPanel(logic.getFilteredFoodList());
-        personListPanelPlaceholder.getChildren().add(foodListPanel.getRoot());
+        foodListPanelPlaceholder.getChildren().add(foodListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -120,8 +142,26 @@ public class MainWindow extends UiPart<Stage> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getMcGymmyFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(this::executeCommand);
+        commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        summaryPanel = new SummaryDisplay();
+        summaryPanelPlaceholder.getChildren().add(summaryPanel.getRoot());
+
+        //Update current value to total calories and macronutrient values.
+        FoodListPanel foodListPanel = getFoodListPanel();
+        summaryPanel.setTotalMacronutrients(
+                foodListPanel.getCurrentCalories(),
+                foodListPanel.getCurrentProteins(),
+                foodListPanel.getCurrentCarbs(),
+                foodListPanel.getCurrentFats()
+        );
+
+        //Add listener to execute after date is changed
+        datePicker.valueProperty()
+                .addListener((observable, oldDate, newDate) -> {
+                    setDate();
+                });
     }
 
     /**
@@ -137,19 +177,108 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the help window or focuses on it if it's already opened.
+     * Shows help message in the result box.
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
-            helpWindow.focus();
+        try {
+            executeCommand("help");
+        } catch (CommandException | ParseException e) {
+            assert false : "Help button on menu error";
         }
     }
 
+    /**
+     * Handles the importing of data file.
+     */
+    @FXML
+    public void handleImport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose file to import");
+        try {
+            file = fileChooser.showOpenDialog(primaryStage);
+            logger.info(String.format("User selected '%s'", file.toString()));
+            executeCommand(String.format("import %s", file.toString()));
+        } catch (RuntimeException | CommandException | ParseException e) {
+            file = null;
+            logger.info("User did not select a valid file");
+            resultDisplay.setFeedbackToUser("Please select a valid import file");
+        }
+    }
+
+    /**
+     * Get the import file directory chosen by the user.
+     */
+    public Optional<File> getImportFileDirectory() {
+        if (file == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(file);
+        }
+    }
+
+    /**
+     * Handles the exporting of data file.
+     */
+    @FXML
+    public void handleExport() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose location to export");
+        try {
+            directory = directoryChooser.showDialog(primaryStage);
+            logger.info(String.format("User selected '%s'", directory.toString()));
+            executeCommand(String.format("export %s", directory.toString()));
+        } catch (RuntimeException | CommandException | ParseException e) {
+            directory = null;
+            logger.info("User did not select a valid directory");
+            resultDisplay.setFeedbackToUser("Please select a valid directory");
+        }
+    }
+
+    /**
+     * Get the export directory chosen by the user.
+     */
+    public Optional<File> getExportDirectory() {
+        if (directory == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(directory);
+        }
+    }
+
+
     void show() {
         primaryStage.show();
+    }
+
+    /**
+     * Add the selected Date to the commandLine.
+     */
+    public void setDate() {
+        if (getDate().isEmpty()) {
+            return;
+        }
+        logger.info(String.format("Selected %s", getDate().get().toString()));
+        try {
+            executeCommand(String.format("find -d %s", getDate().get().toString()));
+            datePicker.setValue(null);
+        } catch (CommandException | ParseException e) {
+            assert false : "Help button on menu error";
+        }
+    }
+
+    /**
+     * Get the date which the user selected.
+     *
+     * @return Optional containing the date selected. Null if no date is selected.
+     */
+    public Optional<LocalDate> getDate() {
+        LocalDate date = datePicker.getValue();
+        if (date == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(date);
+        }
     }
 
     /**
@@ -160,11 +289,10 @@ public class MainWindow extends UiPart<Stage> {
         GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
-        helpWindow.hide();
         primaryStage.hide();
     }
 
-    public FoodListPanel getPersonListPanel() {
+    public FoodListPanel getFoodListPanel() {
         return foodListPanel;
     }
 
@@ -178,14 +306,15 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-
-            if (commandResult.isShowHelp()) {
-                handleHelp();
-            }
-
             if (commandResult.isExit()) {
                 handleExit();
             }
+
+            //Update the graphs
+            summaryPanel.setTotalMacronutrients(getFoodListPanel().getCurrentCalories(),
+                    getFoodListPanel().getCurrentProteins(),
+                    getFoodListPanel().getCurrentCarbs(),
+                    getFoodListPanel().getCurrentFats());
 
             return commandResult;
         } catch (CommandException | ParseException e) {
