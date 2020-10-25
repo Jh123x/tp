@@ -23,6 +23,7 @@ import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
 import jimmy.mcgymmy.model.food.Food;
+import jimmy.mcgymmy.model.macro.MacroList;
 import jimmy.mcgymmy.model.tag.Tag;
 import jimmy.mcgymmy.testutil.FoodBuilder;
 
@@ -37,7 +38,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_foodAcceptedByModel_addSuccessful() throws Exception {
+    public void execute_validFoodWithoutDate_addSuccessfulAndSetCurrentDayAsDate() throws Exception {
         ModelStubAcceptingFoodAdded modelStub = new ModelStubAcceptingFoodAdded();
         Food validFood = new FoodBuilder().withCarb("12345").build();
         AddCommand command = new AddCommand();
@@ -46,13 +47,34 @@ public class AddCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("p", validFood.getProtein()),
                 new CommandParserTestUtil.OptionalParameterStub<>("f", validFood.getFat()),
                 new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs()),
-                new CommandParserTestUtil.OptionalParameterStub<>("t")
+                new CommandParserTestUtil.OptionalParameterStub<>("t"),
+                new CommandParserTestUtil.OptionalParameterStub<>("d")
         );
 
         CommandResult commandResult = command.execute(modelStub);
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validFood), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validFood), modelStub.foodAdded);
+    }
+
+    @Test
+    public void execute_validFoodWithDate_addSuccessfulAndSetInputDateAsDate() throws Exception {
+        Food validFoodWithDate = new FoodBuilder().withCarb("12345").withDate("20/4/2020").build();
+        AddCommand command = new AddCommand();
+        command.setParameters(
+            new CommandParserTestUtil.ParameterStub<>("n", validFoodWithDate.getName()),
+            new CommandParserTestUtil.OptionalParameterStub<>("p", validFoodWithDate.getProtein()),
+            new CommandParserTestUtil.OptionalParameterStub<>("f", validFoodWithDate.getFat()),
+            new CommandParserTestUtil.OptionalParameterStub<>("c", validFoodWithDate.getCarbs()),
+            new CommandParserTestUtil.OptionalParameterStub<>("t"),
+            new CommandParserTestUtil.OptionalParameterStub<>("d", validFoodWithDate.getDate())
+        );
+
+        String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, validFoodWithDate);
+        Model expectedModel = new ModelManager(new McGymmy(model.getMcGymmy()), new UserPrefs());
+        expectedModel.addFood(validFoodWithDate);
+
+        CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -64,7 +86,8 @@ public class AddCommandTest {
             new CommandParserTestUtil.OptionalParameterStub<>("p", validFoodWithTag.getProtein()),
             new CommandParserTestUtil.OptionalParameterStub<>("f", validFoodWithTag.getFat()),
             new CommandParserTestUtil.OptionalParameterStub<>("c", validFoodWithTag.getCarbs()),
-            new CommandParserTestUtil.OptionalParameterStub<>("t", new Tag("hello"))
+            new CommandParserTestUtil.OptionalParameterStub<>("t", new Tag("hello")),
+            new CommandParserTestUtil.OptionalParameterStub<>("d")
         );
 
         String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, validFoodWithTag);
@@ -83,7 +106,8 @@ public class AddCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("p", validFood.getProtein()),
                 new CommandParserTestUtil.OptionalParameterStub<>("f", validFood.getFat()),
                 new CommandParserTestUtil.OptionalParameterStub<>("c", validFood.getCarbs()),
-                new CommandParserTestUtil.OptionalParameterStub<>("t")
+                new CommandParserTestUtil.OptionalParameterStub<>("t"),
+                new CommandParserTestUtil.OptionalParameterStub<>("d")
         );
 
         String expectedMessage = String.format(AddCommand.MESSAGE_SUCCESS, validFood);
@@ -100,6 +124,22 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+
+        @Override
+        public void clearFilteredFood() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public MacroList getMacroList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setMacroList(MacroList replacement) {
+            throw new AssertionError("This method should not be called.");
+        }
+
         @Override
         public ReadOnlyUserPrefs getUserPrefs() {
             throw new AssertionError("This method should not be called.");
@@ -157,6 +197,17 @@ public class AddCommandTest {
 
         @Override
         public void setFood(Index index, Food editedFood) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean canUndo() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+
+        @Override
+        public void undo() {
             throw new AssertionError("This method should not be called.");
         }
 

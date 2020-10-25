@@ -23,6 +23,7 @@ import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.UserPrefs;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.food.Name;
+import jimmy.mcgymmy.storage.JsonMacroListStorage;
 import jimmy.mcgymmy.storage.JsonMcGymmyStorage;
 import jimmy.mcgymmy.storage.JsonUserPrefsStorage;
 import jimmy.mcgymmy.storage.StorageManager;
@@ -41,8 +42,9 @@ public class LogicManagerTest {
     public void setUp() {
         JsonMcGymmyStorage mcGymmyStorage =
                 new JsonMcGymmyStorage(temporaryFolder.resolve("mcGymmy.json"));
+        JsonMacroListStorage macroListStorage = new JsonMacroListStorage(temporaryFolder.resolve("macroList.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(mcGymmyStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(mcGymmyStorage, macroListStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -69,9 +71,11 @@ public class LogicManagerTest {
         // Setup LogicManager with JsonMcGymmyIoExceptionThrowingStub
         JsonMcGymmyStorage mcGymmyStorage =
                 new JsonMcGymmyIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionMcGymmy.json"));
+        JsonMacroListStorage macroListStorage =
+                new JsonMacroListStorage(temporaryFolder.resolve("ioExceptionMacroList.json"));
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ioExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(mcGymmyStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(mcGymmyStorage, macroListStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
 
         // Execute add command

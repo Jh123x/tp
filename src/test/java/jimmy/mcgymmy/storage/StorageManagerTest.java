@@ -25,8 +25,9 @@ public class StorageManagerTest {
     @BeforeEach
     public void setUp() {
         JsonMcGymmyStorage mcGymmyStorage = new JsonMcGymmyStorage(getTempFilePath("ab"));
+        JsonMacroListStorage macroListStorage = new JsonMacroListStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(mcGymmyStorage, userPrefsStorage);
+        storageManager = new StorageManager(mcGymmyStorage, macroListStorage, userPrefsStorage);
     }
 
     private Path getTempFilePath(String fileName) {

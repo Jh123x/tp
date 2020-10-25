@@ -2,11 +2,13 @@ package jimmy.mcgymmy.logic;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import jimmy.mcgymmy.commons.core.GuiSettings;
 import jimmy.mcgymmy.commons.core.LogsCenter;
+import jimmy.mcgymmy.commons.exceptions.DataConversionException;
 import jimmy.mcgymmy.logic.commands.CommandExecutable;
 import jimmy.mcgymmy.logic.commands.CommandResult;
 import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
@@ -15,6 +17,7 @@ import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
 import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.food.Food;
+import jimmy.mcgymmy.model.macro.MacroList;
 import jimmy.mcgymmy.storage.Storage;
 
 /**
@@ -26,7 +29,7 @@ public class LogicManager implements Logic {
 
     private final Model model;
     private final Storage storage;
-    private final McGymmyParser mcGymmyParser;
+    private McGymmyParser mcGymmyParser;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -34,7 +37,14 @@ public class LogicManager implements Logic {
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.storage = storage;
-        mcGymmyParser = new McGymmyParser();
+        try {
+            Optional<MacroList> optionalMacroList = storage.readMacroList();
+            this.mcGymmyParser = optionalMacroList
+                    .map(macroList -> new McGymmyParser(macroList))
+                    .orElseGet(McGymmyParser::new);
+        } catch (IOException | DataConversionException e) {
+            this.mcGymmyParser = new McGymmyParser();
+        }
     }
 
     @Override
@@ -44,8 +54,10 @@ public class LogicManager implements Logic {
         CommandResult commandResult;
         CommandExecutable executable = mcGymmyParser.parse(commandText);
         commandResult = executable.execute(model);
+        mcGymmyParser.setMacroList(model.getMacroList());
 
         try {
+            storage.saveMacroList(mcGymmyParser.getMacroList());
             storage.saveMcGymmy(model.getMcGymmy());
         } catch (IOException ioe) {
             throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);

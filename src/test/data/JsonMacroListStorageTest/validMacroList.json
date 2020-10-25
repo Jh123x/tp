@@ -1,0 +1,12 @@
+{
+  "macros" : [ {
+    "name" : "first",
+    "rawCommands" : [ "list", "help" ],
+    "macroArguments" : [ "a", "b" ]
+  }, {
+    "name" : "second",
+    "rawCommands" : [ "clear" ],
+    "macroArguments" : [ "c", "d" ]
+  } ]
+}
+

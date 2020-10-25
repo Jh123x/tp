@@ -54,13 +54,12 @@ public class TagCommand extends Command {
         Food foodToTag = lastShownList.get(index.getZeroBased());
         Tag tag = tagParameter.consume();
 
-        if (foodToTag.getTags().contains(tag)) {
+        if (foodToTag.hasTag(tag)) {
             throw new CommandException(String.format(MESSAGE_DUPLICATE_TAG, tag.tagName, foodToTag.getName().fullName));
         }
 
-        foodToTag.addTag(tag);
-        model.setFood(index, foodToTag); //To refresh the card
-        model.updateFilteredFoodList(Model.PREDICATE_SHOW_ALL_FOODS);
+        Food newFood = foodToTag.addTag(tag);
+        model.setFood(index, newFood); //To refresh the card
         return new CommandResult(String.format(MESSAGE_SUCCESS, tag.tagName));
     }
 }

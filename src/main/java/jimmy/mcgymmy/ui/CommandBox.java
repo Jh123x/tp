@@ -33,6 +33,18 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
+     * Insert text into the commandline box.
+     * @param text Text to be inserted.
+     */
+    public void insertText(String text) {
+        //Add the inserted text
+        commandTextField.setText(commandTextField.getText() + text);
+
+        //Set pointer to point to the end
+        commandTextField.selectEnd();
+    }
+
+    /**
      * Handles the Enter button pressed event.
      */
     @FXML

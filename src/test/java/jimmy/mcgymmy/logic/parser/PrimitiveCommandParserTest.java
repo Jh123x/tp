@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.core.Messages;
@@ -22,23 +24,28 @@ public class PrimitiveCommandParserTest {
     public static final String DUMMY_VALUE_2 = "cde";
     public static final String DUMMY_VALUE_3 = "fgh";
     private final PrimitiveCommandParser parser = new PrimitiveCommandParser();
-    private final PrimitiveCommandParser parserWithDummy = new PrimitiveCommandParser();
 
-    {
-        parserWithDummy.addCommand("dummy", "dummy", StubCommand::new);
+    @BeforeEach
+    public void setUp() {
+        parser.addCommand("dummy", "dummy", StubCommand::new);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        parser.removeCommand("dummy");
     }
 
     @Test
     public void parse_dummyCommand_correctType() throws Exception {
         String commandString = String.format("dummy -t1 %s -t2 %s -o1 %s", DUMMY_VALUE_1, DUMMY_VALUE_2, DUMMY_VALUE_3);
-        Command command = (Command) parserWithDummy.parse(commandString);
+        Command command = (Command) parser.parse(commandString);
         assertTrue(command instanceof StubCommand);
     }
 
     @Test
     public void parse_dummyCommandAllParameters_success() throws Exception {
         String commandString = String.format("dummy -t1 %s -t2 %s -o1 %s", DUMMY_VALUE_1, DUMMY_VALUE_2, DUMMY_VALUE_3);
-        StubCommand stubCommand = (StubCommand) parserWithDummy.parse(commandString);
+        StubCommand stubCommand = (StubCommand) parser.parse(commandString);
         assertEquals(stubCommand.getParameter1(), DUMMY_VALUE_1);
         assertEquals(stubCommand.getParameter2(), DUMMY_VALUE_2);
         assertEquals(stubCommand.getOptionalParameter(), Optional.of(DUMMY_VALUE_3));
@@ -47,7 +54,7 @@ public class PrimitiveCommandParserTest {
     @Test
     public void parse_dummyCommandOmitOptional_success() throws Exception {
         String commandString = String.format("dummy -t1 %s -t2 %s", DUMMY_VALUE_1, DUMMY_VALUE_2);
-        StubCommand stubCommand = (StubCommand) parserWithDummy.parse(commandString);
+        StubCommand stubCommand = (StubCommand) parser.parse(commandString);
         assertEquals(stubCommand.getParameter1(), DUMMY_VALUE_1);
         assertEquals(stubCommand.getParameter2(), DUMMY_VALUE_2);
         assertEquals(stubCommand.getOptionalParameter(), Optional.empty());
@@ -56,7 +63,7 @@ public class PrimitiveCommandParserTest {
     @Test
     public void parse_dummyCommandSwapOrder_success() throws Exception {
         String commandString = String.format("dummy -t2 %s -o1 %s -t1 %s", DUMMY_VALUE_2, DUMMY_VALUE_3, DUMMY_VALUE_1);
-        StubCommand stubCommand = (StubCommand) parserWithDummy.parse(commandString);
+        StubCommand stubCommand = (StubCommand) parser.parse(commandString);
         assertEquals(stubCommand.getParameter1(), DUMMY_VALUE_1);
         assertEquals(stubCommand.getParameter2(), DUMMY_VALUE_2);
         assertEquals(stubCommand.getOptionalParameter(), Optional.of(DUMMY_VALUE_3));
@@ -65,7 +72,7 @@ public class PrimitiveCommandParserTest {
     @Test
     public void parse_dummyCommandOmitRequired_failure() {
         String commandString = String.format("dummy -t2 %s", DUMMY_VALUE_2);
-        assertThrows(ParseException.class, () -> parserWithDummy.parse(commandString));
+        assertThrows(ParseException.class, () -> parser.parse(commandString));
     }
 
     @Test
@@ -73,7 +80,7 @@ public class PrimitiveCommandParserTest {
         String spacedValue1 = "abc def";
         String spacedValue2 = "a b c d e f g 1 2 3";
         String commandString = String.format("dummy -t1 %s -t2 %s", spacedValue1, spacedValue2);
-        StubCommand stubCommand = (StubCommand) parserWithDummy.parse(commandString);
+        StubCommand stubCommand = (StubCommand) parser.parse(commandString);
         assertEquals(stubCommand.getParameter1(), spacedValue1);
         assertEquals(stubCommand.getParameter2(), spacedValue2);
         assertEquals(stubCommand.getOptionalParameter(), Optional.empty());

@@ -58,11 +58,6 @@ public class PrimitiveCommandParserCommandsTest {
     }
 
     @Test
-    public void parseCommand_findEmptyParameter_failure() {
-        assertThrows(ParseException.class, () -> parser.parse(FindCommand.COMMAND_WORD));
-    }
-
-    @Test
     public void parseCommand_delete() throws Exception {
         String indexString = "68";
         Command command = (Command) parser.parse(DeleteCommand.COMMAND_WORD + " " + indexString);
@@ -134,7 +129,7 @@ public class PrimitiveCommandParserCommandsTest {
         PrimitiveCommandHelpUtil helpUtil = new PrimitiveCommandHelpUtil(
                 parser.getCommandTable(),
                 parser.getCommandDescriptionTable());
-        assertEquals(parser.parse("help").execute(model) , helpUtil.newHelpCommand().execute(model));
+        assertEquals(parser.parse("help").execute(model), helpUtil.newHelpCommand().execute(model));
     }
 
     @Test

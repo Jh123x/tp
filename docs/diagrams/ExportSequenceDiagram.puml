@@ -1,0 +1,62 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":McGymmyParser" as McGymmyParser LOGIC_COLOR
+participant "executable:ExportCommand" as ExportCommand LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant ":McGymmyStorage" as McGymmyStorage STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("export c:/mcgymmy")
+activate LogicManager
+
+LogicManager -> McGymmyParser : parseCommand("export c:/mcgymmy")
+activate McGymmyParser
+
+McGymmyParser --> LogicManager : executable
+deactivate McGymmyParser
+
+LogicManager -> ExportCommand : execute()
+activate ExportCommand
+
+ExportCommand -> Model:getMcGymmy()
+activate Model
+
+Model --> ExportCommand : mcGymmy
+deactivate Model
+
+create McGymmyStorage
+ExportCommand -> McGymmyStorage
+activate McGymmyStorage
+
+McGymmyStorage --> ExportCommand :
+deactivate McGymmyStorage
+
+ExportCommand -> McGymmyStorage : saveMcGymmy(mcGymmy)
+activate McGymmyStorage
+
+McGymmyStorage -> ExportCommand
+deactivate McGymmyStorage
+
+create CommandResult
+ExportCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> ExportCommand
+deactivate CommandResult
+
+ExportCommand --> LogicManager : result
+deactivate ExportCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

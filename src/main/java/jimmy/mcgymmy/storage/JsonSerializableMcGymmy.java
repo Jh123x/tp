@@ -49,9 +49,6 @@ class JsonSerializableMcGymmy {
         McGymmy mcGymmy = new McGymmy();
         for (JsonAdaptedFood jsonAdaptedFood : food) {
             Food food = jsonAdaptedFood.toModelType();
-            if (mcGymmy.hasFood(food)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_FOOD);
-            }
             mcGymmy.addFood(food);
         }
         return mcGymmy;

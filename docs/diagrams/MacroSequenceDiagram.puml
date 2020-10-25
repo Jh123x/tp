@@ -1,0 +1,75 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":McGymmyParser" as McGymmyParser LOGIC_COLOR
+participant ":MacroList" as MacroList LOGIC_COLOR
+participant "test:Macro" as Macro LOGIC_COLOR
+participant "testInstance:CommandExecutable" as CommandExecutable LOGIC_COLOR
+participant ":PrimitiveCommandParser" as PrimitiveCommandParser LOGIC_COLOR
+participant ":Command" as Command LOGIC_COLOR
+end box
+
+[-> LogicManager : execute("delete 1")
+activate LogicManager
+
+LogicManager -> McGymmyParser : parseCommand("test -a banana")
+activate McGymmyParser
+
+activate MacroList
+McGymmyParser -> MacroList : getMacro("test")
+MacroList --> McGymmyParser : test
+deactivate MacroList
+
+McGymmyParser -> Macro : commandInstance(arguments)
+activate Macro
+
+create CommandExecutable
+Macro -> CommandExecutable
+activate CommandExecutable
+CommandExecutable --> Macro
+deactivate CommandExecutable
+
+Macro --> McGymmyParser : testInstance
+deactivate Macro
+
+McGymmyParser --> LogicManager : testInstance
+deactivate McGymmyParser
+
+LogicManager -> CommandExecutable : execute()
+activate CommandExecutable
+
+create PrimitiveCommandParser
+CommandExecutable -> PrimitiveCommandParser
+activate PrimitiveCommandParser
+PrimitiveCommandParser --> CommandExecutable
+deactivate PrimitiveCommandParser
+
+loop for each macro line
+CommandExecutable -> PrimitiveCommandParser : parse
+activate PrimitiveCommandParser
+
+create Command
+PrimitiveCommandParser -> Command
+activate Command
+Command --> PrimitiveCommandParser
+deactivate Command
+
+PrimitiveCommandParser --> CommandExecutable
+deactivate PrimitiveCommandParser
+end
+
+loop for each parsed command
+CommandExecutable -> Command : execute
+activate Command
+Command --> CommandExecutable
+deactivate Command
+end
+
+CommandExecutable --> LogicManager : result
+deactivate CommandExecutable
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
