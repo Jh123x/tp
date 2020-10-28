@@ -41,18 +41,18 @@ Thus we recommend you to start by first understanding how McGymmy works at a hig
 
 ## Quick start
 
-Double click on the jar file to open the GUI.
-Type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
+To get started, you can double click on the jar file to open the GUI.
+You can type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
 Refer to the features below for details of each command.
 
 
-1. Ensure you have Java `11` or above installed in your Computer.
+1. Please ensure that you have Java `11` or above installed in your Computer.
 
-1. Download the latest `mcgymmy.jar` from [here](https://github.com/AY2021S1-CS2103T-W17-3/tp).
+1. You have to download the latest `mcgymmy.jar` from [here](https://github.com/AY2021S1-CS2103T-W17-3/tp).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your McGymmy.
+1. Afterwards, copy the file to the folder you want to use as the _home folder_ for your McGymmy.
 
-1. Double-click the file to start the app. The GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+1. Double-click the file to start the app. You should notice a GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
 
    ![Ui](images/Ui.png)
 
@@ -89,7 +89,7 @@ We will follow the following convention for each command's format:
 
 * `COMMAND_WORD` is the name of the command to be executed, and is always the first word in the *command*.
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
+* Words in `UPPER_CASE` are the parameters to be supplied by you.<br>
   e.g. in `add -n NAME -p PROTEIN`, `NAME` and `PROTEIN` are parameters which can be used as `add bacon -p 200`.
   
 * Prefixes that precede parameters represent flags that indicate which parameter is being referenced. Parameters that are not preceded by a flag are denoted as flag-less parameters. For simplicity, the [flag + parameter input] together will be referenced as a single parameter.<br>
@@ -108,7 +108,7 @@ We will follow the following convention for each command's format:
 
 ### Viewing help : `help`
 
-Displays information on the available commands in the terminal.
+You can view information on the available commands in the terminal.
 
 Format: `help [COMMAND]`
 
@@ -120,7 +120,7 @@ Examples:
 
 ### Adding a food item: `add`
 
-Adds a food item to McGymmy.
+You can add a food item to McGymmy.
 
 Format: `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]`
 
@@ -140,26 +140,9 @@ Examples:
 
 ![add command example](images/CommandImagesForUG/Add.png)
 
-### Clearing all food items shown : `clear`
-
-Removes all food items shown in McGymmy.
-
-Format: `clear`
-
-<div markdown="block" class="alert alert-info">
-
-:information_source:
-
-* Items are removed permanently.
-* All additional input after the *command word* `clear` will be ignored. E.g. `clear` and `clear 123` will have the same effect.
-
-</div>
-
-![clear command example](images/CommandImagesForUG/Clear.png)
-
 ### Tagging food items : `tag`
 
-Tags a food item in McGymmy.
+You can tag a food item in McGymmy.
 
 Format: `tag INDEX -t TAG_NAME`
 
@@ -177,7 +160,7 @@ Format: `tag INDEX -t TAG_NAME`
 
 ### Tagging food items : `untag`
 
-Untags a food item in McGymmy.
+You can untag a food item in McGymmy.
 
 Format: `untag INDEX -t TAG_NAME`
 
@@ -195,7 +178,7 @@ Format: `untag INDEX -t TAG_NAME`
 
 ### Finding a food item: `find`
 
-Finds food items based on the keywords supplied.
+You can find food items based on the keywords supplied.
 
 Format: `find [KEYWORDS] [-n WORDS_IN_NAME] [-t WORDS_IN_TAG] [-d DATE]`
 
@@ -210,14 +193,35 @@ Examples:
 :information_source:
 
 * Filters the displayed list of food items to only include food items corresponding to the provided parameters.
+* `KEYWORDS` and `WORDS_IN_NAME` are nor case sensitive but `WORDS_IN_TAG` is case sensitive.
 
 </div>
 
 ![find_command_example](images/CommandImagesForUG/Find.png)
 
+### Clearing food items: `clear`
+
+You can clear food items currently shown in the list.
+
+Format: `clear`
+
+Examples:
+* `clear` - clears food items
+
+<div markdown="block" class="alert alert-info">
+
+:information_source:
+
+* Clears all food item that is shown on the list.
+* You can clear specific groups of item by using find then clear.
+
+</div>
+
+![find_command_example](images/CommandImagesForUG/Clear.png)
+
 ### Listing all food items : `list`
 
-Shows a list of all food items in McGymmy.
+You can view a list of all food items in McGymmy.
 
 Format: `list`
 
@@ -234,7 +238,7 @@ Format: `list`
 
 ### Editing a food item : `edit`
 
-Edits the details of a food item at the specified index.
+You can edit the details of a food item at the specified index.
 
 Format: `edit INDEX [-n NAME] [-p PROTEIN] [-c CARBS] [-f FATS] [-d DATE]`
 
@@ -258,7 +262,7 @@ Examples:
 
 ### Deleting a food item: `delete`
 
-Deletes a food item at the specified index.
+You can delete a food item at the specified index.
 
 Format: `delete INDEX`
 
@@ -279,7 +283,7 @@ Examples:
 
 ### Importing another save file: `import`
 
-Imports a previously saved file into McGymmy
+You can import a previously saved file into McGymmy from your local directory
 
 Format: `import FILEPATH`
 
@@ -309,9 +313,9 @@ Examples:
 
 ### Exporting your save file to a folder: `export`
 
-Imports a previously saved file to a folder
+You can export a saved file to a folder to your local directory
 
-Format: `import DIRPATH [-o FILENAME]`
+Format: `export DIRPATH [-o FILENAME]`
 
 <div markdown="block" class="alert alert-info">
 
@@ -414,13 +418,13 @@ Examples:
 * `listmacro` - this will display all available macros.
 * `listmacro kfc` - this will display information on the `kfc` macro.
 
-![macro image](todo)
+![List Macro command example](images/CommandImagesForUG/Listmacro.png)
 
 ### Deleting a macro: `remmacro`
 
 Deletes the given macro.
 
-Format: `delete MACRONAME`
+Format: `remmacro MACRONAME`
 
 <div markdown="block" class="alert alert-info">
 
@@ -431,7 +435,7 @@ Format: `delete MACRONAME`
 
 </div>
 
-![delete macro example](todo)
+![delete macro example](images/CommandImagesForUG/Deletemacro.png)
 
 ### Exiting the program : `exit`
 
