@@ -24,17 +24,17 @@ import jimmy.mcgymmy.testutil.TypicalIndexes;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
-    private static final String INVALID_PROTEIN = "+651%)234";
+    private static final String INVALID_PROTEIN = "+651%)";
     private static final String INVALID_FAT = " ";
     private static final String INVALID_CARB = "example.com";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_TAG = "#food";
 
     private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_PROTEIN = "123456";
-    private static final String VALID_FAT = "1230505";
-    private static final String VALID_CARB = "2134";
-    private static final String VALID_TAG_1 = "friend";
-    private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_PROTEIN = "123";
+    private static final String VALID_FAT = "123";
+    private static final String VALID_CARB = "213";
+    private static final String VALID_TAG_1 = "food";
+    private static final String VALID_TAG_2 = "lunch";
 
     private static final String VALID_FILE = Paths
             .get("src", "test", "data", "JsonSerializableMcGymmyTest", "typicalFoodMcGymmy.json").toString();
@@ -67,7 +67,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseName_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseName((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseName(null));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseProtein_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseProtein((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseProtein(null));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseCarb_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseCarb((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseCarb(null));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseFat_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseFat((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseFat(null));
     }
 
     @Test

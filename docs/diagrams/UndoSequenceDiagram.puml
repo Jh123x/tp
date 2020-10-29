@@ -8,7 +8,7 @@ end box
 
 box Model MODEL_COLOR_T1
 participant ":ModelManager" as Model MODEL_COLOR
-participant ":Stack<ReadOnlyMcGymmy>" as McGymmyStack MODEL_COLOR
+participant ":History" as History MODEL_COLOR
 end box
 
 [-> LogicManager : execute(undo)
@@ -27,13 +27,13 @@ activate UndoCommand
 UndoCommand -> Model : undo()
 activate Model
 
-Model -> McGymmyStack :pop()
-activate McGymmyStack
+Model -> History :pop()
+activate History
 
-McGymmyStack -> Model : m:ReadOnlyMcGymmy
-deactivate McGymmyStack
+History -> Model : m
+deactivate History
 
-Model -> Model: resetData(m)
+Model -> Model: updateModelManager(m)***
 activate Model
 
 Model -> Model

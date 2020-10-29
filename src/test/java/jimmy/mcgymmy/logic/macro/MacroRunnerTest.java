@@ -27,7 +27,7 @@ public class MacroRunnerTest {
     @Test
     void testMacroWithUnnamedParameter_addsToModel() throws Exception {
         testMacroAdd(UNNAMED_PARAMETER_TEST_MACRO, "nababa -q 200", new String[]{"nababa"});
-        testMacroAdd(UNNAMED_PARAMETER_TEST_MACRO, "cockroach -q 9912629", new String[]{"cockroach"});
+        testMacroAdd(UNNAMED_PARAMETER_TEST_MACRO, "cockroach -q 629", new String[]{"cockroach"});
     }
 
     private void testMacroAdd(Macro toTest, String arguments, String[] itemsToCheckInModel) throws Exception {

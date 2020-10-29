@@ -33,10 +33,12 @@ public class FatTest {
         Assertions.assertFalse(Fat.isValid(" 1234")); // leading space
         Assertions.assertFalse(Fat.isValid("1234 ")); // trailing space
         Assertions.assertFalse(Fat.isValid("-1234")); // negative value
+        Assertions.assertFalse(Fat.isValid("1234")); // Out of range
 
         // valid fat
-        Assertions.assertTrue(Fat.isValid("123412"));
+
         Assertions.assertTrue(Fat.isValid("911"));
-        Assertions.assertTrue(Fat.isValid("123456789"));
+        Assertions.assertTrue(Fat.isValid("19"));
+        Assertions.assertTrue(Fat.isValid("1"));
     }
 }

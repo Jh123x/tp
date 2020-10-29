@@ -58,4 +58,8 @@ public abstract class AbstractParameter {
     public Option asOption() {
         return this.option;
     }
+
+    public boolean isRequired() {
+        return true;
+    }
 }

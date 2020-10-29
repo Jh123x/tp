@@ -23,10 +23,13 @@ public class CarbohydrateTest {
         // invalid carbohydrates
         assertFalse(Carbohydrate.isValid("")); // empty string
         assertFalse(Carbohydrate.isValid(" ")); // spaces only
+        assertFalse(Carbohydrate.isValid("132454897")); // Out of range
+        assertFalse(Carbohydrate.isValid("1000")); // Out of range
 
         // valid carbohydrates
-        assertTrue(Carbohydrate.isValid("1234"));
-        assertTrue(Carbohydrate.isValid("123456")); // one character
-        assertTrue(Carbohydrate.isValid("132454897")); // long carbohydrate
+        assertTrue(Carbohydrate.isValid("123"));
+        assertTrue(Carbohydrate.isValid("12"));
+        assertTrue(Carbohydrate.isValid("1")); // one character
+
     }
 }

@@ -13,7 +13,7 @@ import jimmy.mcgymmy.model.macro.MacroList;
 
 // Integration tests
 public class NewMacroCommandTest {
-    private Model model = new ModelManager();
+    private final Model model = new ModelManager();
 
     @BeforeEach
     public void setUp() {

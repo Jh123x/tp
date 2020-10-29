@@ -34,8 +34,8 @@ public class MainWindow extends UiPart<Stage> {
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
-    private Stage primaryStage;
-    private Logic logic;
+    private final Stage primaryStage;
+    private final Logic logic;
 
     // Independent Ui parts residing in this Ui container
     private FoodListPanel foodListPanel;
@@ -149,13 +149,7 @@ public class MainWindow extends UiPart<Stage> {
         summaryPanelPlaceholder.getChildren().add(summaryPanel.getRoot());
 
         //Update current value to total calories and macronutrient values.
-        FoodListPanel foodListPanel = getFoodListPanel();
-        summaryPanel.setTotalMacronutrients(
-                foodListPanel.getCurrentCalories(),
-                foodListPanel.getCurrentProteins(),
-                foodListPanel.getCurrentCarbs(),
-                foodListPanel.getCurrentFats()
-        );
+        updateGraph();
 
         //Add listener to execute after date is changed
         datePicker.valueProperty()
@@ -309,18 +303,23 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isExit()) {
                 handleExit();
             }
-
-            //Update the graphs
-            summaryPanel.setTotalMacronutrients(getFoodListPanel().getCurrentCalories(),
-                    getFoodListPanel().getCurrentProteins(),
-                    getFoodListPanel().getCurrentCarbs(),
-                    getFoodListPanel().getCurrentFats());
-
+            updateGraph();
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("Invalid command: " + commandText);
             resultDisplay.setFeedbackToUser(e.getMessage());
+            updateGraph();
             throw e;
         }
+    }
+
+    private void updateGraph() {
+        //Update the graphs
+        summaryPanel.setTotalMacronutrients(
+                getFoodListPanel().getCurrentCalories(),
+                getFoodListPanel().getCurrentProteins(),
+                getFoodListPanel().getCurrentCarbs(),
+                getFoodListPanel().getCurrentFats()
+        );
     }
 }

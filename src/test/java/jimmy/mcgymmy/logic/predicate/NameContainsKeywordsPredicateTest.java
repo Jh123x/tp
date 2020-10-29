@@ -42,35 +42,35 @@ public class NameContainsKeywordsPredicateTest {
     @Test
     public void test_nameContainsKeywords_returnsTrue() {
         // One keyword
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.singletonList("Alice"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Alice Bob")).build()));
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.singletonList("Apple"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Apple Banana")).build()));
 
         // Multiple keywords
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Alice Bob")).build()));
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("Apple", "Banana"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Apple Banana")).build()));
 
         // Only one matching keyword
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Alice Carol")).build()));
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("Banana", "Carrot"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Apple Carrot")).build()));
 
         // Mixed-case keywords
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("aLIce", "bOB"));
-        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Alice Bob")).build()));
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("aPPle", "bAnaNa"));
+        assertTrue(predicate.test(new FoodBuilder().withName(new Name("Apple Banana")).build()));
     }
 
     @Test
     public void test_nameDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.emptyList());
-        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Alice")).build()));
+        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Apple")).build()));
 
         // Non-matching keyword
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("Carol"));
-        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Alice Bob")).build()));
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("Carrot"));
+        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Apple Banana")).build()));
 
-        // Keywords match phone, email and address, but does not match name
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("12345", "54321", "67", "89"));
-        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Alice")).withProtein("12345")
-                .withFat("54321").withCarb("6789").build()));
+        // Keywords match protein, fat and carbs, but does not match name
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("123", "543", "67", "8"));
+        assertFalse(predicate.test(new FoodBuilder().withName(new Name("Apple")).withProtein("123")
+                .withFat("543").withCarb("678").build()));
     }
 }

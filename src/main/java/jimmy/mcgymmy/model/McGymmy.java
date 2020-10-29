@@ -83,6 +83,14 @@ public class McGymmy implements ReadOnlyMcGymmy {
         foodItems.remove(index);
     }
 
+    /**
+     * Removes {@code food} from this {@code McGymmy}.
+     * {@code food} must be valid.
+     */
+    public void removeFood(Food food) {
+        foodItems.remove(food);
+    }
+
     // util methods
 
     @Override

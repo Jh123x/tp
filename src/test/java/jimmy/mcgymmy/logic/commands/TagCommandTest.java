@@ -16,10 +16,10 @@ import jimmy.mcgymmy.testutil.TypicalIndexes;
 
 class TagCommandTest {
 
-    private Model model = new ModelManager(TypicalFoods.getTypicalMcGymmy(), new UserPrefs());
-    private String tag1 = "hello";
-    private String tag2 = "goodbye";
-    private String tag3 = "seeYouAgain";
+    private final Model model = new ModelManager(TypicalFoods.getTypicalMcGymmy(), new UserPrefs());
+    private final String tag1 = "hello";
+    private final String tag2 = "goodbye";
+    private final String tag3 = "seeYouAgain";
 
     @Test
     public void execute_validIndexUnfilteredList_success() {

@@ -51,14 +51,14 @@ public class ModelManagerTest {
     @Test
     public void setUserPrefs_validUserPrefs_copiesUserPrefs() {
         UserPrefs userPrefs = new UserPrefs();
-        userPrefs.setMcGymmyFilePath(Paths.get("jimmy/mcgymmy/file/path"));
+        userPrefs.setMcGymmyFilePath(Paths.get("jimmy", "mcgymmy", "file", "path"));
         userPrefs.setGuiSettings(new GuiSettings(1, 2, 3, 4));
         modelManager.setUserPrefs(userPrefs);
         assertEquals(userPrefs, modelManager.getUserPrefs());
 
         // Modifying userPrefs should not modify modelManager's userPrefs
         UserPrefs oldUserPrefs = new UserPrefs(userPrefs);
-        userPrefs.setMcGymmyFilePath(Paths.get("new/jimmy/mcgymmy/file/path"));
+        userPrefs.setMcGymmyFilePath(Paths.get("new" , "jimmy", "mcgymmy", "file", "path"));
         assertEquals(oldUserPrefs, modelManager.getUserPrefs());
     }
 
@@ -81,7 +81,7 @@ public class ModelManagerTest {
 
     @Test
     public void setMcGymmyFilePath_validPath_setsMcGymmyFilePath() {
-        Path path = Paths.get("jimmy/mcgymmy/file/path");
+        Path path = Paths.get("jimmy", "mcgymmy", "file", "path");
         modelManager.setMcGymmyFilePath(path);
         assertEquals(path, modelManager.getMcGymmyFilePath());
     }
@@ -187,7 +187,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void undo_undoAfterNewMacro_modelManagerHasCorrectContent() throws Exception {
+    public void undo_undoAfterSetMacroList_modelManagerHasCorrectContent() throws Exception {
         ModelManager expectedModelManager = new ModelManager(modelManager.getMcGymmy(), new UserPrefs());
         MacroList newMacroList = modelManager.getMacroList().withNewMacro(TEST_MACRO);
         modelManager.setMacroList(newMacroList);
@@ -227,6 +227,46 @@ public class ModelManagerTest {
         modelManager.undo();
         assertEquals(expected1, modelManager.getMcGymmy());
 
+    }
+
+    @Test
+    public void undo_undoMultipleTimes_modelHasCorrectContent() throws Exception {
+        Food newChickenRice = new FoodBuilder(CHICKEN_RICE).withDate("2020-04-12").build();
+        Food newNasiLemak = new FoodBuilder().withTags("Lunch").build();
+
+        McGymmy expectedMcGymmy1 = new McGymmyBuilder().build();
+        McGymmy expectedMcGymmy2 = new McGymmyBuilder().withFood(CHICKEN_RICE).build();
+        McGymmy expectedMcGymmy3 = new McGymmyBuilder().withFood(CHICKEN_RICE).withFood(NASI_LEMAK).build();
+
+        MacroList macroList1 = modelManager.getMacroList();
+        MacroList macroList2 = modelManager.getMacroList().withNewMacro(TEST_MACRO);
+        MacroList macroList3 = modelManager.getMacroList().withoutMacro("test");
+
+        modelManager.addFood(CHICKEN_RICE);
+        modelManager.setMacroList(macroList2);
+        modelManager.addFood(NASI_LEMAK);
+        modelManager.setMacroList(macroList3);
+        modelManager.setFood(Index.fromOneBased(1), newChickenRice);
+
+        modelManager.undo();
+        assertEquals(expectedMcGymmy3, modelManager.getMcGymmy());
+        assertEquals(modelManager.getMacroList(), macroList3);
+
+        modelManager.undo();
+        assertEquals(expectedMcGymmy3, modelManager.getMcGymmy());
+        assertEquals(modelManager.getMacroList(), macroList2);
+
+        modelManager.undo();
+        assertEquals(expectedMcGymmy2, modelManager.getMcGymmy());
+        assertEquals(modelManager.getMacroList(), macroList2);
+
+        modelManager.undo();
+        assertEquals(expectedMcGymmy2, modelManager.getMcGymmy());
+        assertEquals(modelManager.getMacroList(), macroList1);
+
+        modelManager.undo();
+        assertEquals(expectedMcGymmy1, modelManager.getMcGymmy());
+        assertEquals(modelManager.getMacroList(), macroList1);
     }
 
     @Test

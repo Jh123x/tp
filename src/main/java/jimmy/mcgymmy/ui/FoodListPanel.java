@@ -21,10 +21,10 @@ public class FoodListPanel extends UiPart<Region> {
     @FXML
     private ListView<Food> foodListView;
 
-    private int currentCalories = 0;
-    private int currentFats = 0;
-    private int currentProteins = 0;
-    private int currentCarbs = 0;
+    private long currentCalories = 0;
+    private long currentFats = 0;
+    private long currentProteins = 0;
+    private long currentCarbs = 0;
 
     /**
      * Creates a {@code FoodListPanel} with the given {@code ObservableList}.
@@ -63,7 +63,7 @@ public class FoodListPanel extends UiPart<Region> {
      * Gets sum of calories in current list.
      * @return sum of calories of current list.
      */
-    public int getCurrentCalories() {
+    public long getCurrentCalories() {
         return currentCalories;
     }
 
@@ -71,7 +71,7 @@ public class FoodListPanel extends UiPart<Region> {
      * Gets sum of fats in current list.
      * @return sum of fats of current list.
      */
-    public int getCurrentFats() {
+    public long getCurrentFats() {
         return currentFats;
     }
 
@@ -79,7 +79,7 @@ public class FoodListPanel extends UiPart<Region> {
      * Gets sum of proteins in current list.
      * @return sum of proteins of current list.
      */
-    public int getCurrentProteins() {
+    public long getCurrentProteins() {
         return currentProteins;
     }
 
@@ -87,14 +87,14 @@ public class FoodListPanel extends UiPart<Region> {
      * Gets sum of carbs in current list.
      * @return sum of carbs of current list.
      */
-    public int getCurrentCarbs() {
+    public long getCurrentCarbs() {
         return currentCarbs;
     }
 
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code Food} using a {@code FoodCard}.
      */
-    class FoodListViewCell extends ListCell<Food> {
+    static class FoodListViewCell extends ListCell<Food> {
 
         @Override
         protected void updateItem(Food food, boolean empty) {

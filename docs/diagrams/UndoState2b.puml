@@ -6,9 +6,9 @@ skinparam ClassBorderColor #000000
 title Command "add -n Rice ...", after adding
 
 package Stack {
-    class State1 as "__copy0:ReadOnlyMcGymmy__"
-    class State2 as "__copy1:ReadOnlyMcGymmy__"
-    class State3 as "__copy2:AddressBook__"
+    class State1 as "__copy0:Pair<ReadOnlyMcGymmy, Predicate<Food>>__"
+    class State2 as "__copy1:Pair<ReadOnlyMcGymmy, Predicate<Food>>__"
+    class State3 as "__copy2:Pair<ReadOnlyMcGymmy, Predicate<Food>>__"
 }
 
 
@@ -17,6 +17,6 @@ State2 -[hidden]up-> State3
 
 hide State3
 
-class McGymmy as "Updated McGymmy" #FFFFF
-McGymmy -[hidden]left-> State3
+class ModelManager as "Updated ModelManager" #FFFFF
+ModelManager -[hidden]left-> State3
 @end

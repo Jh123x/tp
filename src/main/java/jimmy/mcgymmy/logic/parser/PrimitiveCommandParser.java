@@ -24,6 +24,8 @@ import jimmy.mcgymmy.logic.commands.ExportCommand;
 import jimmy.mcgymmy.logic.commands.FindCommand;
 import jimmy.mcgymmy.logic.commands.ImportCommand;
 import jimmy.mcgymmy.logic.commands.ListCommand;
+import jimmy.mcgymmy.logic.commands.ListMacroCommand;
+import jimmy.mcgymmy.logic.commands.RemoveMacroCommand;
 import jimmy.mcgymmy.logic.commands.TagCommand;
 import jimmy.mcgymmy.logic.commands.UnTagCommand;
 import jimmy.mcgymmy.logic.commands.UndoCommand;
@@ -53,6 +55,8 @@ public class PrimitiveCommandParser {
         addCommand(UndoCommand.COMMAND_WORD, UndoCommand.SHORT_DESCRIPTION, UndoCommand::new);
         addCommand(ImportCommand.COMMAND_WORD, ImportCommand.SHORT_DESCRIPTION, ImportCommand::new);
         addCommand(ExportCommand.COMMAND_WORD, ExportCommand.SHORT_DESCRIPTION, ExportCommand::new);
+        addCommand(ListMacroCommand.COMMAND_WORD, ListMacroCommand.SHORT_DESCRIPTION, ListMacroCommand::new);
+        addCommand(RemoveMacroCommand.COMMAND_WORD, RemoveMacroCommand.SHORT_DESCRIPTION, RemoveMacroCommand::new);
     }
 
     /**
@@ -106,7 +110,7 @@ public class PrimitiveCommandParser {
         Options options = parameterSet.asOptions();
         try {
             CommandLine cmd = this.parser.parse(options, arguments);
-            this.provideValuesToParameterSet(commandName, cmd, parameterSet);
+            this.provideValuesToParameterSet(cmd, parameterSet);
             return result;
         } catch (org.apache.commons.cli.ParseException | ParseException e) {
             String message = e.getMessage() + "\n" + helpUtil.getUsage(commandName, parameterSet);
@@ -117,35 +121,46 @@ public class PrimitiveCommandParser {
     /**
      * Helper function that takes values in the commons-cli CommandLine object
      * and puts them in the parameterList
-     * TODO do we need to refactor this?
      *
      * @param cmd          CommandLine object to take values from
      * @param parameterSet parameterSet to put values in
      * @throws ParseException if any of the parameter's conversion functions breaks (wrongly formatted argument)
      */
-    private void provideValuesToParameterSet(String commandName,
-                                             CommandLine cmd, ParameterSet parameterSet) throws ParseException {
+    private void provideValuesToParameterSet(CommandLine cmd, ParameterSet parameterSet) throws ParseException {
         List<AbstractParameter> parameterList = parameterSet.getParameterList();
         for (AbstractParameter parameter : parameterList) {
             String flag = parameter.getFlag();
             if (flag.equals("")) {
-                List<String> unconsumedArgs = cmd.getArgList();
-                if (unconsumedArgs.size() == 0 && (!commandName.equals("find"))) {
-                    String message = parameterSet.getUnnamedParameter()
-                            .map(param -> String.format("Missing required option: %s", param.getName()))
-                            .orElseGet(() -> "");
-                    throw new ParseException(message);
-                }
-                parameter.setValue(String.join(" ", unconsumedArgs));
+                provideValuesToUnnamedParameter(cmd, parameter, parameterSet);
             } else {
-                String[] values = cmd.getOptionValues(flag);
-                if (values == null) {
-                    // optional value that was not supplied by user.
-                    continue;
-                }
-                parameter.setValue(String.join(" ", values));
+                provideValuesToParameter(cmd, parameter, flag);
             }
         }
+    }
+
+    private void provideValuesToUnnamedParameter(CommandLine cmd, AbstractParameter parameter,
+                                                 ParameterSet parameterSet) throws ParseException {
+        List<String> unconsumedArgs = cmd.getArgList();
+        if (unconsumedArgs.size() == 0) {
+            if (!parameter.isRequired()) {
+                return;
+            }
+            String message = parameterSet.getUnnamedParameter()
+                    .map(param -> String.format("Missing required option: %s", param.getName()))
+                    .orElseGet(() -> "");
+            throw new ParseException(message);
+        }
+        parameter.setValue(String.join(" ", unconsumedArgs));
+    }
+
+    private void provideValuesToParameter(CommandLine cmd, AbstractParameter parameter,
+                                          String flag) throws ParseException {
+        String[] values = cmd.getOptionValues(flag);
+        if (values == null) {
+            // optional value that was not supplied by user.
+            return;
+        }
+        parameter.setValue(String.join(" ", values));
     }
 
     /**
@@ -179,7 +194,7 @@ public class PrimitiveCommandParser {
     }
 
     public Boolean hasCommand(String command) {
-        return this.getRegisteredCommands().contains(command);
+        return getRegisteredCommands().contains(command);
     }
 
     // for testing

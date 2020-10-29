@@ -10,7 +10,7 @@ import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
  * @param <T> The type of the parameter.
  */
 public class OptionalParameter<T> extends AbstractParameter {
-    private ParameterConverter<T> converter;
+    private final ParameterConverter<T> converter;
     private Optional<T> value = Optional.empty();
 
     /**
@@ -36,6 +36,11 @@ public class OptionalParameter<T> extends AbstractParameter {
     public void setValue(String rawValue) throws ParseException {
         super.setValue(rawValue);
         this.value = Optional.of(converter.apply(rawValue));
+    }
+
+    @Override
+    public boolean isRequired() {
+        return false;
     }
 }
 

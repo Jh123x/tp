@@ -20,13 +20,7 @@ public class DatePredicate implements Predicate<Food> {
      * Initialises {@code DatePredicate} object.
      */
     public DatePredicate(String date) throws ParseException {
-        Date tempDate = null;
-        try {
-            tempDate = ParserUtil.parseDate(date);
-        } catch (ParseException e) {
-            throw new ParseException("Invalid date: " + date);
-        }
-        this.date = tempDate;
+        this.date = ParserUtil.parseDate(date);
     }
 
     /**
@@ -39,4 +33,12 @@ public class DatePredicate implements Predicate<Food> {
     public boolean test(Food food) {
         return this.date.equals(food.getDate());
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DatePredicate // instanceof handles nulls
+                && date.equals(((DatePredicate) other).date)); // state check
+    }
+
 }

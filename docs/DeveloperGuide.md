@@ -8,7 +8,7 @@ title: Developer Guide
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Purpose of this guide**
-This guide is made to help developers understand how McGymmy works.
+This guide is made to help developers understand how McGymmy (MG) works.
 One of the major goals is to centralise all the jimmy.mcgymmy documentation within McGymmy itself.
 Another major goal is to better help developers extend McGymmy to improve on its features.
 
@@ -49,12 +49,6 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 <img src="images/ArchitectureDiagram.png" width="450" alt="Architectural diagram"/>
 
 The ***Architecture Diagram*** given above explains the high-level design of the App. Given below is a quick overview of each component.
-
-<div markdown="span" class="alert alert-primary">
-
-:bulb: **Tip:** The `.puml` files used to create diagrams in this document can be found in the [diagrams](https://github.com/AY2021S1-CS2103T-W17-3/tp/tree/master/docs/diagrams/) folder. Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
-
-</div>
 
 **`Main`** has two classes called [`Main`](https://github.com/AY2021S1-CS2103T-W17-3/tp/tree/master/src/main/java/jimmy/mcgymmy/Main.java) and [`MainApp`](https://github.com/AY2021S1-CS2103T-W17-3/tp/tree/master/src/main/java/jimmy/mcgymmy/MainApp.java). It is responsible for,
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
@@ -118,7 +112,7 @@ For more information on macros and the full parsing process please read the sect
 1. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 1. In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
 
-Note that our implementation of this component is different from the one in the parent project, AddressBook3.
+Note that our implementation of this component is different from the one in the parent project, [AddressBook3](https://se-education.org/addressbook-level3/).
 One notable difference is the use of several `Parameter` classes in the various `Commands`.
 We list a few of the benefits of our redesigned solution below.
 
@@ -164,8 +158,8 @@ The `Model`,
 **API** : [`Storage.java`](https://github.com/AY2021S1-CS2103T-W17-3/tp/tree/master/src/main/java/jimmy/mcgymmy/storage/Storage.java)
 
 The `Storage` component,
-* can save `UserPref` objects in json format and read it back.
-* can save the McGymmy data in json format and read it back.
+* can save `UserPref` objects in JSON format and read it back.
+* can save the McGymmy data in JSON format and read it back.
 
 ### Common classes
 
@@ -309,18 +303,19 @@ The following sequence diagram shows how the import operation works:
 
 
 
-### Undo/redo feature
+### Undo feature
 
 #### Implementation
 
-The proposed undo/redo mechanism is facilitated by `ModelManager`.
-It stores multiple versions of `ReadOnlyMcGymmy` in a stack, with the most recent version on top.
-Whenever there is a change to the data, `ModelManager` will store a copy of its `McGymmy` in the stack.
-Additionally, it implements the following operations:
+The proposed undo mechanism is facilitated by `ModelManager` and `History`.
+`History` pairs `ReadOnlyMcGymmy` and `Predicate<Food>` gotten from `ModelManager` into a pair, then store multiple pairs of different versions in a stack, with the most recent version on top.
+Whenever there is a change to either `ModelManager`'s data or filter predicate, `ModelManager` will pass itself into `History` to be checked and saved in the stack.
+If `History` recognizes there is no change between the current state and the previous state, it will not save the current state to its stack.
+Additionally, `ModelManager` implements the following operations:
 
-* `ModelManager#canUndo()` - Checks if there are any older McGymmy states.
+* `ModelManager#canUndo()` - Checks if there is any older state stored in history.
 * `ModelManager#undo()` - Restores the previous McGymmy state from its history.
-* `ModelManager#addCurrentStateToHistory` - Saves the current McGymmy state in its history.
+* `ModelManager#saveCurrentStateToHistory()` - Saves the current McGymmy state in its history.
 
 The first 2 operations are exposed in the `Model` interface as `Model#canUndo()` and `Model#undo()` respectively.
 
@@ -344,7 +339,7 @@ storing a copied version of the McGymmy into the stack before changing the McGym
 
 ![UndoState2a](images/UndoState2a.png)
 
-![UndoState2a](images/UndoState2a.png)
+![UndoState2a](images/UndoState2b.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `ModelManager#addCurrentStateToHistory()`, so the McGymmy state will not be saved into the `mcGymmyStack`.
 
@@ -370,28 +365,27 @@ The following sequence diagram shows how the undo operation works:
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The method Parser::parse is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
 </div>
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The method ModelManager::updateModelManager is a simplification of updating the McGymmy, updating the filterPredicate and updating the filteredFoodList separately.
+</div>
+
 The following activity diagram summarizes what happens when a user executes a new command:
 
 ![AddToHistoryActivityDiagram](images/AddToHistoryActivityDiagram.png)
 
 #### Design consideration:
 
-##### Aspect: How undo & redo executes
+##### Aspect: How undo executes
 
-* **Alternative 1 (current choice):** Saves the entire McGymmy database.
+* **Alternative 1 (current choice):** Saves the entire ModelManger database.
   * Pros: Easy to implement.
   * Cons: May have performance issues in terms of memory usage.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
+* **Alternative 2:** Individual command knows how to undo by
   itself.
   * Pros: Will use less memory (e.g. for `delete`, just save the food item being deleted).
   * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
 
 ### Macro Command
 
@@ -594,8 +588,13 @@ Use case ends.
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, OS-X
-* **Private diet detail**: Diet details that is not meant to be shared with others
+* **Built-in commands**: Any other commands except Macro Command.
+* **Command Line Interface (CLI)**: A command-line interface (CLI) processes commands to a computer program in the form of lines of text.
+* **Flag**: A dash followed by a letter to denote the start of a parameter. For example, in `-n Chicken Rice`, `-n` is a flag for name and `Chicken Rice` is the input that will be processed by the application.
+* **Graphical User Interface (GUI)**: A visual way of interacting with a computer using items such as windows, icons, and menus, used by most modern operating systems.
+* **Macro command**: A command that allows you to execute multiple built-in commands sequentially with just one line of input
+* **Mainstream OS**: Windows, Linux, Unix, OS-X.
+* **McGymmy/MG**: The name of this application, can be used interchangeably in this guide.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -612,9 +611,9 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+   1. Download the JAR file and copy into any folder
 
-   1. Double-click the jar file
+   1. Double-click the JAR file
       <br>
       Expected: Shows the GUI with a set of sample food items. The window size may not be optimum.
 
@@ -622,7 +621,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.
+   1. Re-launch the app by double-clicking the JAR file.
       <br>
       Expected: The most recent window size and location is retained.
 
@@ -646,7 +645,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-   1. Delete the 'data' file if any. Relaunch the app by double-clicking the jar file.
+   1. Delete the 'data' file if any. Relaunch the app by double-clicking the JAR file.
    <br>
    Expected: A new data file is generated
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import jimmy.mcgymmy.logic.parser.PrimitiveCommandParser;
 import jimmy.mcgymmy.model.macro.exceptions.DuplicateMacroException;
@@ -63,6 +64,26 @@ public class MacroList {
         List<Macro> newList = this.getAsList();
         newList.add(newMacro);
         return new MacroList(newList);
+    }
+
+    /**
+     * Returns a new MacroList without the specified macro.
+     * If the macro does not exist in the MacroList, returns a new copy of the same MacroList.
+     *
+     * @param macroName the macro to remove.
+     */
+    public MacroList withoutMacro(String macroName) {
+        List<Macro> newList = this.getAsList()
+                .stream()
+                .filter(macro -> !macro.getName().equals(macroName))
+                .collect(Collectors.toList());
+        try {
+            return new MacroList(newList);
+        } catch (DuplicateMacroException e) {
+            // this logically should never happen.
+            assert false : "removing macro results in duplicate macro";
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Macro getMacro(String name) {

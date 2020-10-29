@@ -25,14 +25,14 @@ import jimmy.mcgymmy.testutil.FoodBuilder;
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for EditCommand.
  */
 public class EditCommandTest {
-    private static final String VALID_NAME_BOB = "Robert Donald";
-    private static final String VALID_PROTEIN_BOB = "99999999";
+    private static final String VALID_NAME_BOB = "McSpicy";
+    private static final String VALID_PROTEIN_BOB = "999";
     private static final String VALID_DATE = "12-04-2020";
-    private Model model = new ModelManager(getTypicalMcGymmy(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalMcGymmy(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Food editedFood = new FoodBuilder().withTags("friends").build();
+        Food editedFood = new FoodBuilder().withTags("lunch").build();
 
         EditCommand editCommand = new EditCommand();
         editCommand.setParameters(

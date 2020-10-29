@@ -35,7 +35,7 @@ public class LogicManagerTest {
     @TempDir
     public Path temporaryFolder;
 
-    private Model model = new ModelManager();
+    private final Model model = new ModelManager();
     private Logic logic;
 
     @BeforeEach
@@ -80,9 +80,9 @@ public class LogicManagerTest {
 
         // Execute add command
         // String addCommand = AddCommand.COMMAND_WORD + " -n amy -p 99999999 -e amy@amy.com";
-        String addCommand = AddCommand.COMMAND_WORD + " -n amy -p 99999999 -f 123 -c 123543";
-        Food expectedFood = new FoodBuilder().withName(new Name("amy")).withProtein("99999999")
-                .withFat("123").withCarb("123543").build();
+        String addCommand = AddCommand.COMMAND_WORD + " -n amy -p 999 -f 123 -c 543";
+        Food expectedFood = new FoodBuilder().withName(new Name("amy")).withProtein("999")
+                .withFat("123").withCarb("543").build();
         ModelManager expectedModel = new ModelManager();
         expectedModel.addFood(expectedFood);
         String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;

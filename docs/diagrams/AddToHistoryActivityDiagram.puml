@@ -5,10 +5,10 @@ start
 'Since the beta syntax does not support placing the condition outside the
 'diamond we place it as the true branch instead.
 
-if () then ([command might changes fridge state])
-    :Make a copy of McGymmy
-    to mcGymmyStack;
-    :Change McGymmy;
+if () then ([command change ModelManager state])
+    :Make a copy of ModelManager
+                     to History;
+    :Change ModelManager;
 else ([else])
 endif
 stop

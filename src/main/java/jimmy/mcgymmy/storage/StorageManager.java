@@ -18,9 +18,9 @@ import jimmy.mcgymmy.model.macro.MacroList;
 public class StorageManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
-    private McGymmyStorage mcGymmyStorage;
-    private MacroListStorage macroListStorage;
-    private UserPrefsStorage userPrefsStorage;
+    private final McGymmyStorage mcGymmyStorage;
+    private final MacroListStorage macroListStorage;
+    private final UserPrefsStorage userPrefsStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code McGymmyStorage} and {@code UserPrefStorage}.

@@ -25,7 +25,7 @@ public class DeleteCommandTest {
     2. succeeds when index is valid
      */
 
-    private Model model = new ModelManager(TypicalFoods.getTypicalMcGymmy(), new UserPrefs());
+    private final Model model = new ModelManager(TypicalFoods.getTypicalMcGymmy(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() {

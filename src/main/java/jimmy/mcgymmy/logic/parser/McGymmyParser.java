@@ -50,14 +50,19 @@ public class McGymmyParser {
     public CommandExecutable parse(String text) throws ParseException {
         ParserUtil.HeadTailString headTail = ParserUtil.HeadTailString.splitString(text);
         String commandName = headTail.getHead();
-        if (commandName.equals("macro")) {
-            return parseCreateMacro(text);
-        } else if (this.macroList.hasMacro(commandName)) {
-            return this.parseRunMacro(commandName, headTail.getTail());
-        } else if (this.primitiveCommandParser.hasCommand(commandName)) {
-            return this.primitiveCommandParser.parsePrimitiveCommand(commandName, headTail.getTail());
-        } else {
-            throw new ParseException(Messages.MESSAGE_UNKNOWN_COMMAND);
+        try {
+            if (commandName.equals("macro")) {
+                return parseCreateMacro(text);
+            } else if (this.macroList.hasMacro(commandName)) {
+                return this.parseRunMacro(commandName, headTail.getTail());
+            } else if (this.primitiveCommandParser.hasCommand(commandName)) {
+                return this.primitiveCommandParser.parsePrimitiveCommand(commandName, headTail.getTail());
+            } else {
+                throw new ParseException(Messages.MESSAGE_UNKNOWN_COMMAND);
+            }
+        } catch (IllegalArgumentException e) {
+            //Catch the error when the value of protein is > 1000 or < 0
+            throw new ParseException(e.getMessage());
         }
     }
 

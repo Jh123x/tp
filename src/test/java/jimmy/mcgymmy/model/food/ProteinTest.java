@@ -29,10 +29,11 @@ public class ProteinTest {
         Assertions.assertFalse(Protein.isValid("protein")); // non-numeric
         Assertions.assertFalse(Protein.isValid("9011p041")); // alphabets within digits
         Assertions.assertFalse(Protein.isValid("9312 1534")); // spaces within digits
+        Assertions.assertFalse(Protein.isValid("9111")); // Out of range
 
         // valid protein numbers
         Assertions.assertTrue(Protein.isValid("911"));
-        Assertions.assertTrue(Protein.isValid("93121534"));
-        Assertions.assertTrue(Protein.isValid("124293842033123"));
+        Assertions.assertTrue(Protein.isValid("93"));
+        Assertions.assertTrue(Protein.isValid("1"));
     }
 }

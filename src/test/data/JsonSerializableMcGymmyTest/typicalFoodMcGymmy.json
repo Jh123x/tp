@@ -3,7 +3,7 @@
   "food": [
     {
       "name": "Chicken Rice",
-      "protein": "94351253",
+      "protein": "253",
       "fat": "123",
       "carbs": "456",
       "date": "20 Apr 2020",
@@ -13,7 +13,7 @@
     },
     {
       "name": "Nasi Alamak",
-      "protein": "98765432",
+      "protein": "432",
       "fat": "321",
       "carbs": "123",
       "date": "2 Sep 2020",
@@ -24,7 +24,7 @@
     },
     {
       "name": "Crispy Fried Fish",
-      "protein": "95352563",
+      "protein": "563",
       "fat": "456",
       "carbs": "654",
       "date": "13 Oct 2020",
@@ -32,7 +32,7 @@
     },
     {
       "name": "Danish Cookies",
-      "protein": "87652533",
+      "protein": "533",
       "fat": "654",
       "carbs": "456",
       "date": "1 Jan 2020",
@@ -42,7 +42,7 @@
     },
     {
       "name": "Eggs",
-      "protein": "9482224",
+      "protein": "224",
       "fat": "246",
       "carbs": "810",
       "date": "7 Mar 2019",
@@ -50,7 +50,7 @@
     },
     {
       "name": "Fruit Cake",
-      "protein": "9482427",
+      "protein": "427",
       "fat": "987",
       "carbs": "789",
       "date": "3 Feb 1998",
@@ -58,7 +58,7 @@
     },
     {
       "name": "Gingerbread",
-      "protein": "9482442",
+      "protein": "442",
       "fat": "789",
       "carbs": "987",
       "date": "5 May 1973",

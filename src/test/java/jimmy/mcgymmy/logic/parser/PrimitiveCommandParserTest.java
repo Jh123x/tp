@@ -92,9 +92,9 @@ public class PrimitiveCommandParserTest {
     }
 
     static class StubCommand extends Command {
-        private Parameter<String> testParameter1 = CommandParserTestUtil.makeDummyParameter("test1", "t1");
-        private Parameter<String> testParameter2 = CommandParserTestUtil.makeDummyParameter("test2", "t2");
-        private OptionalParameter<String> testOptionalParameter =
+        private final Parameter<String> testParameter1 = CommandParserTestUtil.makeDummyParameter("test1", "t1");
+        private final Parameter<String> testParameter2 = CommandParserTestUtil.makeDummyParameter("test2", "t2");
+        private final OptionalParameter<String> testOptionalParameter =
                 CommandParserTestUtil.makeDummyOptionalParameter("opt", "o1");
 
         {

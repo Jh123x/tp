@@ -142,7 +142,9 @@ public class ModelManager implements Model {
     public void deleteFood(Index index) {
         logger.fine("Delete food at index: " + index.getOneBased());
         saveCurrentStateToHistory();
-        mcGymmy.removeFood(index);
+
+        //Delete food based on food index
+        mcGymmy.removeFood(filteredFoodItems.get(index.getZeroBased()));
     }
 
     /**

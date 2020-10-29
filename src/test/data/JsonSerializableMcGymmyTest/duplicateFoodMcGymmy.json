@@ -2,7 +2,7 @@
   "food": [
     {
       "name": "chicken rice",
-      "protein": "94351253",
+      "protein": "253",
       "fat": "123",
       "carbs": "456",
       "date": "20 Apr 2020",
@@ -12,7 +12,7 @@
     },
     {
       "name": "chicken rice",
-      "protein": "94351253",
+      "protein": "253",
       "fat": "123",
       "carbs": "456",
       "date": "20/04/2020"

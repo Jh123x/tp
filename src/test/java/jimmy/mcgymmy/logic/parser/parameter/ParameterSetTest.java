@@ -11,11 +11,11 @@ import jimmy.mcgymmy.logic.parser.exceptions.ParameterConflictException;
 
 
 public class ParameterSetTest {
-    private DefaultParser parser = new DefaultParser();
+    private final DefaultParser parser = new DefaultParser();
 
-    private Parameter<String> dummyParameter1 = CommandParserTestUtil.makeDummyParameter("test", "t");
+    private final Parameter<String> dummyParameter1 = CommandParserTestUtil.makeDummyParameter("test", "t");
 
-    private Parameter<String> dummyParameter2 = CommandParserTestUtil.makeDummyParameter("test2", "t2");
+    private final Parameter<String> dummyParameter2 = CommandParserTestUtil.makeDummyParameter("test2", "t2");
 
     @Test
     void add_newParameter_success() {

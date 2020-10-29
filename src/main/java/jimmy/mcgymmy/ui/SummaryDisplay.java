@@ -3,15 +3,16 @@ package jimmy.mcgymmy.ui;
 import static jimmy.mcgymmy.commons.util.CollectionUtil.requireAllNonNull;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
 
 public class SummaryDisplay extends UiPart<AnchorPane> {
     private static final String FXML = "SummaryDisplay.fxml";
     private static final String TOTAL_CALORIES_TEXT = "Total Calories %d";
-    private static final String TOTAL_PROTEIN_TEXT = "Protein: %s";
-    private static final String TOTAL_CARBOHYDRATE_TEXT = "Carbs: %s";
-    private static final String TOTAL_FAT_TEXT = "Fats: %s";
+    private static final String TOTAL_PROTEIN_TEXT = "Protein: %d";
+    private static final String TOTAL_CARBOHYDRATE_TEXT = "Carbs: %d";
+    private static final String TOTAL_FAT_TEXT = "Fats: %d";
 
     @FXML
     private PieChart pieChart;
@@ -22,13 +23,14 @@ public class SummaryDisplay extends UiPart<AnchorPane> {
      */
     public SummaryDisplay() {
         super(FXML);
-        pieChart.setClockwise(true);
-        pieChart.setLabelLineLength(25);
-        pieChart.setLabelsVisible(true);
+        pieChart.setAnimated(false);
+        pieChart.setLabelsVisible(false);
+        pieChart.setLegendSide(Side.RIGHT);
     }
 
-    public void setTotalMacronutrients(int totalCalories, int totalProtein, int totalCarbs, int totalFats) {
+    public void setTotalMacronutrients(long totalCalories, long totalProtein, long totalCarbs, long totalFats) {
         requireAllNonNull(totalCalories, totalProtein, totalCarbs, totalFats);
+        assert totalCalories > 0 : "Total Calories is negative";
         pieChart.setTitle(String.format(TOTAL_CALORIES_TEXT, totalCalories));
 
         //Reset the data
@@ -40,7 +42,7 @@ public class SummaryDisplay extends UiPart<AnchorPane> {
         addData(TOTAL_FAT_TEXT, totalFats);
     }
 
-    private void addData(String formatString, int count) {
+    private void addData(String formatString, long count) {
 
         //If the count for the data is <= 0, do not show the data value
         if (count <= 0) {

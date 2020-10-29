@@ -21,7 +21,7 @@ public class JsonMcGymmyStorage implements McGymmyStorage {
 
     private static final Logger logger = LogsCenter.getLogger(JsonMcGymmyStorage.class);
 
-    private Path filePath;
+    private final Path filePath;
 
     public JsonMcGymmyStorage(Path filePath) {
         this.filePath = filePath;
@@ -47,7 +47,7 @@ public class JsonMcGymmyStorage implements McGymmyStorage {
 
         Optional<JsonSerializableMcGymmy> jsonMcGymmy = JsonUtil.readJsonFile(
                 filePath, JsonSerializableMcGymmy.class);
-        if (!jsonMcGymmy.isPresent()) {
+        if (jsonMcGymmy.isEmpty()) {
             return Optional.empty();
         }
 

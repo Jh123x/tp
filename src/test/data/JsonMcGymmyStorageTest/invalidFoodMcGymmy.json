@@ -2,7 +2,7 @@
   "food": [
     {
       "name": "Food with invalid name field: Ha!ns Mu@ster",
-      "protein": "9482424",
+      "protein": "424",
       "fat": "123",
       "carbs": "321"
     }

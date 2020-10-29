@@ -40,7 +40,7 @@ public class AddCommandTest {
     @Test
     public void execute_validFoodWithoutDate_addSuccessfulAndSetCurrentDayAsDate() throws Exception {
         ModelStubAcceptingFoodAdded modelStub = new ModelStubAcceptingFoodAdded();
-        Food validFood = new FoodBuilder().withCarb("12345").build();
+        Food validFood = new FoodBuilder().withCarb("123").build();
         AddCommand command = new AddCommand();
         command.setParameters(
                 new CommandParserTestUtil.ParameterStub<>("n", validFood.getName()),
@@ -59,7 +59,7 @@ public class AddCommandTest {
 
     @Test
     public void execute_validFoodWithDate_addSuccessfulAndSetInputDateAsDate() throws Exception {
-        Food validFoodWithDate = new FoodBuilder().withCarb("12345").withDate("20/4/2020").build();
+        Food validFoodWithDate = new FoodBuilder().withCarb("123").withDate("20/4/2020").build();
         AddCommand command = new AddCommand();
         command.setParameters(
             new CommandParserTestUtil.ParameterStub<>("n", validFoodWithDate.getName()),
@@ -79,7 +79,7 @@ public class AddCommandTest {
 
     @Test
     public void execute_validFoodWithTag_addSuccessful() {
-        Food validFoodWithTag = new FoodBuilder().withCarb("12345").withTags("hello").build();
+        Food validFoodWithTag = new FoodBuilder().withCarb("123").withTags("hello").build();
         AddCommand command = new AddCommand();
         command.setParameters(
             new CommandParserTestUtil.ParameterStub<>("n", validFoodWithTag.getName()),
@@ -99,7 +99,7 @@ public class AddCommandTest {
 
     @Test
     public void execute_duplicateFood_success() {
-        Food validFood = new FoodBuilder().withCarb("12345").build();
+        Food validFood = new FoodBuilder().withCarb("123").build();
         AddCommand command = new AddCommand();
         command.setParameters(
                 new CommandParserTestUtil.ParameterStub<>("n", validFood.getName()),
