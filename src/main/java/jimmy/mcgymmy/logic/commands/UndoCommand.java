@@ -6,7 +6,7 @@ public class UndoCommand extends Command {
     public static final String COMMAND_WORD = "undo";
     public static final String SHORT_DESCRIPTION = "Undo the last command.";
 
-    public static final String MESSAGE_UNDO_SUCCESS = "Successfully undo the last command.";
+    public static final String MESSAGE_UNDO_SUCCESS = "Successfully undid the last command.";
     public static final String MESSAGE_NOT_UNDOABLE = "Cannot undo anymore.";
 
     @Override

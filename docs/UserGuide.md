@@ -24,13 +24,13 @@ Open this document in a modern internet browser (Mozilla Firefox, Google Chrome,
 
 ## 2. A little note from the developers
 
-Thank you for using McGymmy. We sincerely hope that McGymmy plays apart to help you achieve a healthier lifestyle.
+Thank you for using McGymmy. We sincerely hope that McGymmy plays a part to help you achieve a healthier lifestyle.
 We understand that McGymmy may be a little different from traditional GUI applications and it may be a little difficult to start using it initially.
 Thus we recommend you to start by first understanding how McGymmy works at a high level at the Quick start section. Then, explore the Features section.
 
 <div markdown="block" class="alert alert-info">
 
-:bulb: **Tip:** Press Ctrl-F to open the find prompt in your browser. You can type in keywords such as `add` or `edit` to quickly navigate to those parts of the document.
+:bulb: **Tip:** Press `Ctrl-F` for Windows and Other OSs and `CMD + F` for Mac OS to open the find prompt in your browser. You can type in keywords such as `add` or `edit` to quickly navigate to those parts of the document.
 
 </div>
 
@@ -81,7 +81,7 @@ Each of the commands explained below will have an image which shows the output.
 ![Usage](images/CommandImagesForUG/Usage.png)
 
 If you are just looking for a particular command:
-1. Press `ctrl-f` 
+1. Press `Ctrl-F` for Windows and other operating systems, `CMD + F` for Mac OS.
 1. Search for the command in the search bar.
 
 If you want a table with all the commands:
@@ -145,13 +145,14 @@ Examples:
 
 You can add a food item to McGymmy.
 
-Format: `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]`
+Format: `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE] [-t TAG]`
 
 Examples:
 * `add -n potato -p 100 -c 5 -f 0`
 * `add -n McSpicy`
 * `add -n Wonton Mee -c 10`
 * `add -n Sushi -d 20/04/2020`
+* `add -n Burger -t FastFood`
 
 <div markdown="block" class="alert alert-info">
 
@@ -174,8 +175,10 @@ Format: `tag INDEX -t TAG_NAME`
 :information_source:
 
 * Tags `TAG_NAME` for food item at the specified `INDEX`.
+* `TAG_NAME` is case-sensitive.
 * The index refers to the index number shown in the displayed food list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* Tags for food items must be less than 20 characters.
 
 </div>
 
@@ -192,6 +195,7 @@ Format: `untag INDEX -t TAG_NAME`
 :information_source:
 
 * Untags `TAG_NAME` for food item at the specified `INDEX`.
+* `TAG_NAME` is case-sensitive.
 * The index refers to the index number shown in the displayed food list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
@@ -501,6 +505,7 @@ McGymmy's data is saved in the hard disk automatically after any command that ch
 For those who prefer typing:
 1. Use the find command in section `5.5` and add the `-d` tag before specifying a date
 1. You will see the food you ate on that day
+<br>
 For those who prefer clicking:
 1. Click on `date` button at the file menu
 1. Click on the calendar icon
@@ -515,15 +520,15 @@ For those who prefer clicking:
 
 Action       | Format, Examples
 -------------|------------------
-**Add**      | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23 -d 02/09/2020`
+**Add**      | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE] [-t TAG]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23 -d 02/09/2020 -t Lunch`
 **Clear**    | `clear`
 **Delete**   | `delete INDEX`<br> e.g., `delete 3`
 **Edit**     | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60 -d 02/09/2020`
 **Exit**     | `exit`
-**Export**   | `import DIRPATH [-o FILENAME]` <br> e.g., `export c:/mcgymmy -o save_file`
+**Export**   | `export DIRPATH [-o FILENAME]` <br> e.g., `export c:/mcgymmy -o save_file`
 **Find**     | `find [KEYWORDS] [-n WORDS_IN_NAME] [-t WORDS_IN_TAG] [-d DATE]` <br> e.g., `find chicken -t Dinner -d 28-10-2020`
 **Help**     | `help [COMMAND]` <br> e.g., `help add`
-**Import**   | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​` <br> e.g., `import c:/mcgymmy/save_file.json`
+**Import**   | `import [FILEPATH]​` <br> e.g., `import c:/mcgymmy/save_file.json`
 **List**     | `list`
 **Macro**    | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​` <br> e.g., `macro lunch; add Chicken`
 **RemMacro** | `remmacro MACRONAME` <br> e.g., `remmacro lunch`

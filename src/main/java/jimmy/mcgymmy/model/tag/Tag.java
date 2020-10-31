@@ -10,8 +10,8 @@ import jimmy.mcgymmy.commons.util.AppUtil;
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric and less than 20 characters";
+    public static final String VALIDATION_REGEX = "\\p{Alnum}{1,20}";
 
     public final String tagName;
 

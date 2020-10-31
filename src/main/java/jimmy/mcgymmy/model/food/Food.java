@@ -185,9 +185,9 @@ public class Food {
     @Override
     public String toString() {
         return "Food: " + this.getName() + "\n"
-                + "protein: " + protein.getAmount() + "\n"
-                + "carbs: " + carbs.getAmount() + "\n"
-                + "fat: " + fat.getAmount() + "\n";
+                + "Protein: " + protein.getAmount() + "\n"
+                + "Carbs: " + carbs.getAmount() + "\n"
+                + "Fat: " + fat.getAmount() + "\n";
     }
 
 }

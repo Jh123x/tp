@@ -59,14 +59,14 @@ public class FoodTest {
     @Test
     public void toStringTest() {
         String expected1 = "Food: test food\n"
-                + "protein: 2\n"
-                + "carbs: 3\n"
-                + "fat: 4\n";
+                + "Protein: 2\n"
+                + "Carbs: 3\n"
+                + "Fat: 4\n";
         assertEquals(COMPARED_FOOD.toString(), expected1);
         String expected2 = "Food: test food2\n"
-                + "protein: 100\n"
-                + "carbs: 20\n"
-                + "fat: 10\n";
+                + "Protein: 100\n"
+                + "Carbs: 20\n"
+                + "Fat: 10\n";
         assertEquals(new Food("test food2", 100, 10, 20).toString(), expected2);
     }
 
