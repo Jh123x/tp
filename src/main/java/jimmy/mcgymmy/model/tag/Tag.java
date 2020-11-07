@@ -2,6 +2,7 @@ package jimmy.mcgymmy.model.tag;
 
 import static java.util.Objects.requireNonNull;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.commons.util.AppUtil;
 
 /**
@@ -10,7 +11,7 @@ import jimmy.mcgymmy.commons.util.AppUtil;
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric and less than 20 characters";
+    public static final String MESSAGE_CONSTRAINTS = "Tag names should be alphanumeric and less than 20 characters";
     public static final String VALIDATION_REGEX = "\\p{Alnum}{1,20}";
 
     public final String tagName;
@@ -20,7 +21,7 @@ public class Tag {
      *
      * @param tagName A valid tag name.
      */
-    public Tag(String tagName) {
+    public Tag(String tagName) throws IllegalValueException {
         requireNonNull(tagName);
         AppUtil.checkArgument(isValidTagName(tagName), MESSAGE_CONSTRAINTS);
         this.tagName = tagName;

@@ -1,9 +1,9 @@
 package jimmy.mcgymmy.model;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
-import static jimmy.mcgymmy.testutil.TypicalFoods.CHICKEN_RICE;
-import static jimmy.mcgymmy.testutil.TypicalFoods.DANISH_COOKIES;
-import static jimmy.mcgymmy.testutil.TypicalFoods.NASI_LEMAK;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getChickenRice;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getDanishCookies;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getNasiLemak;
 import static jimmy.mcgymmy.testutil.TypicalMacros.TEST_MACRO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.core.GuiSettings;
 import jimmy.mcgymmy.commons.core.index.Index;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.logic.commands.CommandTestUtil;
 import jimmy.mcgymmy.logic.predicate.NameContainsKeywordsPredicate;
 import jimmy.mcgymmy.model.food.Food;
@@ -30,10 +31,12 @@ import jimmy.mcgymmy.testutil.TypicalFoods;
 public class ModelManagerTest {
 
     private ModelManager modelManager = new ModelManager();
+    private Model expectedModel = new ModelManager();
 
     @BeforeEach
     public void setup() {
         modelManager = new ModelManager();
+        expectedModel = new ModelManager();
     }
 
     @Test
@@ -93,13 +96,13 @@ public class ModelManagerTest {
 
     @Test
     public void hasFood_personNotInMcGymmy_returnsFalse() {
-        assertFalse(modelManager.hasFood(CHICKEN_RICE));
+        assertFalse(modelManager.hasFood(getChickenRice()));
     }
 
     @Test
     public void hasFood_foodInMcGymmy_returnsTrue() {
-        modelManager.addFood(CHICKEN_RICE);
-        assertTrue(modelManager.hasFood(CHICKEN_RICE));
+        modelManager.addFood(getChickenRice());
+        assertTrue(modelManager.hasFood(getChickenRice()));
     }
 
     @Test
@@ -114,30 +117,78 @@ public class ModelManagerTest {
 
     @Test
     public void canUndo_modelGotChangedPreviously_returnsTrue() {
-        modelManager.addFood(CHICKEN_RICE);
+        modelManager.addFood(getChickenRice());
         assertTrue(modelManager.canUndo());
     }
 
     @Test
     public void canUndo_modelGotChangedButUndoAlready_returnsFalse() {
-        modelManager.addFood(CHICKEN_RICE);
+        modelManager.addFood(getChickenRice());
         modelManager.undo();
         assertFalse(modelManager.canUndo());
     }
 
     @Test
+    public void clear_empty_mcGymmyHasCorrectContent() {
+        McGymmy expected = new McGymmyBuilder().build();
+        modelManager.clearFilteredFood();
+        assertEquals(expected, modelManager.getMcGymmy());
+    }
+
+    @Test
+    public void clear_nonEmpty_mcGymmyHasCorrectContent() {
+        McGymmy expected = new McGymmyBuilder().build();
+        modelManager.addFood(getChickenRice());
+        modelManager.addFood(getNasiLemak());
+        modelManager.clearFilteredFood();
+        assertEquals(expected, modelManager.getMcGymmy());
+    }
+
+    @Test
+    public void find_empty_mcGymmyHasCorrectContent() {
+        modelManager.updateFilteredFoodList((food) -> food.getName()
+                .fullName.contains(getChickenRice().getName().fullName));
+
+        assertEquals(expectedModel.getFilteredFoodList(), modelManager.getFilteredFoodList());
+    }
+
+    @Test
+    public void find_nonEmpty_mcGymmyHasCorrectContent() {
+        expectedModel.addFood(getChickenRice());
+        modelManager.addFood(getChickenRice());
+        modelManager.addFood(getNasiLemak());
+        modelManager.updateFilteredFoodList((food) -> food.getName()
+                        .fullName.contains(getChickenRice().getName().fullName));
+        assertEquals(expectedModel.getFilteredFoodList(), modelManager.getFilteredFoodList());
+    }
+
+    @Test
+    public void findThenClear_nonEmpty_mcGymmyHasCorrectContent() {
+        expectedModel.addFood(getChickenRice());
+        modelManager.addFood(getChickenRice());
+        modelManager.addFood(getNasiLemak());
+        modelManager.updateFilteredFoodList((food) -> food.getName()
+                .fullName.contains(getNasiLemak().getName().fullName));
+        modelManager.clearFilteredFood();
+        modelManager.updateFilteredFoodList((food) -> true);
+        assertEquals(expectedModel.getFilteredFoodList(), modelManager.getFilteredFoodList());
+    }
+
+
+
+    @Test
     public void undo_undoAfterAddFood_mcGymmyHasCorrectContent() {
-        modelManager.addFood(CHICKEN_RICE);
-        McGymmy expected = new McGymmyBuilder().withFood(TypicalFoods.CHICKEN_RICE).build();
-        modelManager.addFood(NASI_LEMAK);
+        modelManager.addFood(getChickenRice());
+        McGymmy expected = new McGymmyBuilder().withFood(TypicalFoods.getChickenRice()).build();
+        modelManager.addFood(getNasiLemak());
         modelManager.undo();
         assertEquals(expected, modelManager.getMcGymmy());
     }
 
     @Test
     public void undo_undoAfterDeleteFood_mcGymmyHasCorrectContent() {
-        modelManager.addFood(CHICKEN_RICE);
-        McGymmy expected = new McGymmyBuilder().withFood(TypicalFoods.CHICKEN_RICE).build();
+        modelManager.addFood(getChickenRice());
+        McGymmy expected = new McGymmyBuilder().withFood(TypicalFoods.getChickenRice()).build();
         modelManager.deleteFood(Index.fromOneBased(1));
         modelManager.undo();
         assertEquals(expected, modelManager.getMcGymmy());
@@ -145,20 +196,20 @@ public class ModelManagerTest {
 
     @Test
     public void undo_undoAfterSetMcGymmy_mcGymmyHasCorrectContent() {
-        modelManager.addFood(CHICKEN_RICE);
-        McGymmy expected = new McGymmyBuilder().withFood(TypicalFoods.CHICKEN_RICE).build();
-        McGymmy mcGymmy = new McGymmyBuilder().withFood(TypicalFoods.CHICKEN_RICE).withFood(
-                TypicalFoods.NASI_LEMAK).build();
+        modelManager.addFood(getChickenRice());
+        McGymmy expected = new McGymmyBuilder().withFood(TypicalFoods.getChickenRice()).build();
+        McGymmy mcGymmy = new McGymmyBuilder().withFood(TypicalFoods.getChickenRice()).withFood(
+                TypicalFoods.getNasiLemak()).build();
         modelManager.setMcGymmy(mcGymmy);
         modelManager.undo();
         assertEquals(expected, modelManager.getMcGymmy());
     }
 
     @Test
-    public void undo_undoAfterSetFood_mcGymmyHasCorrectContent() {
-        McGymmy expected = new McGymmyBuilder().withFood(CHICKEN_RICE).build();
-        modelManager.addFood(CHICKEN_RICE);
-        Food editedFood = new FoodBuilder(CHICKEN_RICE).withCarb("50").build();
+    public void undo_undoAfterSetFood_mcGymmyHasCorrectContent() throws IllegalValueException {
+        McGymmy expected = new McGymmyBuilder().withFood(getChickenRice()).build();
+        modelManager.addFood(getChickenRice());
+        Food editedFood = new FoodBuilder(getChickenRice()).withCarb("50").build();
         modelManager.setFood(Index.fromOneBased(1), editedFood);
         modelManager.undo();
         assertEquals(expected, modelManager.getMcGymmy());
@@ -166,10 +217,10 @@ public class ModelManagerTest {
 
     @Test
     public void undo_undoAfterUpdateFilteredFoodList_modelManagerHasCorrectContent() {
-        McGymmy expectedMcGymmy = new McGymmyBuilder().withFood(CHICKEN_RICE).withFood(DANISH_COOKIES).build();
+        McGymmy expectedMcGymmy = new McGymmyBuilder().withFood(getChickenRice()).withFood(getDanishCookies()).build();
         ModelManager expectedModelManager = new ModelManager(expectedMcGymmy, new UserPrefs());
-        modelManager.addFood(CHICKEN_RICE);
-        modelManager.addFood(DANISH_COOKIES);
+        modelManager.addFood(getChickenRice());
+        modelManager.addFood(getDanishCookies());
         CommandTestUtil.showFoodAtIndex(modelManager, Index.fromOneBased(2)); // updateFilterdFoodList
         modelManager.undo();
         assertEquals(modelManager, expectedModelManager);
@@ -177,13 +228,14 @@ public class ModelManagerTest {
 
     @Test
     public void undo_undoAfterClearFilteredFood_modelManagerHasCorrectContent() {
-        McGymmy expectedMcGymmy = new McGymmyBuilder().withFood(CHICKEN_RICE).withFood(DANISH_COOKIES).build();
+        McGymmy expectedMcGymmy = new McGymmyBuilder().withFood(getChickenRice()).withFood(getDanishCookies()).build();
         ModelManager expectedModelManager = new ModelManager(expectedMcGymmy, new UserPrefs());
-        modelManager.addFood(CHICKEN_RICE);
-        modelManager.addFood(DANISH_COOKIES);
+        modelManager.addFood(getChickenRice());
+        modelManager.addFood(getDanishCookies());
+        modelManager.updateFilteredFoodList(food -> food.equals(getChickenRice()));
         modelManager.clearFilteredFood();
         modelManager.undo();
-        assertEquals(modelManager, expectedModelManager);
+        assertEquals(modelManager.getMcGymmy(), expectedMcGymmy);
     }
 
     @Test
@@ -196,18 +248,18 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void undo_undoMultipleTimes_mcGymmyHasCorrectContent() {
-        Food newChickenRice = new FoodBuilder(CHICKEN_RICE).withDate("2020-04-12").build();
+    public void undo_undoMultipleTimes_mcGymmyHasCorrectContent() throws IllegalValueException {
+        Food newChickenRice = new FoodBuilder(getChickenRice()).withDate("2020-04-12").build();
         Food newNasiLemak = new FoodBuilder().withTags("Lunch").build();
 
         McGymmy expected1 = new McGymmyBuilder().build();
-        McGymmy expected2 = new McGymmyBuilder().withFood(CHICKEN_RICE).build();
-        McGymmy expected3 = new McGymmyBuilder().withFood(CHICKEN_RICE).withFood(NASI_LEMAK).build();
-        McGymmy expected4 = new McGymmyBuilder().withFood(newChickenRice).withFood(NASI_LEMAK).build();
+        McGymmy expected2 = new McGymmyBuilder().withFood(getChickenRice()).build();
+        McGymmy expected3 = new McGymmyBuilder().withFood(getChickenRice()).withFood(getNasiLemak()).build();
+        McGymmy expected4 = new McGymmyBuilder().withFood(newChickenRice).withFood(getNasiLemak()).build();
         McGymmy expected5 = new McGymmyBuilder().withFood(newChickenRice).withFood(newNasiLemak).build();
 
-        modelManager.addFood(CHICKEN_RICE);
-        modelManager.addFood(NASI_LEMAK);
+        modelManager.addFood(getChickenRice());
+        modelManager.addFood(getNasiLemak());
         modelManager.setFood(Index.fromOneBased(1), newChickenRice);
         modelManager.setFood(Index.fromOneBased(2), newNasiLemak);
         modelManager.deleteFood(Index.fromOneBased(1));
@@ -231,20 +283,20 @@ public class ModelManagerTest {
 
     @Test
     public void undo_undoMultipleTimes_modelHasCorrectContent() throws Exception {
-        Food newChickenRice = new FoodBuilder(CHICKEN_RICE).withDate("2020-04-12").build();
+        Food newChickenRice = new FoodBuilder(getChickenRice()).withDate("2020-04-12").build();
         Food newNasiLemak = new FoodBuilder().withTags("Lunch").build();
 
         McGymmy expectedMcGymmy1 = new McGymmyBuilder().build();
-        McGymmy expectedMcGymmy2 = new McGymmyBuilder().withFood(CHICKEN_RICE).build();
-        McGymmy expectedMcGymmy3 = new McGymmyBuilder().withFood(CHICKEN_RICE).withFood(NASI_LEMAK).build();
+        McGymmy expectedMcGymmy2 = new McGymmyBuilder().withFood(getChickenRice()).build();
+        McGymmy expectedMcGymmy3 = new McGymmyBuilder().withFood(getChickenRice()).withFood(getNasiLemak()).build();
 
         MacroList macroList1 = modelManager.getMacroList();
         MacroList macroList2 = modelManager.getMacroList().withNewMacro(TEST_MACRO);
         MacroList macroList3 = modelManager.getMacroList().withoutMacro("test");
 
-        modelManager.addFood(CHICKEN_RICE);
+        modelManager.addFood(getChickenRice());
         modelManager.setMacroList(macroList2);
-        modelManager.addFood(NASI_LEMAK);
+        modelManager.addFood(getNasiLemak());
         modelManager.setMacroList(macroList3);
         modelManager.setFood(Index.fromOneBased(1), newChickenRice);
 
@@ -270,22 +322,23 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void undo_updateFilteredFoodListWithSamePredicateMultipleTime_onlyUndoOnce() {
-        McGymmy expectedMcGymmy = new McGymmyBuilder().withFood(CHICKEN_RICE).withFood(DANISH_COOKIES).build();
+    public void undo_updateFilteredFoodListWithSamePredicateMultipleTime_undoMultipleTimes() {
+        McGymmy expectedMcGymmy = new McGymmyBuilder().withFood(getChickenRice()).withFood(getDanishCookies()).build();
         ModelManager expectedModelManager = new ModelManager(expectedMcGymmy, new UserPrefs());
         modelManager = new ModelManager(expectedMcGymmy, new UserPrefs());
         Predicate<Food> predicate = food -> false;
         modelManager.updateFilteredFoodList(predicate);
         modelManager.updateFilteredFoodList(predicate);
         modelManager.undo();
-        assertFalse(modelManager.canUndo());
+        assertTrue(modelManager.canUndo());
+        modelManager.undo();
         assertEquals(modelManager, expectedModelManager);
     }
 
     @Test
     public void equals() {
-        McGymmy mcGymmy = new McGymmyBuilder().withFood(TypicalFoods.CHICKEN_RICE).withFood(
-                TypicalFoods.NASI_LEMAK).build();
+        McGymmy mcGymmy = new McGymmyBuilder().withFood(TypicalFoods.getChickenRice()).withFood(
+                TypicalFoods.getNasiLemak()).build();
         McGymmy differentMcGymmy = new McGymmy();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -307,7 +360,7 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(new ModelManager(differentMcGymmy, userPrefs)));
 
         // different filteredList -> returns false
-        String[] keywords = CHICKEN_RICE.getName().fullName.split("\\s+");
+        String[] keywords = getChickenRice().getName().fullName.split("\\s+");
         modelManager.updateFilteredFoodList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
         assertFalse(modelManager.equals(new ModelManager(mcGymmy, userPrefs)));
 

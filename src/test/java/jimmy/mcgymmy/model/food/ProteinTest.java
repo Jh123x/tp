@@ -8,14 +8,9 @@ import org.junit.jupiter.api.Test;
 public class ProteinTest {
 
     @Test
-    public void constructor_null_throwsNullPointerException() {
-        assertThrows(NumberFormatException.class, () -> new Protein(null));
-    }
-
-    @Test
-    public void constructor_invalidProtein_throwsIllegalArgumentException() {
-        String invalidProtein = "";
-        assertThrows(IllegalArgumentException.class, () -> new Protein(invalidProtein));
+    public void newDefault_works() {
+        // If it doesnt, the thrown runtime exception will break this test.
+        Protein.newDefault();
     }
 
     @Test

@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+
 /**
  * Represents a version with major, minor and patch number
  */
@@ -39,11 +41,11 @@ public class Version implements Comparable<Version> {
      * @return a Version object
      */
     @JsonCreator
-    public static Version fromString(String versionString) throws IllegalArgumentException {
+    public static Version fromString(String versionString) throws IllegalValueException {
         Matcher versionMatcher = VERSION_PATTERN.matcher(versionString);
 
         if (!versionMatcher.find()) {
-            throw new IllegalArgumentException(String.format(EXCEPTION_STRING_NOT_VERSION, versionString));
+            throw new IllegalValueException(String.format(EXCEPTION_STRING_NOT_VERSION, versionString));
         }
 
         return new Version(Integer.parseInt(versionMatcher.group(1)),

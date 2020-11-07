@@ -11,6 +11,7 @@ import jimmy.mcgymmy.commons.core.Config;
 import jimmy.mcgymmy.commons.core.LogsCenter;
 import jimmy.mcgymmy.commons.core.Version;
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.commons.util.ConfigUtil;
 import jimmy.mcgymmy.commons.util.StringUtil;
 import jimmy.mcgymmy.logic.Logic;
@@ -80,13 +81,24 @@ public class MainApp extends Application {
         Optional<ReadOnlyMcGymmy> mcGymmyOptional;
         ReadOnlyMcGymmy initialData;
         MacroList macroList;
+
         try {
             mcGymmyOptional = storage.readMcGymmy();
-            if (!mcGymmyOptional.isPresent()) {
+            if (mcGymmyOptional.isEmpty()) {
                 logger.info("Data file not found. Will be starting with a sample McGymmy");
             }
-            initialData = mcGymmyOptional.orElseGet(SampleDataUtil::getSampleMcGymmy);
+            if (mcGymmyOptional.isEmpty()) {
+                initialData = SampleDataUtil.getSampleMcGymmy();
+            } else {
+                initialData = mcGymmyOptional.get();
+            }
+
             macroList = storage.readMacroList().orElseGet(MacroList::new);
+        } catch (IllegalValueException e) {
+            assert false : "Sample Mcgymmy has an Error";
+            logger.warning("There was an error in Sample McGymmy. Will be starting with an empty McGymmy");
+            initialData = new McGymmy();
+            macroList = new MacroList();
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty McGymmy");
             initialData = new McGymmy();

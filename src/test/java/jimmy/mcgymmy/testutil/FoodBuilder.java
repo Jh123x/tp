@@ -3,6 +3,7 @@ package jimmy.mcgymmy.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.model.date.Date;
 import jimmy.mcgymmy.model.food.Carbohydrate;
 import jimmy.mcgymmy.model.food.Fat;
@@ -32,7 +33,7 @@ public class FoodBuilder {
     /**
      * Creates a {@code FoodBuilder} with the default details.
      */
-    public FoodBuilder() {
+    public FoodBuilder() throws IllegalValueException {
         name = new Name(DEFAULT_NAME);
         protein = new Protein(DEFAULT_PROTEIN);
         fat = new Fat(DEFAULT_FAT);
@@ -64,7 +65,7 @@ public class FoodBuilder {
     /**
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Food} that we are building.
      */
-    public FoodBuilder withTags(String... tags) {
+    public FoodBuilder withTags(String... tags) throws IllegalValueException {
         this.tags = SampleDataUtil.getTagSet(tags);
         return this;
     }
@@ -72,7 +73,7 @@ public class FoodBuilder {
     /**
      * Sets the {@code Carbohydrate} of the {@code Food} that we are building.
      */
-    public FoodBuilder withCarb(String carb) {
+    public FoodBuilder withCarb(String carb) throws IllegalValueException {
         this.carbohydrate = new Carbohydrate(Integer.parseInt(carb));
         return this;
     }
@@ -80,7 +81,7 @@ public class FoodBuilder {
     /**
      * Sets the {@code Protein} of the {@code Food} that we are building.
      */
-    public FoodBuilder withProtein(String protein) {
+    public FoodBuilder withProtein(String protein) throws IllegalValueException {
         this.protein = new Protein(Integer.parseInt(protein));
         return this;
     }
@@ -88,7 +89,7 @@ public class FoodBuilder {
     /**
      * Sets the {@code Fat} of the {@code Food} that we are building.
      */
-    public FoodBuilder withFat(String fat) {
+    public FoodBuilder withFat(String fat) throws IllegalValueException {
         this.fat = new Fat(Integer.parseInt(fat));
         return this;
     }
@@ -96,12 +97,12 @@ public class FoodBuilder {
     /**
      * Sets the {@code Date} of the {@code Food} that we are building.
      */
-    public FoodBuilder withDate(String date) {
+    public FoodBuilder withDate(String date) throws IllegalValueException {
         this.date = new Date(date);
         return this;
     }
 
-    public Food build() {
+    public Food build() throws IllegalValueException {
         return new Food(name, protein, fat, carbohydrate, tags, date);
     }
 

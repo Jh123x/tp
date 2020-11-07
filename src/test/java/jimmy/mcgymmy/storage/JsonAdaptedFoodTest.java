@@ -26,19 +26,19 @@ public class JsonAdaptedFoodTest {
     private static final String INVALID_DATE = "20/04/20";
     private static final String INVALID_TAG = "##lucnsh";
 
-    private static final String VALID_NAME = TypicalFoods.NASI_LEMAK.getName().toString();
-    private static final String VALID_PROTEIN = Integer.toString(TypicalFoods.NASI_LEMAK.getProtein().getAmount());
-    private static final String VALID_FAT = Integer.toString(TypicalFoods.NASI_LEMAK.getFat().getAmount());
-    private static final String VALID_CARBS = Integer.toString(TypicalFoods.NASI_LEMAK.getCarbs().getAmount());
-    private static final String VALID_DATE = TypicalFoods.NASI_LEMAK.getDate().toString();
-    private static final List<JsonAdaptedTag> VALID_TAGS = TypicalFoods.NASI_LEMAK.getTags().stream()
+    private static final String VALID_NAME = TypicalFoods.getNasiLemak().getName().toString();
+    private static final String VALID_PROTEIN = Integer.toString(TypicalFoods.getNasiLemak().getProtein().getAmount());
+    private static final String VALID_FAT = Integer.toString(TypicalFoods.getNasiLemak().getFat().getAmount());
+    private static final String VALID_CARBS = Integer.toString(TypicalFoods.getNasiLemak().getCarbs().getAmount());
+    private static final String VALID_DATE = TypicalFoods.getNasiLemak().getDate().toString();
+    private static final List<JsonAdaptedTag> VALID_TAGS = TypicalFoods.getNasiLemak().getTags().stream()
             .map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
 
     @Test
     public void toModelType_validFoodDetails_returnsPerson() throws Exception {
-        JsonAdaptedFood food = new JsonAdaptedFood(TypicalFoods.NASI_LEMAK);
-        Assertions.assertEquals(TypicalFoods.NASI_LEMAK, food.toModelType());
+        JsonAdaptedFood food = new JsonAdaptedFood(TypicalFoods.getNasiLemak());
+        Assertions.assertEquals(TypicalFoods.getNasiLemak(), food.toModelType());
     }
 
     @Test

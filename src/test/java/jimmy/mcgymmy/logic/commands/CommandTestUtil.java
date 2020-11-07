@@ -19,7 +19,6 @@ import jimmy.mcgymmy.model.food.Food;
  * Contains helper methods for testing commands.
  */
 public class CommandTestUtil {
-    // TODO: update this file when we actually add commands
 
     /**
      * Executes the given {@code command}, confirms that <br>

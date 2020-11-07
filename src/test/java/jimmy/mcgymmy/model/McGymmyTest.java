@@ -9,8 +9,11 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.model.food.Food;
+import jimmy.mcgymmy.model.food.Fridge;
 import jimmy.mcgymmy.testutil.FoodBuilder;
+import jimmy.mcgymmy.testutil.McGymmyBuilder;
 import jimmy.mcgymmy.testutil.TypicalFoods;
 
 public class McGymmyTest {
@@ -50,24 +53,35 @@ public class McGymmyTest {
 
     @Test
     public void hasFood_foodNotInMcGymmy_returnsFalse() {
-        assertFalse(mcGymmy.hasFood(TypicalFoods.CHICKEN_RICE));
+        assertFalse(mcGymmy.hasFood(TypicalFoods.getChickenRice()));
     }
 
     @Test
     public void hasFood_foodInMcGymmy_returnsTrue() {
-        mcGymmy.addFood(TypicalFoods.CHICKEN_RICE);
-        assertTrue(mcGymmy.hasFood(TypicalFoods.CHICKEN_RICE));
+        mcGymmy.addFood(TypicalFoods.getChickenRice());
+        assertTrue(mcGymmy.hasFood(TypicalFoods.getChickenRice()));
     }
 
     @Test
-    public void hasFood_foodWithSameIdentityFieldsInMcGymmy_returnsTrue() {
-        mcGymmy.addFood(TypicalFoods.CHICKEN_RICE);
-        Food editedAlice = new FoodBuilder(TypicalFoods.CHICKEN_RICE).build();
+    public void hasFood_foodWithSameIdentityFieldsInMcGymmy_returnsTrue() throws IllegalValueException {
+        mcGymmy.addFood(TypicalFoods.getChickenRice());
+        Food editedAlice = new FoodBuilder(TypicalFoods.getChickenRice()).build();
         assertTrue(mcGymmy.hasFood(editedAlice));
     }
 
     @Test
     public void getFoodList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> mcGymmy.getFoodList().remove(0));
+    }
+
+    @Test
+    public void hashCode_returnsCorrectHashCode() {
+        Food chickenRice = TypicalFoods.getChickenRice();
+        Food apple = TypicalFoods.getApple();
+        Fridge fridge = new Fridge();
+        fridge.add(chickenRice);
+        fridge.add(apple);
+        McGymmy mcGymmy = new McGymmyBuilder().withFood(chickenRice).withFood(apple).build();
+        assertEquals(fridge.hashCode(), mcGymmy.hashCode());
     }
 }

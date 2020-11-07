@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import jimmy.mcgymmy.model.Model;
 
 /**
- * Lists all food items in mcgymmy to the user.
+ * Lists all food items in McGymmy to the user.
  */
 public class ListCommand extends Command {
 

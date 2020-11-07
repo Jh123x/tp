@@ -2,6 +2,9 @@ package jimmy.mcgymmy.logic.commands;
 
 import jimmy.mcgymmy.model.Model;
 
+/**
+ * Undoes the last command that changed ModelManager.
+ */
 public class UndoCommand extends Command {
     public static final String COMMAND_WORD = "undo";
     public static final String SHORT_DESCRIPTION = "Undo the last command.";

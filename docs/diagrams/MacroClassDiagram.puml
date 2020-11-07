@@ -11,9 +11,8 @@ Class McGymmyParser
 Class PrimitiveCommandParser
 }
 
-Package Macro as MacroPackage {
-Class Macro
-Class MacroList
+Package MacroRunner as MacroPackage {
+Class MacroRunner
 }
 
 package Command as CommandPackage {
@@ -25,19 +24,24 @@ Class "{abstract}\nCommand" as Command
 Class LogicManager
 }
 
-LogicManager --right--> McGymmyParser
+package Model{
+Class MacroList
+Class Macro
+}
+
+LogicManager --> McGymmyParser
 
 PrimitiveCommandParser -[hidden]u- McGymmyParser
 PrimitiveCommandParser ..> XYZCommand : creates >
 XYZCommand -up-|> Command
 Command .up.|> CommandExecutable
 
-Macro --> PrimitiveCommandParser : uses >
-MacroList .left.> Macro
+MacroRunner --> PrimitiveCommandParser : uses >
+MacroRunner ..> CommandExecutable : creates >
 
-Macro ..> CommandExecutable : creates >
+MacroList -down-> Macro
 
 McGymmyParser ..> MacroList : has a >
-McGymmyParser ..> Macro : uses >
+McGymmyParser ..> MacroRunner : uses >
 
 @enduml

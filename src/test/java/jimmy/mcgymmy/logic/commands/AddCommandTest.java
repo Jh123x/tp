@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.ObservableList;
 import jimmy.mcgymmy.commons.core.GuiSettings;
 import jimmy.mcgymmy.commons.core.index.Index;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+import jimmy.mcgymmy.logic.commands.exceptions.CommandException;
 import jimmy.mcgymmy.logic.parser.CommandParserTestUtil;
 import jimmy.mcgymmy.model.McGymmy;
 import jimmy.mcgymmy.model.Model;
@@ -78,7 +80,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_validFoodWithTag_addSuccessful() {
+    public void execute_validFoodWithTag_addSuccessful() throws IllegalValueException {
         Food validFoodWithTag = new FoodBuilder().withCarb("123").withTags("hello").build();
         AddCommand command = new AddCommand();
         command.setParameters(
@@ -98,7 +100,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicateFood_success() {
+    public void execute_duplicateFood_success() throws CommandException, IllegalValueException {
         Food validFood = new FoodBuilder().withCarb("123").build();
         AddCommand command = new AddCommand();
         command.setParameters(

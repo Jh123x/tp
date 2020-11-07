@@ -10,6 +10,9 @@ import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.macro.Macro;
 import jimmy.mcgymmy.model.macro.MacroList;
 
+/**
+ * Creates a new macro. Special constructor since the format for this command is special.
+ */
 public class NewMacroCommand implements CommandExecutable {
     private final String argumentDeclaration;
     private final String[] statements;
@@ -39,7 +42,6 @@ public class NewMacroCommand implements CommandExecutable {
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         } catch (ArrayIndexOutOfBoundsException e) {
-            // TODO better errors?
             throw new CommandException("Error: missing macro name.");
         }
     }

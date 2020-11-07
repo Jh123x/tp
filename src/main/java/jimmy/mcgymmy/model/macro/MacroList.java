@@ -12,8 +12,9 @@ import jimmy.mcgymmy.logic.parser.PrimitiveCommandParser;
 import jimmy.mcgymmy.model.macro.exceptions.DuplicateMacroException;
 
 /**
- * Immutable container for macros. Ensures a macro's name is not taken before
- * allowing it to be added.
+ * Immutable container for macros.
+ * Ensures a macro's name is not taken before allowing it to be added.
+ * Defensive by being immutable.
  */
 public class MacroList {
     private final Map<String, Macro> macros;
@@ -24,6 +25,10 @@ public class MacroList {
      */
     public MacroList() {
         this.macros = new HashMap<>();
+        /* This may be considered 'breaking abstraction' for the MVC since we are referencing
+         a static method in a Logic class, but this is a necessary 'evil'. The alternative is
+         to have another file where we store the names of all registered commands, which is
+         undesirable since we want to keep DRY/a single source of truth. */
         this.commandNames = new HashSet<>(PrimitiveCommandParser.getRegisteredCommands());
         this.commandNames.add("macro");
     }

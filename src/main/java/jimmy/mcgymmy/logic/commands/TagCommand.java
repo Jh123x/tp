@@ -13,6 +13,9 @@ import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.tag.Tag;
 
+/**
+ * Tags a food item with a Tag.
+ */
 public class TagCommand extends Command {
     public static final String COMMAND_WORD = "tag";
     public static final String SHORT_DESCRIPTION = "Add tags to the selected food item.";

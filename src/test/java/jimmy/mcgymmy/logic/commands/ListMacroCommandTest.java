@@ -24,6 +24,16 @@ public class ListMacroCommandTest {
     }
 
     @Test
+    public void listEmptyList_success() throws Exception {
+        // Boundary value: testing empty list.
+        this.model.setMacroList(this.model.getMacroList().withoutMacro(TEST_MACRO.getName()));
+        String feedback = new ListMacroCommand().execute(model).getFeedbackToUser();
+
+        // testing if its showing whole list
+        assertTrue(feedback.contains("all the available macros"));
+    }
+
+    @Test
     public void listWithoutParameter_success() throws Exception {
         String feedback = new ListMacroCommand().execute(model).getFeedbackToUser();
 

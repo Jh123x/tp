@@ -7,6 +7,9 @@ import java.util.Optional;
 import jimmy.mcgymmy.commons.exceptions.DataConversionException;
 import jimmy.mcgymmy.model.macro.MacroList;
 
+/**
+ * Represents a storage for {@link MacroList}.
+ */
 public interface MacroListStorage {
 
     /**

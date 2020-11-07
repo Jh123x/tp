@@ -7,6 +7,9 @@ import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * The UI component responsible for showing the summarised Statistics of the food entered.
+ */
 public class SummaryDisplay extends UiPart<AnchorPane> {
     private static final String FXML = "SummaryDisplay.fxml";
     private static final String TOTAL_CALORIES_TEXT = "Total Calories %d";

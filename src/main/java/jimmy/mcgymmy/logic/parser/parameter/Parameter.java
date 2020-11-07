@@ -14,7 +14,7 @@ public class Parameter<T> extends AbstractParameter {
     private Optional<T> value = Optional.empty();
 
     /**
-     * Create a required parameter
+     * Creates a required parameter.
      *
      * @param name        Name of the parameter.
      * @param flag        flag used in the command, e.g. '-c' in 'add banana -c 100'

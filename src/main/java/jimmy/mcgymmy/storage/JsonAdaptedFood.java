@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+import jimmy.mcgymmy.commons.util.AppUtil;
 import jimmy.mcgymmy.model.date.Date;
 import jimmy.mcgymmy.model.food.Carbohydrate;
 import jimmy.mcgymmy.model.food.Fat;
@@ -63,63 +65,46 @@ class JsonAdaptedFood {
                 .collect(Collectors.toList()));
     }
 
+    private void checkNull(Object item, String className) throws IllegalValueException {
+        AppUtil.checkArgument(item != null,
+                String.format(JsonAdaptedFood.MISSING_FIELD_MESSAGE_FORMAT, className));
+    }
+
+    private <T>void checkValid(T item, String className, Predicate<T> isValid, String classError)
+            throws IllegalValueException {
+        checkNull(item, className);
+        AppUtil.checkArgument(isValid.test(item), classError);
+    }
+
     /**
      * Converts this Jackson-friendly adapted food object into the model's {@code Food} object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted food.
      */
     public Food toModelType() throws IllegalValueException {
+
+        //Check all variables
+        checkValid(fat, Fat.class.getSimpleName(), Fat::isValid, Fat.MESSAGE_CONSTRAINTS);
+        checkValid(date, Date.class.getSimpleName(), Date::isValid, Date.MESSAGE_CONSTRAINTS);
+        checkValid(name, Name.class.getSimpleName(), Name::isValidName, Name.MESSAGE_CONSTRAINTS);
+        checkValid(protein, Protein.class.getSimpleName(), Protein::isValid, Protein.MESSAGE_CONSTRAINTS);
+        checkValid(carbs, Carbohydrate.class.getSimpleName(), Carbohydrate::isValid, Carbohydrate.MESSAGE_CONSTRAINTS);
+
+        //Load Tags using a for loop due to IllegalValueException.
         final List<Tag> foodTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tagged) {
             foodTags.add(tag.toModelType());
         }
 
-        if (name == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
-        }
-        if (!Name.isValidName(name)) {
-            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
-        }
+        //Create Object from data
         final Name modelName = new Name(name);
-
-        if (protein == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Protein.class.getSimpleName()));
-        }
-        if (!Protein.isValid(protein)) {
-            throw new IllegalValueException(Protein.MESSAGE_CONSTRAINTS);
-        }
-        final Protein modelProtein = new Protein(Integer.parseInt(protein));
-
-        if (fat == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Fat.class.getSimpleName()));
-        }
-        if (!Fat.isValid(fat)) {
-            throw new IllegalValueException(Fat.MESSAGE_CONSTRAINTS);
-        }
+        final Date modelDate = new Date(date);
+        final Set<Tag> modelTags = new HashSet<>(foodTags);
         final Fat modelFat = new Fat(Integer.parseInt(fat));
-
-        if (carbs == null) {
-            throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Carbohydrate.class.getSimpleName()));
-        }
-        if (!Carbohydrate.isValid(carbs)) {
-            throw new IllegalValueException(Carbohydrate.MESSAGE_CONSTRAINTS);
-        }
+        final Protein modelProtein = new Protein(Integer.parseInt(protein));
         final Carbohydrate modelCarbohydrate = new Carbohydrate(Integer.parseInt(carbs));
 
-        if (date == null) {
-            throw new IllegalValueException(
-                String.format(MISSING_FIELD_MESSAGE_FORMAT, Date.class.getSimpleName()));
-        }
-
-        final Date modelDate;
-        try {
-            modelDate = new Date(date);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
-        }
-
-        final Set<Tag> modelTags = new HashSet<>(foodTags);
+        //Return the Food item.
         return new Food(modelName, modelProtein, modelFat, modelCarbohydrate, modelTags, modelDate);
     }
 

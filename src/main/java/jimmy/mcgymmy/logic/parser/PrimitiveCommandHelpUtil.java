@@ -18,6 +18,17 @@ import jimmy.mcgymmy.logic.parser.parameter.ParameterSet;
  * A class to generate various help strings for primitive commands.
  */
 public class PrimitiveCommandHelpUtil {
+    /* In the future, instead of these constants we could create a method
+    that inserts help strings for commands that are not stored in the table,
+    but should also be listed using `help`. But for now, YAGNI. */
+    private static final String MACRO_HELP_STRING = "Add a macro to run several commands in succession.";
+    // not splitting up usage with new lines because that may confuse user.
+    private static final String MACRO_USAGE_STRING = "usage: macro"
+            + "\nMACRONAME FLAG_1 FLAG_2 ... ; "
+            + "COMMAND_1 PARAMETERS_TO_COMMAND_1; "
+            + "[COMMAND_2 PARAMETERS_TO_COMMAND_2; ...]"
+            + "\n\nEXAMPLE: macro breakfast; add -n toast -c 10; add -n egg -p 10";
+
     private final Map<String, Supplier<Command>> commandTable;
     private final Map<String, String> commandDescriptionTable;
 
@@ -57,6 +68,7 @@ public class PrimitiveCommandHelpUtil {
         for (String commandName : commandDescriptionTable.keySet()) {
             result.append(String.format("\n%s: %s", commandName, commandDescriptionTable.get(commandName)));
         }
+        result.append("\nmacro: ").append(MACRO_HELP_STRING);
         return result.toString();
     }
 
@@ -67,6 +79,9 @@ public class PrimitiveCommandHelpUtil {
      */
     public CommandExecutable newHelpCommand(String commandName) {
         return model -> {
+            if (commandName.equals("macro")) {
+                return new CommandResult(MACRO_USAGE_STRING);
+            }
             if (!commandTable.containsKey(commandName)) {
                 throw new CommandException("Error: That command does not exist.");
             }

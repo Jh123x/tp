@@ -15,7 +15,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [homepage](https://ay2021s1-cs2103t-w17-3.github.io/tp/)
 [github](https://github.com/dcchan98)
-[portfolio](team/sean.md)
+[portfolio](team/dcchan98)
 
 * Role: Team Lead
 
@@ -26,7 +26,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/chewypiano.png" width="200px">
 
 [github](http://github.com/chewypiano)
-[portfolio](team/kamil.md)
+[portfolio](team/chewypiano)
 
 * Role: Team Lead
 * Responsibilities:
@@ -36,7 +36,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/joeychensmart.png" width="200px">
 
 [github](https://github.com/JoeyChenSmart)
-[portfolio](team/joey.md)
+[portfolio](team/joeychensmart)
 
 * Role: Developer
 * Responsibilities:
@@ -46,7 +46,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/aidoxe-123.png" width="200px">
 
 [github](http://github.com/aidoxe-123)
-[portfolio](team/duong.md)
+[portfolio](team/aidoxe-123)
 
 * Role: Developer
 * Responsibilities:
@@ -56,7 +56,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/jh123x.png" width="200px">
 
 [github](http://github.com/Jh123x)
-[portfolio](team/junhua.md)
+[portfolio](team/jh123x)
 
 * Role: Developer
 * Responsibilities:

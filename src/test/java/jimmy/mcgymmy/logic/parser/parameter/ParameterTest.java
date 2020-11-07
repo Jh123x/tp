@@ -9,16 +9,18 @@ import org.junit.jupiter.api.Test;
 import jimmy.mcgymmy.logic.parser.CommandParserTestUtil;
 
 public class ParameterTest { // TODO: options test, here + optional param
+
     @Test
     void parameter_storesCorrectValue() throws Exception {
-        Parameter<Integer> testParameter = new Parameter<>(
-                "intparam",
-                "i",
-                "test",
-                "test",
-                String::length);
+        //Test values
+        Parameter<Integer> testParameter = new Parameter<>("intparam", "j", "test", "test", String::length);
         testParameter.setValue("abcdef");
         assertEquals(testParameter.consume(), 6);
+
+        //Test another value
+        Parameter<Integer> testParameter2 = new Parameter<>("intparam2", "j", "test2", "test2", String::length);
+        testParameter2.setValue("Hello world   ");
+        assertEquals(testParameter2.consume(), 14);
     }
 
     @Test

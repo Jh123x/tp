@@ -48,7 +48,7 @@ public class FindCommand extends Command {
             "date",
             "d",
             "Date associated with the Food",
-            "20-04-2020", (s) -> new DatePredicate(s)
+            "20-04-2020", DatePredicate::new
     );
 
     void setParameters(OptionalParameter<FoodContainsKeywordsPredicate> foodPredicateParameter,

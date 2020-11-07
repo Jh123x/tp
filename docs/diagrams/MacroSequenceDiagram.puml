@@ -5,7 +5,7 @@ box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":McGymmyParser" as McGymmyParser LOGIC_COLOR
 participant ":MacroList" as MacroList LOGIC_COLOR
-participant "test:Macro" as Macro LOGIC_COLOR
+participant ":MacroRunner" as Macro LOGIC_COLOR
 participant "testInstance:CommandExecutable" as CommandExecutable LOGIC_COLOR
 participant ":PrimitiveCommandParser" as PrimitiveCommandParser LOGIC_COLOR
 participant ":Command" as Command LOGIC_COLOR
@@ -22,7 +22,7 @@ McGymmyParser -> MacroList : getMacro("test")
 MacroList --> McGymmyParser : test
 deactivate MacroList
 
-McGymmyParser -> Macro : commandInstance(arguments)
+McGymmyParser -> Macro : commandInstance(test, arguments)
 activate Macro
 
 create CommandExecutable

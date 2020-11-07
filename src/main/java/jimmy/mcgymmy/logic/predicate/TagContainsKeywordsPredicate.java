@@ -3,6 +3,7 @@ package jimmy.mcgymmy.logic.predicate;
 import java.util.List;
 import java.util.function.Predicate;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.tag.Tag;
 
@@ -27,7 +28,7 @@ public class TagContainsKeywordsPredicate implements Predicate<Food> {
                 .anyMatch(keyword -> {
                     try {
                         return food.getTags().contains(new Tag(keyword));
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalValueException e) {
                         return false;
                     }
                 });

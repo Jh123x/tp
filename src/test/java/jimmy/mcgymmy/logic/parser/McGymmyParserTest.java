@@ -1,9 +1,11 @@
 package jimmy.mcgymmy.logic.parser;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
+import static jimmy.mcgymmy.testutil.TypicalMacros.TEST_MACRO;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +20,10 @@ import jimmy.mcgymmy.model.macro.Macro;
 public class McGymmyParserTest {
     @Test
     public void primitiveCommands_getParsed() throws Exception {
-        // only test these 3 but it should suffice
         McGymmyParser mcGymmyParser = new McGymmyParser();
+        // Equivalence partition: command without arguments
         CommandExecutable listCommand = mcGymmyParser.parse("list");
+        // Equivalence partition: command with arguments
         CommandExecutable addCommand = mcGymmyParser.parse("add -n poop -p 200");
         assertTrue(listCommand instanceof ListCommand);
         assertTrue(addCommand instanceof AddCommand);
@@ -29,7 +32,7 @@ public class McGymmyParserTest {
     @Test
     public void macroDefinitions_getParsedCorrectly() throws Exception {
         McGymmyParser mcGymmyParser = new McGymmyParser();
-        // should also filter out the empty commands, i.e. the ';;', ';  ;', etc
+        // testing that it filters out the empty commands, i.e. the ';;', ';  ;', etc
         CommandExecutable output = mcGymmyParser.parse("macro test  ;list;; exit  ;;");
         assertTrue(output instanceof NewMacroCommand);
         NewMacroCommand newMacroCommand = (NewMacroCommand) output;
@@ -44,6 +47,18 @@ public class McGymmyParserTest {
         mcGymmyParser.setMacroList(mcGymmyParser.getMacroList().withNewMacro(dummyMacro));
         // this should not throw any errors
         mcGymmyParser.parse("test");
+    }
+
+    @Test
+    public void invalidMacro_showsUsageToUser() throws Exception {
+        McGymmyParser mcGymmyParser = new McGymmyParser();
+        mcGymmyParser.setMacroList(mcGymmyParser.getMacroList().withNewMacro(TEST_MACRO));
+        try {
+            mcGymmyParser.parse("test");
+            fail("ParseException not thrown");
+        } catch (ParseException e) {
+            assertTrue(e.getMessage().contains("Missing required"));
+        }
     }
 
     @Test

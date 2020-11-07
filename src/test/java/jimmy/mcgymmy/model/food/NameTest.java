@@ -1,10 +1,13 @@
 package jimmy.mcgymmy.model.food;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 
 public class NameTest {
 
@@ -14,9 +17,9 @@ public class NameTest {
     }
 
     @Test
-    public void constructor_invalidName_throwsIllegalArgumentException() {
+    public void constructor_invalidName_throwsIllegalValueException() {
         String invalidName = "";
-        assertThrows(IllegalArgumentException.class, () -> new Name(invalidName));
+        assertThrows(IllegalValueException.class, () -> new Name(invalidName));
     }
 
     @Test
@@ -36,5 +39,12 @@ public class NameTest {
         assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
+    }
+
+    @Test
+    public void hashCode_returnsCorrectHashCode() throws IllegalValueException {
+        String nameStr = "peter";
+        Name name = new Name(nameStr);
+        assertEquals(name.hashCode(), nameStr.hashCode());
     }
 }

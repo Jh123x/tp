@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import jimmy.mcgymmy.commons.core.LogsCenter;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.commons.util.StringUtil;
 import jimmy.mcgymmy.model.food.Food;
 
@@ -22,13 +23,14 @@ public class NameContainsKeywordsPredicate implements Predicate<Food> {
     @Override
     public boolean test(Food food) {
         assert food != null : "NameContainsKeywordsPredicate -> Name cannot be null";
-        try {
-            return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(food.getName().fullName, keyword));
-        } catch (IllegalArgumentException e) {
-            logger.info("ILE surfaced : " + e);
-            return true;
-        }
+        return keywords.stream()
+                .anyMatch(keyword -> {
+                    try {
+                        return StringUtil.containsWordIgnoreCase(food.getName().fullName, keyword);
+                    } catch (IllegalValueException e) {
+                        return false;
+                    }
+                });
     }
 
     @Override

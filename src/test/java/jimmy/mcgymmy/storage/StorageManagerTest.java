@@ -66,4 +66,14 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getMcGymmyFilePath());
     }
 
+    @Test
+    public void getUserPrefsFilePath() {
+        assertNotNull(storageManager.getUserPrefsFilePath());
+    }
+
+    @Test
+    public void getMacroListFilePath() {
+        assertNotNull(storageManager.getMacroListFilePath());
+    }
+
 }

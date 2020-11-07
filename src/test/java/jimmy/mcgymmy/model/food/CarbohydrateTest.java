@@ -8,11 +8,10 @@ import org.junit.jupiter.api.Test;
 
 public class CarbohydrateTest {
 
-
     @Test
-    public void constructor_invalidCarbohydrate_throwsIllegalArgumentException() {
-        String invalidCarb = "";
-        assertThrows(NumberFormatException.class, () -> new Carbohydrate(Integer.parseInt(invalidCarb)));
+    public void newDefault_works() {
+        // If it doesnt, the thrown runtime exception will break this test.
+        Carbohydrate.newDefault();
     }
 
     @Test

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.logic.commands.AddCommand;
 import jimmy.mcgymmy.logic.commands.CommandResult;
 import jimmy.mcgymmy.logic.commands.ListCommand;
@@ -67,7 +68,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_storageThrowsIoException_throwsCommandException() {
+    public void execute_storageThrowsIoException_throwsCommandException() throws IllegalValueException {
         // Setup LogicManager with JsonMcGymmyIoExceptionThrowingStub
         JsonMcGymmyStorage mcGymmyStorage =
                 new JsonMcGymmyIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionMcGymmy.json"));

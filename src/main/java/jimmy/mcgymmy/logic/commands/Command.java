@@ -30,6 +30,7 @@ public abstract class Command implements CommandExecutable {
             // Commands can only be created by the developers so any parameter conflicts
             // should not happen, and should fail here during testing.
             assert false : e.getMessage();
+            throw new RuntimeException(e.getMessage());
         }
     }
 

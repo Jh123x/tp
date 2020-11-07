@@ -2,6 +2,7 @@ package jimmy.mcgymmy.logic.commands;
 
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.ModelManager;
 import jimmy.mcgymmy.model.food.Name;
@@ -20,7 +21,7 @@ public class ClearCommandTest {
     }
 
     @Test
-    public void execute_oneFoodMcGymmy_success() {
+    public void execute_oneFoodMcGymmy_success() throws IllegalValueException {
         Model model = new ModelManager();
         model.addFood(new FoodBuilder().withName(new Name("Pizza")).build());
         Model expectedModel = new ModelManager();
@@ -31,14 +32,17 @@ public class ClearCommandTest {
     @Test
     public void execute_partialClearMcGymmy_success() {
         Model model = new ModelManager();
-        model.addFood(TypicalFoods.APPLE);
-        model.addFood(TypicalFoods.CRISPY_FRIED_FISH);
-        model.updateFilteredFoodList((food) -> food.getName().fullName.contains(TypicalFoods.APPLE.getName().fullName));
+        model.addFood(TypicalFoods.getApple());
+        model.addFood(TypicalFoods.getCrispyFriedFish());
+        model.updateFilteredFoodList((food) -> food
+                .getName()
+                .fullName
+                .contains(TypicalFoods.getApple().getName().fullName));
 
         Model expectedModel = new ModelManager();
-        expectedModel.addFood(TypicalFoods.CRISPY_FRIED_FISH);
+        expectedModel.addFood(TypicalFoods.getCrispyFriedFish());
         expectedModel.updateFilteredFoodList((food) -> food.getName()
-                .fullName.contains(TypicalFoods.APPLE.getName().fullName));
+                .fullName.contains(TypicalFoods.getApple().getName().fullName));
 
 
         ClearCommand clearCommand = new ClearCommand();

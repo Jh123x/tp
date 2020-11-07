@@ -10,7 +10,7 @@ import jimmy.mcgymmy.model.ReadOnlyUserPrefs;
 import jimmy.mcgymmy.model.UserPrefs;
 
 /**
- * API of the Storage component
+ * API of the Storage component.
  */
 public interface Storage extends McGymmyStorage, UserPrefsStorage, MacroListStorage {
 

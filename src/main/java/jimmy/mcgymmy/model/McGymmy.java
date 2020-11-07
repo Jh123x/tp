@@ -10,7 +10,7 @@ import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.food.Fridge;
 
 /**
- * Wraps all data at mcgymmy level
+ * Wraps all data at mcgymmy level.
  * Duplicates are not allowed (by .isSameFood comparison)
  */
 public class McGymmy implements ReadOnlyMcGymmy {

@@ -12,7 +12,8 @@ public class IndexTest {
     @Test
     public void createOneBasedIndex() {
         // invalid index
-        assertThrows(IndexOutOfBoundsException.class, () -> Index.fromOneBased(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> Index.fromOneBased(0)); //Boundary Case
+        assertThrows(IndexOutOfBoundsException.class, () -> Index.fromOneBased(-100)); // Negative partition
 
         // check equality using the same base
         assertEquals(1, Index.fromOneBased(1).getOneBased());
@@ -26,7 +27,8 @@ public class IndexTest {
     @Test
     public void createZeroBasedIndex() {
         // invalid index
-        assertThrows(IndexOutOfBoundsException.class, () -> Index.fromZeroBased(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> Index.fromZeroBased(-1)); //Boundary case
+        assertThrows(IndexOutOfBoundsException.class, () -> Index.fromZeroBased(-100)); //Negative partition
 
         // check equality using the same base
         assertEquals(0, Index.fromZeroBased(0).getZeroBased());

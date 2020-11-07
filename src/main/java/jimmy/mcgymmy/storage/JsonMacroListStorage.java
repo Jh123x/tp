@@ -14,6 +14,9 @@ import jimmy.mcgymmy.commons.util.FileUtil;
 import jimmy.mcgymmy.commons.util.JsonUtil;
 import jimmy.mcgymmy.model.macro.MacroList;
 
+/**
+ * A class to access {@link MacroList} stored as a json file on the hard disk.
+ */
 public class JsonMacroListStorage implements MacroListStorage {
 
     private static final Logger logger = LogsCenter.getLogger(JsonMacroListStorage.class);

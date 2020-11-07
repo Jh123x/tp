@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+
 public class AppUtilTest {
 
     @Test
@@ -18,20 +20,20 @@ public class AppUtilTest {
     }
 
     @Test
-    public void checkArgument_true_nothingHappens() {
+    public void checkArgument_true_nothingHappens() throws IllegalValueException {
         AppUtil.checkArgument(true);
         AppUtil.checkArgument(true, "");
     }
 
     @Test
-    public void checkArgument_falseWithoutErrorMessage_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> AppUtil.checkArgument(false));
+    public void checkArgument_falseWithoutErrorMessage_throwsIllegalValueException() {
+        assertThrows(IllegalValueException.class, () -> AppUtil.checkArgument(false));
     }
 
     @Test
-    public void checkArgument_falseWithErrorMessage_throwsIllegalArgumentException() {
+    public void checkArgument_falseWithErrorMessage_throwsIllegalValueException() {
         String errorMessage = "error message";
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalValueException.class,
                 errorMessage, () -> AppUtil.checkArgument(false, errorMessage));
     }
 }

@@ -9,6 +9,8 @@ package jimmy.mcgymmy.commons.core.index;
  * convert it back to an int if the index will not be passed to a different component again.
  */
 public class Index {
+    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INDEX_TOO_LARGE = "Index should be smaller than 2^31.";
     private final int zeroBasedIndex;
 
     /**

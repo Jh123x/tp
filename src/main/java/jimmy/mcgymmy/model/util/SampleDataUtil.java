@@ -1,9 +1,9 @@
 package jimmy.mcgymmy.model.util;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.model.McGymmy;
 import jimmy.mcgymmy.model.ReadOnlyMcGymmy;
 import jimmy.mcgymmy.model.date.Date;
@@ -18,7 +18,7 @@ import jimmy.mcgymmy.model.tag.Tag;
  * Contains utility methods for populating {@code McGymmy} with sample data.
  */
 public class SampleDataUtil {
-    public static Food[] getSamplePersons() {
+    public static Food[] getSampleFoods() throws IllegalValueException {
         return new Food[] {
             new Food(new Name("Chicken Rice"), new Protein(200), new Fat(300),
                     new Carbohydrate(100), getTagSet("Lunch"),
@@ -35,9 +35,9 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyMcGymmy getSampleMcGymmy() {
+    public static ReadOnlyMcGymmy getSampleMcGymmy() throws IllegalValueException {
         McGymmy sampleMG = new McGymmy();
-        for (Food sampleFood : getSamplePersons()) {
+        for (Food sampleFood : getSampleFoods()) {
             sampleMG.addFood(sampleFood);
         }
         return sampleMG;
@@ -46,10 +46,13 @@ public class SampleDataUtil {
     /**
      * Returns a tag set containing the list of strings given.
      */
-    public static Set<Tag> getTagSet(String... strings) {
-        return Arrays.stream(strings)
-                .map(Tag::new)
-                .collect(Collectors.toSet());
+    public static Set<Tag> getTagSet(String... strings) throws IllegalValueException {
+        Set<Tag> tagSet = new HashSet<>();
+        for (String string : strings) {
+            Tag tag = new Tag(string);
+            tagSet.add(tag);
+        }
+        return tagSet;
     }
 
 }

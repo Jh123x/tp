@@ -98,7 +98,7 @@ public interface Model {
     void clearFilteredFood();
 
     /**
-     * Check if McGymmy can undoi
+     * Check if McGymmy can undo
      */
     boolean canUndo();
 

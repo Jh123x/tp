@@ -7,6 +7,7 @@ import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 
 /**
  * Macro class that deals with user-created macros.
+ * Immutable for defensive coding.
  */
 public class Macro {
     private final String name;
@@ -16,7 +17,7 @@ public class Macro {
 
     /**
      * Constructor for macros
-     * TODO: more elaboration needed?
+     *
      * @param name name of the macro.
      * @param macroArguments List of arguments to the macro.
      * @param commands The commands to be run.
@@ -59,8 +60,7 @@ public class Macro {
                 options.addOption(option);
             }
         } catch (IllegalArgumentException e) {
-            // TODO better error message
-            throw new IllegalValueException("Wrong format for macros.");
+            throw new IllegalValueException("Invalid format for macro. Please refer to the user guide.");
         }
         return options;
     }

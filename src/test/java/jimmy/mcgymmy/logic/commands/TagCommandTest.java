@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.core.Messages;
 import jimmy.mcgymmy.commons.core.index.Index;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.logic.parser.CommandParserTestUtil;
 import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.ModelManager;
@@ -22,7 +23,7 @@ class TagCommandTest {
     private final String tag3 = "seeYouAgain";
 
     @Test
-    public void execute_validIndexUnfilteredList_success() {
+    public void execute_validIndexUnfilteredList_success() throws IllegalValueException {
         Index index = TypicalIndexes.INDEX_FIRST_FOOD;
         Food foodToTag = model.getFilteredFoodList().get(index.getZeroBased());
         TagCommand tagCommand = new TagCommand();
@@ -40,7 +41,7 @@ class TagCommandTest {
     }
 
     @Test
-    public void execute_invalidIndexUnfilteredList_throwsCommandException() {
+    public void execute_invalidIndexUnfilteredList_throwsCommandException() throws IllegalValueException {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredFoodList().size() + 1);
         TagCommand tagCommand = new TagCommand();
         tagCommand.setParameters(
@@ -51,7 +52,7 @@ class TagCommandTest {
     }
 
     @Test
-    public void execute_validIndexFilteredList_success() {
+    public void execute_validIndexFilteredList_success() throws IllegalValueException {
 
         CommandTestUtil.showFoodAtIndex(model, TypicalIndexes.INDEX_FIRST_FOOD);
 
@@ -71,7 +72,7 @@ class TagCommandTest {
     }
 
     @Test
-    public void execute_duplicateTag_throwsCommandException() {
+    public void execute_duplicateTag_throwsCommandException() throws IllegalValueException {
         Index index = TypicalIndexes.INDEX_FIRST_FOOD;
         Food foodToTag = model.getFilteredFoodList().get(index.getZeroBased());
         TagCommand tagCommand = new TagCommand();

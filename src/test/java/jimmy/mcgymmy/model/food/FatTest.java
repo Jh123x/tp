@@ -8,14 +8,9 @@ import org.junit.jupiter.api.Test;
 public class FatTest {
 
     @Test
-    public void constructor_null_throwsNullPointerException() {
-        assertThrows(NumberFormatException.class, () -> new Fat(null));
-    }
-
-    @Test
-    public void constructor_invalidEmail_throwsIllegalArgumentException() {
-        String invalidFat = "12@123";
-        assertThrows(NumberFormatException.class, () -> new Fat(Integer.parseInt(invalidFat)));
+    public void newDefault_works() {
+        // If it doesnt, the thrown runtime exception will break this test.
+        Fat.newDefault();
     }
 
     @Test

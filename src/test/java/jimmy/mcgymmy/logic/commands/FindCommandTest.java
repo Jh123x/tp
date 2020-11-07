@@ -1,9 +1,9 @@
 package jimmy.mcgymmy.logic.commands;
 
-import static jimmy.mcgymmy.testutil.TypicalFoods.CHICKEN_RICE;
-import static jimmy.mcgymmy.testutil.TypicalFoods.CRISPY_FRIED_FISH;
-import static jimmy.mcgymmy.testutil.TypicalFoods.DANISH_COOKIES;
-import static jimmy.mcgymmy.testutil.TypicalFoods.NASI_LEMAK;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getChickenRice;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getCrispyFriedFish;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getDanishCookies;
+import static jimmy.mcgymmy.testutil.TypicalFoods.getNasiLemak;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
@@ -61,7 +61,7 @@ public class FindCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("d"));
         expectedModel.updateFilteredFoodList(predicate);
         CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CHICKEN_RICE, CRISPY_FRIED_FISH),
+        assertEquals(Arrays.asList(getChickenRice(), getCrispyFriedFish()),
                 model.getFilteredFoodList());
     }
 
@@ -77,7 +77,7 @@ public class FindCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("d", datePredicate));
         expectedModel.updateFilteredFoodList(datePredicate);
         CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CHICKEN_RICE), model.getFilteredFoodList());
+        assertEquals(Arrays.asList(getChickenRice()), model.getFilteredFoodList());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class FindCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("d"));
         expectedModel.updateFilteredFoodList(tagPredicate);
         CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CHICKEN_RICE, NASI_LEMAK, DANISH_COOKIES), model.getFilteredFoodList());
+        assertEquals(Arrays.asList(getChickenRice(), getNasiLemak(), getDanishCookies()), model.getFilteredFoodList());
     }
 
     @Test

@@ -19,6 +19,7 @@ import jimmy.mcgymmy.logic.parser.parameter.OptionalParameter;
 import jimmy.mcgymmy.logic.parser.parameter.Parameter;
 import jimmy.mcgymmy.model.Model;
 
+// Unit tests using a stub command
 public class PrimitiveCommandParserTest {
     public static final String DUMMY_VALUE_1 = "abc";
     public static final String DUMMY_VALUE_2 = "cde";

@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+
 /**
  * Helper functions for handling strings.
  */
@@ -24,7 +26,7 @@ public class StringUtil {
      * @param sentence cannot be null
      * @param word     cannot be null, cannot be empty, must be a single word
      */
-    public static boolean containsWordIgnoreCase(String sentence, String word) {
+    public static boolean containsWordIgnoreCase(String sentence, String word) throws IllegalValueException {
         requireNonNull(sentence);
         requireNonNull(word);
 
@@ -34,7 +36,6 @@ public class StringUtil {
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
-
         return Arrays.stream(wordsInPreppedSentence)
                 .anyMatch(preppedWord::equalsIgnoreCase);
     }

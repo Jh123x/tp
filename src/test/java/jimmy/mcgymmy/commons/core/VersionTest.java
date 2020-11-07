@@ -6,18 +6,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+
 public class VersionTest {
 
     @Test
-    public void versionParsing_acceptableVersionString_parsedVersionCorrectly() {
+    public void versionParsing_acceptableVersionString_parsedVersionCorrectly() throws IllegalValueException {
         verifyVersionParsedCorrectly("V0.0.0ea", 0, 0, 0, true);
         verifyVersionParsedCorrectly("V3.10.2", 3, 10, 2, false);
         verifyVersionParsedCorrectly("V100.100.100ea", 100, 100, 100, true);
     }
 
     @Test
-    public void versionParsing_wrongVersionString_throwIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> Version.fromString("This is not a version string"));
+    public void versionParsing_wrongVersionString_throwIllegalValueException() {
+        assertThrows(IllegalValueException.class, () -> Version.fromString("This is not a version string"));
     }
 
     @Test
@@ -128,8 +130,8 @@ public class VersionTest {
         assertTrue(one.equals(another));
     }
 
-    private void verifyVersionParsedCorrectly(String versionString,
-                                              int major, int minor, int patch, boolean isEarlyAccess) {
+    private void verifyVersionParsedCorrectly(
+            String versionString, int major, int minor, int patch, boolean isEarlyAccess) throws IllegalValueException {
         assertEquals(new Version(major, minor, patch, isEarlyAccess), Version.fromString(versionString));
     }
 }

@@ -12,12 +12,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.core.index.Index;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 
 class FridgeTest {
-    private static final Food CHIMKEN = new Food("Chimken", 1, 2, 3);
-    private static final Food RAMEN = new Food("Ramen", 2, 3, 4);
-
+    private static Food chimken;
+    private static Food ramen;
     private Fridge fridge;
+
+    static {
+        try {
+            chimken = new Food("Chimken", 1, 2, 3);
+            ramen = new Food("Ramen", 2, 3, 4);
+        } catch (IllegalValueException e) {
+            assert false : "Error in food";
+        }
+    }
 
     @BeforeEach
     public void beforeEachTestMethod() {
@@ -31,13 +40,13 @@ class FridgeTest {
 
     @Test
     public void contains_foodNotInList_returnsFalse() {
-        assertFalse(fridge.contains(CHIMKEN));
+        assertFalse(fridge.contains(chimken));
     }
 
     @Test
     public void contains_foodInList_returnsTrue() {
-        fridge.add(CHIMKEN);
-        assertTrue(fridge.contains(CHIMKEN));
+        fridge.add(chimken);
+        assertTrue(fridge.contains(chimken));
     }
 
     @Test
@@ -47,12 +56,12 @@ class FridgeTest {
 
     @Test
     public void setFood_indexLessThanZero_throwsIndexOutOfBoundException() {
-        assertThrows(IndexOutOfBoundsException.class, () -> fridge.setFood(Index.fromZeroBased(-1), CHIMKEN));
+        assertThrows(IndexOutOfBoundsException.class, () -> fridge.setFood(Index.fromZeroBased(-1), chimken));
     }
 
     @Test
     public void setFood_indexLargerThanOrEqualToSize_throwsIndexOutOfBoundException() {
-        assertThrows(IndexOutOfBoundsException.class, () -> fridge.setFood(Index.fromZeroBased(1), CHIMKEN));
+        assertThrows(IndexOutOfBoundsException.class, () -> fridge.setFood(Index.fromZeroBased(1), chimken));
     }
 
     @Test
@@ -62,10 +71,10 @@ class FridgeTest {
 
     @Test
     public void setFood_validFood_success() {
-        fridge.add(CHIMKEN);
-        fridge.setFood(Index.fromZeroBased(0), RAMEN);
+        fridge.add(chimken);
+        fridge.setFood(Index.fromZeroBased(0), ramen);
         Fridge expectedFridge = new Fridge();
-        expectedFridge.add(RAMEN);
+        expectedFridge.add(ramen);
         assertEquals(expectedFridge, this.fridge);
     }
 
@@ -81,7 +90,7 @@ class FridgeTest {
 
     @Test
     public void remove_validIndex_removesFood() {
-        fridge.add(CHIMKEN);
+        fridge.add(chimken);
         fridge.remove(Index.fromZeroBased(0));
         Fridge expectedFridge = new Fridge();
         assertEquals(expectedFridge, fridge);
@@ -94,9 +103,9 @@ class FridgeTest {
 
     @Test
     public void setFoods_fridge_replacesOwnListWithProvidedFridge() {
-        fridge.add(CHIMKEN);
+        fridge.add(chimken);
         Fridge expectedFridge = new Fridge();
-        expectedFridge.add(RAMEN);
+        expectedFridge.add(ramen);
         fridge.setFoods(expectedFridge);
         assertEquals(expectedFridge, fridge);
     }
@@ -108,11 +117,11 @@ class FridgeTest {
 
     @Test
     public void setFoods_list_replacesOwnListWithProvidedList() {
-        fridge.add(CHIMKEN);
-        List<Food> foodList = Collections.singletonList(RAMEN);
+        fridge.add(chimken);
+        List<Food> foodList = Collections.singletonList(ramen);
         fridge.setFoods(foodList);
         Fridge expectedFridge = new Fridge();
-        expectedFridge.add(RAMEN);
+        expectedFridge.add(ramen);
         assertEquals(expectedFridge, fridge);
     }
 

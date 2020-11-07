@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,16 +22,6 @@ import jimmy.mcgymmy.model.ModelManager;
 
 public class PrimitiveCommandParserCommandsTest {
     private final PrimitiveCommandParser parser = new PrimitiveCommandParser();
-
-    @Test
-    public void defaultCommands_added() {
-        // if this breaks, you need to add the command in McGymmyParser.addDefaultCommands
-        String[] commands = {"add", "edit", "delete", "clear", "find", "delete", "list"};
-        Set<String> registeredCommands = parser.getRegisteredCommands();
-        for (String command : commands) {
-            assertTrue(registeredCommands.contains(command));
-        }
-    }
 
     @Test
     public void parseCommand_clear() throws Exception {
@@ -134,7 +123,7 @@ public class PrimitiveCommandParserCommandsTest {
 
     @Test
     public void parseCommand_helpCommands() throws Exception {
-        // Should suffice to check "help [COMMAND]" works.
+        // Should suffice to check "help [COMMAND NAME]" appears.
         Model model = new ModelManager();
         PrimitiveCommandHelpUtil helpUtil = new PrimitiveCommandHelpUtil(
                 parser.getCommandTable(),

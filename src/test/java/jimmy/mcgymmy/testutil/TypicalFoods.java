@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.model.McGymmy;
 import jimmy.mcgymmy.model.food.Food;
 import jimmy.mcgymmy.model.food.Name;
@@ -13,44 +14,31 @@ import jimmy.mcgymmy.model.food.Name;
  */
 public class TypicalFoods {
 
-    public static final Food CHICKEN_RICE = new FoodBuilder().withName(new Name("Chicken Rice"))
-            .withProtein("253").withFat("123")
-            .withCarb("456").withDate("20 Apr 2020")
-            .withTags("lunch").build();
-    public static final Food NASI_LEMAK = new FoodBuilder().withName(new Name("Nasi Alamak"))
-            .withProtein("432").withFat("321")
-            .withCarb("123").withDate("2 Sep 2020")
-            .withTags("dinner", "lunch").build();
-    public static final Food CRISPY_FRIED_FISH = new FoodBuilder().withName(new Name("Crispy Fried Fish"))
-            .withProtein("563").withFat("456").withCarb("654")
-            .withDate("13 Oct 2020").build();
-    public static final Food DANISH_COOKIES = new FoodBuilder().withName(new Name("Danish Cookies"))
-            .withProtein("533").withFat("654")
-            .withCarb("456").withDate("1 Jan 2020")
-            .withTags("lunch").build();
-    public static final Food EGGS = new FoodBuilder().withName(new Name("Eggs"))
-            .withProtein("224").withFat("246").withCarb("810")
-            .withDate("7 Mar 2019").build();
-    public static final Food FRUIT_CAKE = new FoodBuilder().withName(new Name("Fruit Cake"))
-            .withProtein("427").withFat("987").withCarb("789")
-            .withDate("3 Feb 1998").build();
-    public static final Food GINGERBREAD = new FoodBuilder().withName(new Name("Gingerbread"))
-            .withProtein("442").withFat("789").withCarb("987")
-            .withDate("5 May 1973").build();
+    public static final String KEYWORD_MATCHING_RICE = "Rice"; // A keyword that matches RICE
+
+    private static Food chickenRice;
+    private static Food nasiLemak;
+    private static Food crispyFriedFish;
+    private static Food danishCookies;
+    private static Food eggs;
+    private static Food fruitCake;
+    private static Food gingerbread;
 
     // Manually added
-    public static final Food HOT_PLATE = new FoodBuilder().withName(new Name("Hot Plate")).withProtein("424")
-            .withFat("234").withCarb("234").build();
-    public static final Food INDOMEE = new FoodBuilder().withName(new Name("Indomee")).withProtein("131")
-            .withFat("234").withCarb("234").build();
+    private static Food hotPlate;
+    private static Food indomee;
 
     // Manually added - Food's details found in {@code CommandTestUtil}
-    public static final Food APPLE = new FoodBuilder().withName(new Name("Apple")).withProtein("888")
-            .withFat("234").withCarb("234").build();
-    public static final Food BEANS = new FoodBuilder().withName(new Name("beans")).withProtein("888")
-            .withFat("234").withCarb("234").build();
+    private static Food apple;
+    private static Food beans;
 
-    public static final String KEYWORD_MATCHING_RICE = "Rice"; // A keyword that matches RICE
+    static {
+        try {
+            generateTypicalFoods();
+        } catch (IllegalValueException e) {
+            assert false : "Error in Typical foods";
+        }
+    }
 
     private TypicalFoods() {
     } // prevents instantiation
@@ -65,6 +53,42 @@ public class TypicalFoods {
             mg.addFood(food);
         }
         return mg;
+    }
+
+    private static void generateTypicalFoods() throws IllegalValueException {
+        //Generate all of the foods
+        chickenRice = new FoodBuilder().withName(new Name("Chicken Rice"))
+                .withProtein("253").withFat("123")
+                .withCarb("456").withDate("20 Apr 2020")
+                .withTags("lunch").build();
+        crispyFriedFish = new FoodBuilder().withName(new Name("Crispy Fried Fish"))
+                .withProtein("563").withFat("456").withCarb("654")
+                .withDate("13 Oct 2020").build();
+        nasiLemak = new FoodBuilder().withName(new Name("Nasi Alamak"))
+                .withProtein("432").withFat("321")
+                .withCarb("123").withDate("2 Sep 2020")
+                .withTags("dinner", "lunch").build();
+        danishCookies = new FoodBuilder().withName(new Name("Danish Cookies"))
+                .withProtein("533").withFat("654")
+                .withCarb("456").withDate("1 Jan 2020")
+                .withTags("lunch").build();
+        eggs = new FoodBuilder().withName(new Name("Eggs"))
+                .withProtein("224").withFat("246").withCarb("810")
+                .withDate("7 Mar 2019").build();
+        fruitCake = new FoodBuilder().withName(new Name("Fruit Cake"))
+                .withProtein("427").withFat("987").withCarb("789")
+                .withDate("3 Feb 1998").build();
+        gingerbread = new FoodBuilder().withName(new Name("Gingerbread"))
+                .withProtein("442").withFat("789").withCarb("987")
+                .withDate("5 May 1973").build();
+        hotPlate = new FoodBuilder().withName(new Name("Hot Plate")).withProtein("424")
+                .withFat("234").withCarb("234").build();
+        indomee = new FoodBuilder().withName(new Name("Indomee")).withProtein("131")
+                .withFat("234").withCarb("234").build();
+        apple = new FoodBuilder().withName(new Name("Apple")).withProtein("888")
+                .withFat("234").withCarb("234").build();
+        beans = new FoodBuilder().withName(new Name("beans")).withProtein("888")
+                .withFat("234").withCarb("234").build();
     }
 
     /**
@@ -83,7 +107,51 @@ public class TypicalFoods {
     }
 
     public static List<Food> getTypicalFoodItems() {
-        return new ArrayList<>(Arrays.asList(CHICKEN_RICE, NASI_LEMAK, CRISPY_FRIED_FISH, DANISH_COOKIES, EGGS,
-                FRUIT_CAKE, GINGERBREAD));
+        return new ArrayList<>(Arrays.asList(chickenRice, nasiLemak, crispyFriedFish, danishCookies, eggs,
+                fruitCake, gingerbread));
+    }
+
+    public static Food getChickenRice() {
+        return chickenRice;
+    }
+
+    public static Food getNasiLemak() {
+        return nasiLemak;
+    }
+
+    public static Food getCrispyFriedFish() {
+        return crispyFriedFish;
+    }
+
+    public static Food getDanishCookies() {
+        return danishCookies;
+    }
+
+    public static Food getEggs() {
+        return eggs;
+    }
+
+    public static Food getFruitCake() {
+        return fruitCake;
+    }
+
+    public static Food getGingerbread() {
+        return gingerbread;
+    }
+
+    public static Food getHotPlate() {
+        return hotPlate;
+    }
+
+    public static Food getIndomee() {
+        return indomee;
+    }
+
+    public static Food getApple() {
+        return apple;
+    }
+
+    public static Food getBeans() {
+        return beans;
     }
 }

@@ -46,21 +46,21 @@ public class EditCommand extends Command {
             ParserUtil::parseName
     );
     private OptionalParameter<Protein> proteinParameter = this.addOptionalParameter(
-            "protein value",
+            "protein",
             "p",
             "Protein value of food (g)",
             "10",
             ParserUtil::parseProtein
     );
     private OptionalParameter<Fat> fatParameter = this.addOptionalParameter(
-            "fat value",
+            "fat",
             "f",
             "Fat value of food (g)",
             "10",
             ParserUtil::parseFat
     );
     private OptionalParameter<Carbohydrate> carbParameter = this.addOptionalParameter(
-            "carb value",
+            "carb",
             "c",
             "Carbohydrate value of food (g)",
             "10",
@@ -85,23 +85,34 @@ public class EditCommand extends Command {
         this.dateParameter = dateParameter;
     }
 
-    @Override
-    public CommandResult execute(Model model) throws CommandException {
-        requireNonNull(model);
-        List<Food> lastShownList = model.getFilteredFoodList();
-        Index index = indexParameter.consume();
+    /**
+     * Check for Starting Exceptions.
+     * @param lastShownList Current FilteredList that is shown.
+     * @param index Index input from the user.
+     * @throws CommandException if Index is out of range or there was no arguments provided.
+     */
+    private void checkForExceptions(List<Food> lastShownList, Index index) throws CommandException {
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_FOOD_DISPLAYED_INDEX);
         }
-
-        Food foodToEdit = lastShownList.get(index.getZeroBased());
 
         if (nameParameter.getValue().isEmpty() && proteinParameter.getValue().isEmpty()
                 && fatParameter.getValue().isEmpty() && carbParameter.getValue().isEmpty()
                 && dateParameter.getValue().isEmpty()) {
             throw new CommandException(MESSAGE_NOT_EDITED);
         }
+    }
+
+    @Override
+    public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
+        List<Food> lastShownList = model.getFilteredFoodList();
+        Index index = indexParameter.consume();
+
+        //Check for Errors.
+        checkForExceptions(lastShownList, index);
+        Food foodToEdit = lastShownList.get(index.getZeroBased());
 
         Name newName = this.nameParameter.getValue().orElseGet(foodToEdit::getName);
         Protein newProtein = this.proteinParameter.getValue().orElseGet(foodToEdit::getProtein);

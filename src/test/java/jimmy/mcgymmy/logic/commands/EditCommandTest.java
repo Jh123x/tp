@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import jimmy.mcgymmy.commons.core.Messages;
 import jimmy.mcgymmy.commons.core.index.Index;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.logic.parser.CommandParserTestUtil;
 import jimmy.mcgymmy.model.McGymmy;
 import jimmy.mcgymmy.model.Model;
@@ -31,7 +32,7 @@ public class EditCommandTest {
     private final Model model = new ModelManager(getTypicalMcGymmy(), new UserPrefs());
 
     @Test
-    public void execute_allFieldsSpecifiedUnfilteredList_success() {
+    public void execute_allFieldsSpecifiedUnfilteredList_success() throws IllegalValueException {
         Food editedFood = new FoodBuilder().withTags("lunch").build();
 
         EditCommand editCommand = new EditCommand();
@@ -53,7 +54,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_someFieldsSpecifiedUnfilteredList_success() {
+    public void execute_someFieldsSpecifiedUnfilteredList_success() throws IllegalValueException {
         Index indexLastFood = Index.fromOneBased(model.getFilteredFoodList().size());
         Food lastFood = model.getFilteredFoodList().get(indexLastFood.getZeroBased());
 
@@ -79,7 +80,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_dateSpecifiedUnfilteredList_success() {
+    public void execute_dateSpecifiedUnfilteredList_success() throws IllegalValueException {
         Index indexLastFood = Index.fromOneBased(model.getFilteredFoodList().size());
         Food lastFood = model.getFilteredFoodList().get(indexLastFood.getZeroBased());
 
@@ -122,7 +123,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_filteredList_success() {
+    public void execute_filteredList_success() throws IllegalValueException {
         showFoodAtIndex(model, INDEX_FIRST_FOOD);
 
         Food foodInFilteredList = model.getFilteredFoodList().get(INDEX_FIRST_FOOD.getZeroBased());

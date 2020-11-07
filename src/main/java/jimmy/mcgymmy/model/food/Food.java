@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import jimmy.mcgymmy.commons.core.LogsCenter;
-import jimmy.mcgymmy.commons.util.AppUtil;
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.commons.util.CollectionUtil;
 import jimmy.mcgymmy.model.date.Date;
 import jimmy.mcgymmy.model.tag.Tag;
@@ -14,15 +14,9 @@ import jimmy.mcgymmy.model.tag.Tag;
 
 /**
  * Represents a Food item in McGymmy.
+ * Immutable for defensive coding.
  */
 public class Food {
-    public static final String FOOD_NAME_MESSAGE_CONSTRAINT = "Food name can take in any value, and it cannot be blank";
-
-    /*
-     * The first character of name must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     */
-    public static final String VALIDATION_REGEX = "[^\\s].*";
 
     private static final Logger logger = LogsCenter.getLogger(Food.class);
 
@@ -40,7 +34,6 @@ public class Food {
      */
     public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs, Set<Tag> tags, Date date) {
         CollectionUtil.requireAllNonNull(name, protein, carbs, fat, date);
-        AppUtil.checkArgument(isValidName(name.toString()), FOOD_NAME_MESSAGE_CONSTRAINT);
         this.name = name;
         this.protein = protein;
         this.carbs = carbs;
@@ -68,14 +61,14 @@ public class Food {
      * A Constructor made for convenience
      */
 
-    public Food(String name, int proteinAmount, int fatAmount, int carbsAmount) {
+    public Food(String name, int proteinAmount, int fatAmount, int carbsAmount) throws IllegalValueException {
         this(new Name(name), new Protein(proteinAmount), new Fat(fatAmount), new Carbohydrate(carbsAmount));
     }
 
     /**
      * Every field must be present and not null.
      */
-    public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs) {
+    public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs) throws IllegalValueException {
         this(name, protein, fat, carbs, new HashSet<Tag>());
     }
 
@@ -91,10 +84,6 @@ public class Food {
      */
     public Food(Name name, Protein protein, Fat fat, Carbohydrate carbs, Set<Tag> tags) {
         this(name, protein, fat, carbs, tags, Date.currentDate());
-    }
-
-    private boolean isValidName(String test) {
-        return test.matches(VALIDATION_REGEX);
     }
 
     /**
@@ -128,6 +117,7 @@ public class Food {
 
     /**
      * Adds a new tag to food
+     *
      * @return A new Food with the tag
      */
     public Food addTag(Tag tag) {
@@ -138,6 +128,7 @@ public class Food {
 
     /**
      * Removes a tag from food
+     *
      * @return A new Food without the tag
      */
     public Food removeTag(Tag tag) {
@@ -148,6 +139,7 @@ public class Food {
 
     /**
      * Check if this food is already tagged with this tag
+     *
      * @return True if this food is already tagged with this tag
      */
     public boolean hasTag(Tag tag) {

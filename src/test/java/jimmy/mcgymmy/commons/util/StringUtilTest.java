@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+
 public class StringUtilTest {
 
     //---------------- Tests for isNonZeroUnsignedInteger --------------------------------------
@@ -61,14 +63,14 @@ public class StringUtilTest {
     }
 
     @Test
-    public void containsWordIgnoreCase_emptyWord_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
+    public void containsWordIgnoreCase_emptyWord_throwsIllegalValueException() {
+        assertThrows(IllegalValueException.class,
                 "Word parameter cannot be empty", () -> StringUtil.containsWordIgnoreCase("typical sentence", "  "));
     }
 
     @Test
-    public void containsWordIgnoreCase_multipleWords_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
+    public void containsWordIgnoreCase_multipleWords_throwsIllegalValueException() {
+        assertThrows(IllegalValueException.class,
                 "Word parameter should be a single word", () -> StringUtil.containsWordIgnoreCase(
                         "typical sentence", "aaa BBB"));
     }
@@ -104,7 +106,7 @@ public class StringUtilTest {
      */
 
     @Test
-    public void containsWordIgnoreCase_validInputs_correctResult() {
+    public void containsWordIgnoreCase_validInputs_correctResult() throws IllegalValueException {
 
         // Empty sentence
         assertFalse(StringUtil.containsWordIgnoreCase("", "abc")); // Boundary case

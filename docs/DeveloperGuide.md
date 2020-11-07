@@ -7,12 +7,12 @@ title: Developer Guide
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Purpose of this guide**
+## 1. **Purpose of this guide**
 This guide is made to help developers understand how McGymmy (MG) works.
 One of the major goals is to centralise all the jimmy.mcgymmy documentation within McGymmy itself.
 Another major goal is to better help developers extend McGymmy to improve on its features.
 
-##  Icon Legend
+##  2. Icon Legend
 <div markdown="span" class="alert alert-primary">
 
 :bulb: **Tip:** This indicates that the following text consists of tips to better utilise MG
@@ -20,9 +20,9 @@ Another major goal is to better help developers extend McGymmy to improve on its
 </div>
 :information_source: **Note:** This indicates important notes for current feature we are looking at<br>
 
-## A little note from the developers
+## 3. A little note from the developers
 
-Thank you for using MG. We sincerely hope that MG plays apart to help you achieve a healthier lifestyle.
+Thank you for using MG. We sincerely hope that MG plays a part to help you achieve a healthier lifestyle.
 We understand that MG may be a little different from traditional GUI applications and it may be a little difficult to start using it initially.
 Thus, we recommend you to start by first understanding how MG works at a high level at the Quick start section. Then, explore the Features section.
 
@@ -32,19 +32,19 @@ Thus, we recommend you to start by first understanding how MG works at a high le
 
 </div>
 
-## **General Information**
+## 4. **General Information**
 McGymmy (MG) is a **desktop app for managing diet and exercise, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, McGymmy can log your diet and exercise tasks, goals and progress done faster than traditional GUI apps.
 
-## **Setting up, getting started**
+## 5. **Setting up, getting started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 --------------------------------------------------------------------------------------------------------------------
 
 
-## **Design**
+## 6. **Design**
 
-### Architecture
+### 6.1 Architecture
 
 <img src="images/ArchitectureDiagram.png" width="450" alt="Architectural diagram"/>
 
@@ -80,7 +80,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 
 The sections below give more details of each component.
 
-### UI component
+### 6.2 UI component
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
@@ -96,7 +96,7 @@ The `UI` component,
 * Executes user commands using the `Logic` component.
 * Listens for changes to `Model` data so that the UI can be updated with the modified data.
 
-### Logic component
+### 6.3 Logic component
 
 ![Structure of the Logic Component](images/LogicClassDiagram.png)
 
@@ -117,7 +117,7 @@ One notable difference is the use of several `Parameter` classes in the various 
 We list a few of the benefits of our redesigned solution below.
 
 1. The main motivation for this change was to facilitate the addition of the `macro` feature.
-2. The old design of the parser operated at too high an abstraction level, resulting in the developer having to create hideous objects like the `EditPersonDescriptor` to implement basic functionality.
+2. The old design of the parser operated at too high an abstraction level, resulting in the developer having to create boilerplate objects like the `EditPersonDescriptor` to implement basic functionality.
 3. The new design allows us to code in a more declarative style which is more readable and arguably "self-documenting".
 4. Hiding details of each `Parameter` behind an additional layer of abstraction allows us to automate the creation of other features such as parsers for each individual `Command` and automatially generating `help` strings.
 
@@ -128,7 +128,7 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 For more details on the new architecture you can refer to this [pull request](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/39).
 In particular, details on how to create new `Command`s are included in the pull request above.
 
-### Model component
+### 6.4 Model component
 
 ![Structure of the Model Component](images/ModelClassDiagram.png)
 
@@ -151,7 +151,7 @@ The `Model`,
 </div>
 
 
-### Storage component
+### 6.5 Storage component
 
 ![Structure of the Storage Component](images/StorageClassDiagram.png)
 
@@ -161,21 +161,21 @@ The `Storage` component,
 * can save `UserPref` objects in JSON format and read it back.
 * can save the McGymmy data in JSON format and read it back.
 
-### Common classes
+### 6.6 Common classes
 
 Classes used by multiple components are in the `jimmy.mcgymmy.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Implementation**
+## 7. **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Clear feature
+### 7.1 Clear feature
 
 The clear feature extends model with the ability to delete all the items shown in the UI.
 
-#### Implementation
+#### 7.1.1 Implementation
 
 Given below is an example usage scenario and how the clear mechanism works
 
@@ -193,9 +193,9 @@ The following sequence diagram shows how the clear operation works:
 
 ![ClearSequenceDiagram](images/ClearSequenceDiagram.png)
 
-#### Design Considerations
+#### 7.1.2 Design Considerations
 
-##### Aspect: How clear executes
+##### 7.1.2.1 Aspect: How clear executes
 
 * **Alternative 1 (Current Choice):** A refilter using predicate into a list and reupdate food items.
 
@@ -208,9 +208,9 @@ The following sequence diagram shows how the clear operation works:
     * Cons: Code may break if food properties ever changes due to traversal error.
 
 
-### Find feature
+### 7.2 Find feature
 
-#### Implementation
+#### 7.2.1 Implementation
 
 The find mechanism is facilitated by `ModelManager`. It keeps a filtered list (updated via a specified `Predicate`) of food items,
 stored internally as a `FilteredList<Food>`. Additionally, it implements the following relevant operation:
@@ -234,9 +234,9 @@ The following sequence diagram shows how the find operation works:
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The method Parser::parse is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
 </div>
 
-#### Design consideration:
+#### 7.2.2 Design consideration:
 
-##### Aspect: Arguments for FindCommand
+##### 7.2.2.1 Aspect: Arguments for FindCommand
 
 * **Alternative 1 (current choice):** Completely optional parameters, and ability to `find item` without a `flag`.
   * Pros: More flexibility for user, not restricted by parameter requirements.
@@ -246,7 +246,7 @@ The following sequence diagram shows how the find operation works:
   * Pros: Easier to implement.
   * Cons: Less user-friendly, user restricted in use of method
 
-##### Aspect: How find works
+##### 7.2.2.2 Aspect: How find works
 
 * **Alternative 1 (current choice):** Filters Food with matching instance of at least one (assuming multiple arguments) argument for a given parameter
   * Pros: Easier to implement and easier to locate more things quickly.
@@ -260,12 +260,12 @@ The following sequence diagram shows how the find operation works:
   * Pros: Combined Pros of Alternative 1 and 2, gives user greater autonomy.
   * Cons: Harder to implement, harder to use effectively.
 
-### Import feature
+### 7.3 Import feature
 
 The current Import feature is facilitated by `JsonMcGymmyStorage`.
 It extends model with the ability to override the current data with an imported one.
 
-#### Implementation
+#### 7.3.1 Implementation
 
 Given below is an example usage scenario and how the import mechanism behaves at each step
 
@@ -287,9 +287,9 @@ The following sequence diagram shows how the import operation works:
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The method Parser::parse is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
 </div>
 
-#### Design Considerations
+#### 7.3.2 Design Considerations
 
-##### Aspect: How import executes
+##### 7.3.2.1 Aspect: How import executes
 
 * **Alternative 1 (Current Choice):** User keys in the filepath of the save file
 
@@ -303,14 +303,13 @@ The following sequence diagram shows how the import operation works:
 
 
 
-### Undo feature
+### 7.4 Undo feature
 
-#### Implementation
+#### 7.4.1 Implementation
 
 The proposed undo mechanism is facilitated by `ModelManager` and `History`.
 `History` pairs `ReadOnlyMcGymmy` and `Predicate<Food>` gotten from `ModelManager` into a pair, then store multiple pairs of different versions in a stack, with the most recent version on top.
-Whenever there is a change to either `ModelManager`'s data or filter predicate, `ModelManager` will pass itself into `History` to be checked and saved in the stack.
-If `History` recognizes there is no change between the current state and the previous state, it will not save the current state to its stack.
+Whenever there is a change to either `ModelManager`'s data, filter predicate, or macro list, `ModelManager` will pass itself into `History` to be saved into the stack.
 Additionally, `ModelManager` implements the following operations:
 
 * `ModelManager#canUndo()` - Checks if there is any older state stored in history.
@@ -372,9 +371,9 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 ![AddToHistoryActivityDiagram](images/AddToHistoryActivityDiagram.png)
 
-#### Design consideration:
+#### 7.4.2 Design consideration:
 
-##### Aspect: How undo executes
+##### 7.4.2.1 Aspect: How undo executes
 
 * **Alternative 1 (current choice):** Saves the entire ModelManger database.
   * Pros: Easy to implement.
@@ -387,11 +386,13 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### Macro Command
+### 7.5 Macro Command
 
 ![Structure of the Macro Component](images/MacroClassDiagram.png)
 
 As with the other class diagram for the *Logic* component above, we omit some details in the above diagram for clarity.
+
+Macros are a way for users to create shortcuts to run several commands in succession, with arguments. For more information please refer to the user guide.
 
 There are two 'parts' to the macro component:
 
@@ -400,34 +401,46 @@ There are two 'parts' to the macro component:
 
 The creation of the macro object is straightforward as we defer most of the heavy lifting to during the execution of the macro.
 
-#### A more complete picture of the parsing process
+#### 7.5.1 A more complete picture of the parsing process
 
 We only described parsing and execution of primitive commands in the section above.
 A short description of the process including the parsing of macros is as follows:
 
 1. If command word is `macro`, return a `NewMacroCommand` (which will create a new `macro` when executed).
-2. Else if command word is an existing macro, call that macro object's `toCommandExecutable` method and return that.
+2. Else if command word is an existing macro, call the `asCommandInstance` method in the `MacroRunner` class to create a `CommandExecutable` from the macro and return that.
 3. Else hand over to primitive command parser.
 
-#### Execution of macros
+#### 7.5.2 Structure of the macro classes
+
+The main data objects for macros are the `Macro` and `MacroList` classes. These are stored in the `Model`.
+
+`Macro` is an immutable container containing data such as the name, arguments to and commands to execute in the macro as strings.
+
+`MacroList` is an immutable container of `Macro`s.
+
+Lastly, the `MacroRunner` utility class in the `Logic` component is responsible for turning these `Macro` data objects into `CommandExecutable` objects that can be run.
+
+#### 7.5.3 Execution of macros
 
 Here we detail what exactly happens in each macro's `toCommandExecutable` object.
 Throughout this section, we will use the following macro as an example: `macro test a;add -n \a breakfast 200`.
 
-1. Parameters supplied by the user are substituted into the macro's lines. For the example if the user enters `test -a rice`, `rice` will be substituted into the `\a` part of `add -n \a breakfast 200` to obtain `add -n rice breakfast 200`;
+1. Parameters supplied by the user are substituted into the macro's lines using regular expressions. For the example if the user enters `test -a rice`, `rice` will be substituted into the `\a` part of `add -n \a breakfast 200` to obtain `add -n rice breakfast 200`;
 2. Pass the list of strings to a new instance of `PrimitiveCommandParser` to get a list of `Command`s. If a `ParseException` occurs, we recast it as a `CommandException` and re-throw it.
 3. Execute all these `Command`s in sequence, and return a new `CommandResult` created from concatenating the respective `CommandResults` returned by the `Command`s. If a `CommandException` occurs in this sequence, that exception is thrown with the added message listing the commands that have executed successfully, and commands that have yet to be executed.
 
+Below is a sequence diagram summarizing the main interactions.
+
 ![Sequence diagram for macro](images/MacroSequenceDiagram.png)
 
-#### Additional considerations for this implementation
+#### 7.5.3 Additional considerations for this implementation
 Alternatively could have done the parsing/compiling on creation of the macro so we don't need to use another parser during execution.
 That is, each macro instance could contain its own `ParameterSet` which could then be used by its callee functions.
 This implementation is considerably more involved hence we proceeded with the current implementation.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Documentation, logging, testing, configuration, dev-ops**
+## 8. **Documentation, logging, testing, configuration, dev-ops**
 
 * [Documentation guide](Documentation.md)
 * [Testing guide](Testing.md)
@@ -437,9 +450,9 @@ This implementation is considerably more involved hence we proceeded with the cu
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Requirements**
+## 9. **Appendix: Requirements**
 
-### Product scope
+### 9.1 Product scope
 
 **Target user profile**:
 
@@ -459,7 +472,7 @@ This implementation is considerably more involved hence we proceeded with the cu
 * profile setting for them to store different settings
 
 
-### User stories
+### 9.2 User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
@@ -473,9 +486,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | expert user                                | create shortcuts for tasks             | frequently performed tasks                                             |
 | `*`      | programmer                                 | make use of the CLI like design        | get used to CLI in the future                                          |
 
-*{More to be added}*
 
-### Use cases
+### 9.3 Use cases
 
 (For all use cases below, the **System** is `McGymmy` and the **Actor** is the `user`, unless specified otherwise)
 
@@ -496,7 +508,7 @@ Use case ends
 Use case ends.
 
 **Extensions**
-- 1a. The format of the add method is invalid
+- 1a. The format of add method is invalid
     1a1. McGymmy shows an error message
     Use case ends.
 
@@ -573,7 +585,7 @@ Use case ends.
 
 *{More to be added}*
 
-### Non-Functional Requirements
+### 9.4 Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
 2.  Should be able to hold up to 1000 food items without a noticeable sluggishness in performance for typical usage.
@@ -586,7 +598,7 @@ Use case ends.
 
 *{More to be added}*
 
-### Glossary
+### 9.5 Glossary
 
 * **Built-in commands**: Any other commands except Macro Command.
 * **Command Line Interface (CLI)**: A command-line interface (CLI) processes commands to a computer program in the form of lines of text.
@@ -595,10 +607,11 @@ Use case ends.
 * **Macro command**: A command that allows you to execute multiple built-in commands sequentially with just one line of input
 * **Mainstream OS**: Windows, Linux, Unix, OS-X.
 * **McGymmy/MG**: The name of this application, can be used interchangeably in this guide.
+* **Parameter**: Inputs given to the flag. For example, in `-n Chicken Rice`, `Chicken Rice` is the parameter passed to the flag `-n`.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## 10. **Appendix: Instructions for manual testing**
 
 Given below are instructions to test the app manually.
 
@@ -607,7 +620,7 @@ testers are expected to do more *exploratory* testing.
 
 </div>
 
-### Launch and shutdown
+### 10.1 Launch and shutdown
 
 1. Initial launch
 
@@ -625,7 +638,7 @@ testers are expected to do more *exploratory* testing.
       <br>
       Expected: The most recent window size and location is retained.
 
-### Deleting food items
+### 10.2 Deleting food items
 
 1. Deleting a food item while all food items are shown.
 
@@ -641,7 +654,7 @@ testers are expected to do more *exploratory* testing.
       Expected: Similar to previous.
 
 
-### Saving data
+### 10.3 Saving data
 
 1. Dealing with missing/corrupted data files
 

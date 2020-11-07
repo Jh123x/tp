@@ -2,10 +2,11 @@ package jimmy.mcgymmy.model.food;
 
 import static java.util.Objects.requireNonNull;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
 import jimmy.mcgymmy.commons.util.AppUtil;
 
 /**
- * Represents a Food's name in mcgymmy.
+ * Represents a Food's name in McGymmy.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Name {
@@ -26,7 +27,7 @@ public class Name {
      *
      * @param name A valid name.
      */
-    public Name(String name) {
+    public Name(String name) throws IllegalValueException {
         requireNonNull(name);
         AppUtil.checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
         fullName = name;

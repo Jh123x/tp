@@ -55,6 +55,11 @@ public abstract class AbstractParameter {
         return this.example;
     }
 
+    /**
+     * Returns a commons-cli Option representing the parameter.
+     *
+     * @return Option of the parameter.
+     */
     public Option asOption() {
         return this.option;
     }
