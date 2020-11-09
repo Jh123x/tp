@@ -19,7 +19,7 @@ Given below are my contributions to the project.
   * What it does: Lays the groundwork for future development of the application as UI and parsers require food item to work.
   * Highlights: Allows the user to properly create food items in McGymmy.
   
-* **New Feature**: Did pair programming with [Junhua](team/jh123x.html) to add a `PieChart` with summary values along with the labels for total calories. [\#80](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/80/)
+* **New Feature**: Did pair programming with [Junhua](jh123x.html) to add a `PieChart` with summary values along with the labels for total calories. [\#80](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/80/)
   * What it does: The `PieChart` shows the percentage and weight of the different MacroNutrients as well as the total calories consumed 
   * Justification: The Visualisation of the data allows the user to get a rough idea how much he had consumed, compared to just staring at numbers. It also provides more visual impact to the user and give them a sense of progress.
   * Highlights: The animations of the PieChart was buggy and does not work as expected. As such we disabled the animation.

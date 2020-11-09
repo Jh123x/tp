@@ -33,7 +33,7 @@ Given below are my contributions to the project:
   * Highlights: This enhancement affects existing commands and commands to be added in future. 
   It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
 
- * **New Feature**: Allowed finding food by tag. [\#82](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/82)
+* **New Feature**: Allowed finding food by tag. [\#82](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/82)
   * What it does: allows user to categorize food by tag
   * Justification: I found that user can add tag to food item, but there is no meaningful usage of them beside viewing. 
   Therefore I decided to make find command to work with tag, so that users can use tag as a way to categorize their food.
@@ -57,11 +57,11 @@ Given below are my contributions to the project:
     * Update storage class diagram [\#100](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/100)
 
 * **Community**:
- * PRs reviewed (with non-trivial review comments): [\#39](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/39),
+    * PRs reviewed (with non-trivial review comments): [\#39](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/39),
  [\#57](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/57), [\#76](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/76),
  [\#104](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/104)
- * Contributed to forum discussion: 
-   1. Help fix trailing white space [forum#276](https://github.com/nus-cs2103-AY2021S1/forum/issues/276)
-   2. Share how to temporary disable checkstyle [forum#260](https://github.com/nus-cs2103-AY2021S1/forum/issues/260)
-   3. Explain why a test fails: [forum\#65](https://github.com/nus-cs2103-AY2021S1/forum/issues/65)
- * Reported bugs and suggestions for other teams in the class: [List of bugs and suggestions](https://github.com/aidoxe-123/ped/issues)
+    * Contributed to forum discussion: 
+        1. Help fix trailing white space [forum#276](https://github.com/nus-cs2103-AY2021S1/forum/issues/276)
+        2. Share how to temporary disable checkstyle [forum#260](https://github.com/nus-cs2103-AY2021S1/forum/issues/260)
+        3. Explain why a test fails: [forum\#65](https://github.com/nus-cs2103-AY2021S1/forum/issues/65)
+    * Reported bugs and suggestions for other teams in the class: [List of bugs and suggestions](https://github.com/aidoxe-123/ped/issues)

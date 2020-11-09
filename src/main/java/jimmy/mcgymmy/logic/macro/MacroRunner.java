@@ -88,15 +88,19 @@ public class MacroRunner {
     private static List<CommandExecutable> parseCommands(String[] rawCommands) throws CommandException {
         PrimitiveCommandParser parser = new PrimitiveCommandParser();
         List<CommandExecutable> commandExecutables = new ArrayList<>();
+        String currentCommand = "";
         try {
             LOGGER.info("----------------[BEGIN MACRO PARSING]");
             for (String rawCommand : rawCommands) {
+                currentCommand = rawCommand;
                 commandExecutables.add(parser.parse(rawCommand));
             }
             return commandExecutables;
 
         } catch (ParseException e) {
-            throw new CommandException("Error when executing the macro: \n" + e.getMessage());
+            String message = String.format("Error when executing the macro when parsing '%s'\n%s",
+                    currentCommand, e.getMessage());
+            throw new CommandException(message);
         }
     }
 

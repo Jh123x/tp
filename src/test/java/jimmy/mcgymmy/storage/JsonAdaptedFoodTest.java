@@ -36,7 +36,7 @@ public class JsonAdaptedFoodTest {
             .collect(Collectors.toList());
 
     @Test
-    public void toModelType_validFoodDetails_returnsPerson() throws Exception {
+    public void toModelType_validFoodDetails_returnsFood() throws Exception {
         JsonAdaptedFood food = new JsonAdaptedFood(TypicalFoods.getNasiLemak());
         Assertions.assertEquals(TypicalFoods.getNasiLemak(), food.toModelType());
     }

@@ -13,8 +13,8 @@ Class JsonUserPrefsStorage
 Class JsonMcGymmyStorage
 
 StorageManager .left.|> Storage
-StorageManager o-right-> UserPrefsStorage
-StorageManager o--> McGymmyStorage
+StorageManager *-right-> UserPrefsStorage
+StorageManager *--> McGymmyStorage
 
 JsonUserPrefsStorage .left.|> UserPrefsStorage
 JsonMcGymmyStorage .left.|> McGymmyStorage

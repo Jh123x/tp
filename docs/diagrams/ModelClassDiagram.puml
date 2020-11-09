@@ -22,7 +22,7 @@ Class Fat
 Class Name
 Class Date
 Class Protein
-Class UniqueFoodList
+Class Fridge
 }
 
 Package Tag {
@@ -41,8 +41,8 @@ ModelManager o--> "1" McGymmy
 ModelManager o-left-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
-McGymmy *--> "1" UniqueFoodList
-UniqueFoodList o--> "*" Food
+McGymmy *--> "1" Fridge
+Fridge o--> "*" Food
 Food *--> Name
 Food *--> Protein
 Food *--> Fat
@@ -55,5 +55,5 @@ Protein -[hidden]right-> Carbohydrate
 Carbohydrate -[hidden]right-> Fat
 Fat -[hidden]right-> Date
 
-ModelManager -->"1" Food : filtered list
+ModelManager -->"1" Food : filteredFoodItems
 @enduml

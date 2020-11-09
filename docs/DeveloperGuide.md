@@ -8,8 +8,8 @@ title: Developer Guide
 --------------------------------------------------------------------------------------------------------------------
 
 ## 1. **Purpose of this guide**
-This guide is made to help developers understand how McGymmy (MG) works.
-One of the major goals is to centralise all the jimmy.mcgymmy documentation within McGymmy itself.
+This guide aims to help developers understand how McGymmy (MG) works.
+One of the major goals is to centralise all the McGymmy documentation within McGymmy itself.
 Another major goal is to better help developers extend McGymmy to improve on its features.
 
 ##  2. Icon Legend
@@ -18,7 +18,11 @@ Another major goal is to better help developers extend McGymmy to improve on its
 :bulb: **Tip:** This indicates that the following text consists of tips to better utilise MG
 
 </div>
+<div markdown="span" class="alert alert-info">
+
 :information_source: **Note:** This indicates important notes for current feature we are looking at<br>
+
+</div>
 
 ## 3. A little note from the developers
 
@@ -109,8 +113,8 @@ For more information on macros and the full parsing process please read the sect
 1. `Logic` uses the `McGymmyParser` class to parse the user command.
 1. This results in a `CommandExecutable` object which is executed by the `LogicManager`.
 1. The command execution can affect the `Model` (e.g. adding a food item).
-1. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
-1. In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
+1. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
+1. In addition, the `CommandResult` object can also instruct the `UI` to perform certain actions, such as displaying help to the user.
 
 Note that our implementation of this component is different from the one in the parent project, [AddressBook3](https://se-education.org/addressbook-level3/).
 One notable difference is the use of several `Parameter` classes in the various `Commands`.
@@ -142,9 +146,9 @@ The `Model`,
 * does not depend on any of the other three components.
 
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in `McGymmy`, which `Food` references. This allows `McGymmy` to only require one `Tag` object per unique `Tag`, instead of each `Food` needing their own `Tag` object.
-
-<br>
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in `McGymmy`, which `Food` references. This allows `McGymmy` to only require one `Tag` object per unique `Tag`, instead of each `Food` needing their own `Tag` object.<br>
 
 ![BetterModelClassDiagram](images/BetterModelClassDiagram.png)
 
@@ -193,19 +197,25 @@ The following sequence diagram shows how the clear operation works:
 
 ![ClearSequenceDiagram](images/ClearSequenceDiagram.png)
 
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** The method <code>Parser::parse</code> is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+
+</div>
+
 #### 7.1.2 Design Considerations
 
 ##### 7.1.2.1 Aspect: How clear executes
 
 * **Alternative 1 (Current Choice):** A refilter using predicate into a list and reupdate food items.
 
-    * Pros: No traversal issue and no issue when food definition changes
+    * Pros: No traversal issue and no issue when food definition changes. Good time and space complexity.
     * Cons: Hard to implement
 
 * **Alternative 2:** An enhanced for loop can be used to remove all occurences straight from the list.
 
-    * Pros: Cleaner code and smaller and time space complexity
-    * Cons: Code may break if food properties ever changes due to traversal error.
+    * Pros: Cleaner code.
+    * Cons: Code may break if food properties ever changes due to traversal error. Also, has larger time and space complexity.
 
 
 ### 7.2 Find feature
@@ -221,7 +231,7 @@ Given below is an example usage scenario and how the find mechanism behaves at e
 
 Step 1. The user launches the application after having used it for a while.
 
-Step 2. The user wants to find what he ate for dinner on a certain date (eg. 21-10-2020).
+Step 2. The user wants to find food with apple in its name and fruit in its tag.
 
 Step 3. The user executes `find -n apple -t fruit`. The `find` command will check if the inputs are valid, and then parsed (similar to `delete`)
 before using these inputs to create conditional `Predicate<Food>` instances (eg. `NameContainsKeywordsPredicate`, `DatePredicate`). The predicates
@@ -231,7 +241,10 @@ The following sequence diagram shows how the find operation works:
 
 ![FindSequenceDiagram](images/FindSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The method Parser::parse is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** The method <code>Parser::parse</code> is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+
 </div>
 
 #### 7.2.2 Design consideration:
@@ -239,26 +252,26 @@ The following sequence diagram shows how the find operation works:
 ##### 7.2.2.1 Aspect: Arguments for FindCommand
 
 * **Alternative 1 (current choice):** Completely optional parameters, and ability to `find item` without a `flag`.
-  * Pros: More flexibility for user, not restricted by parameter requirements.
-  * Cons: Harder to implement, breaks general patten of `flag`-less arguments being compulsory parameters.
+    * Pros: More flexibility for user, not restricted by parameter requirements.
+    * Cons: Harder to implement, breaks general patten of `flag`-less arguments being compulsory parameters.
 
 * **Alternative 2:** Compulsory `flag`-less name parameter
-  * Pros: Easier to implement.
-  * Cons: Less user-friendly, user restricted in use of method
+    * Pros: Easier to implement.
+    * Cons: Less user-friendly, user restricted in use of method
 
 ##### 7.2.2.2 Aspect: How find works
 
 * **Alternative 1 (current choice):** Filters Food with matching instance of at least one (assuming multiple arguments) argument for a given parameter
-  * Pros: Easier to implement and easier to locate more things quickly.
-  * Cons: Harder to locate specific food items.
+    * Pros: Easier to implement and easier to locate more things quickly.
+    * Cons: Harder to locate specific food items.
 
 * **Alternative 2:** Filters Food with matching instance of all arguments for a given parameter
-  * Pros: Can locate specific food items easily; more narrowed-down search.
-  * Cons: More difficult to find something over broad terms.
+    * Pros: Can locate specific food items easily; more narrowed-down search.
+    * Cons: More difficult to find something over broad terms.
 
 * **Alternative 3 (proposed best choice):** Allow variation in type of filtering through another optional parameter.
-  * Pros: Combined Pros of Alternative 1 and 2, gives user greater autonomy.
-  * Cons: Harder to implement, harder to use effectively.
+    * Pros: Combined Pros of Alternative 1 and 2, gives user greater autonomy.
+    * Cons: Harder to implement, harder to use effectively.
 
 ### 7.3 Import feature
 
@@ -267,24 +280,27 @@ It extends model with the ability to override the current data with an imported 
 
 #### 7.3.1 Implementation
 
-Given below is an example usage scenario and how the import mechanism behaves at each step
+Given below is an example usage scenario and how the import mechanism behaves at each step.
 
-Step 1. The User just installed his application on his new computer and wants to transfer his old data over
+Step 1. The User just installed his application on his new computer and wants to transfer his old data over.
 
-Step 2. The user transfers his previous save file to `C:/McGymmy/saveFile.json`
+Step 2. The user transfers his previous save file to `C:/McGymmy/saveFile.json`.
 
 Step 3. The User executes `import c:/McGymmy/saveFile.json`.
 The import command will check if the file is valid and exists before calling `JsonMcGymmyStorage`.
 `JsonMcGymmyStorage` will call `#readMcGymmy` if the read is successful, the old data will be overwritten.
 Otherwise, a CommandException will be thrown.
 
-Step 4. His old data files from his old computer will be overridden by his old data
+Step 4. His previous data files will be overwritten and updated.
 
 The following sequence diagram shows how the import operation works:
 
 ![ImportSequenceDiagram](images/ImportSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The method Parser::parse is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** The method <code>Parser::parse</code> is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+
 </div>
 
 #### 7.3.2 Design Considerations
@@ -308,7 +324,9 @@ The following sequence diagram shows how the import operation works:
 #### 7.4.1 Implementation
 
 The proposed undo mechanism is facilitated by `ModelManager` and `History`.
-`History` pairs `ReadOnlyMcGymmy` and `Predicate<Food>` gotten from `ModelManager` into a pair, then store multiple pairs of different versions in a stack, with the most recent version on top.
+
+`History` combines `ModelManager`'s `McGymmy`, `Predicate<Food>` and `MacroList` together, then store multiple groups of different versions in a stack, with the most recent version on top.
+
 Whenever there is a change to either `ModelManager`'s data, filter predicate, or macro list, `ModelManager` will pass itself into `History` to be saved into the stack.
 Additionally, `ModelManager` implements the following operations:
 
@@ -320,7 +338,13 @@ The first 2 operations are exposed in the `Model` interface as `Model#canUndo()`
 
 Given below is an example usage scenario and how the undo mechanism behaves at each step.
 
-Step 1. The user launches the application for the first time. The `ModelManager` will be initialized with the empty `mcGymmyStack`.
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** The type <code>ModelManager**</code> of the objects stored in <code>History</code>  in the following diagrams is used as a simplified presentation for <code>Pair&lt;McGymmy, Pair&lt;Predicate&lt;Food&gt;, MacroList&gt;&gt;</code>, so that the diagrams look less complicated.
+
+</div>
+
+Step 1. The user launches the application for the first time. The `ModelManager` will be initialized with the empty `History`.
 
 ![UndoState0](images/UndoState0.png)
 
@@ -340,7 +364,9 @@ storing a copied version of the McGymmy into the stack before changing the McGym
 
 ![UndoState2a](images/UndoState2b.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `ModelManager#addCurrentStateToHistory()`, so the McGymmy state will not be saved into the `mcGymmyStack`.
+<div markdown="span" class="alert alert-info">
+
+:information_source: **Note:** If a command fails its execution, it will not call `ModelManager#addCurrentStateToHistory()`, so the McGymmy state will not be saved into the `mcGymmyStack`.
 
 </div>
 
@@ -349,7 +375,9 @@ which will pop the top most state from `mcGymmyStack`, and restores the McGymmy 
 
 ![UndoState3](images/UndoState3.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial McGymmy state, then there are no previous McGymmy states to restore. The `undo` command uses `Model#canUndoMcGymmy()` to check if this is the case. If so, it will return an error to the user rather
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial McGymmy state, then there are no previous McGymmy states to restore. The `undo` command uses `Model#canUndoMcGymmy()` to check if this is the case. If so, it will return an error to the user rather
 than attempting to perform the undo.
 
 </div>
@@ -358,13 +386,22 @@ The following sequence diagram shows how the undo operation works:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
 </div>
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The method Parser::parse is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+<div markdown="span" class="alert alert-info">
+
+:information_source: **Note:** The method <code>Parser::parse</code> is a simplification of the overall parsing sequence which was already covered in showcasing the execution of the delete method. As such, redundant parsing details are not covered here.
+   
 </div>
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The method ModelManager::updateModelManager is a simplification of updating the McGymmy, updating the filterPredicate and updating the filteredFoodList separately.
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** The method <code>ModelManager::updateModelManager</code> is a simplification of updating the McGymmy, updating the filterPredicate and updating the filteredFoodList separately.
+
 </div>
 
 The following activity diagram summarizes what happens when a user executes a new command:
@@ -376,23 +413,25 @@ The following activity diagram summarizes what happens when a user executes a ne
 ##### 7.4.2.1 Aspect: How undo executes
 
 * **Alternative 1 (current choice):** Saves the entire ModelManger database.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+    * Pros: Easy to implement.
+    * Cons: May have performance issues in terms of memory usage.
 
-* **Alternative 2:** Individual command knows how to undo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the food item being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+* **Alternative 2:** Individual command knows how to undo by itself.
 
-_{more aspects and alternatives to be added}_
+    * Pros: Will use less memory (e.g. for `delete`, just save the food item being deleted).
+    * Cons: We must ensure that the implementation of each individual command is correct.
 
 ### 7.5 Macro Command
 
 ![Structure of the Macro Component](images/MacroClassDiagram.png)
 
+<div markdown="span" class="alert alert-info">
+
 As with the other class diagram for the *Logic* component above, we omit some details in the above diagram for clarity.
 
-Macros are a way for users to create shortcuts to run several commands in succession, with arguments. For more information please refer to the user guide.
+</div>
+
+Macros are a way for users to create shortcuts to run several commands in succession, with arguments. For more information please refer to the [user guide](https://ay2021s1-cs2103t-w17-3.github.io/tp/UserGuide.html).
 
 There are two 'parts' to the macro component:
 
@@ -408,13 +447,14 @@ A short description of the process including the parsing of macros is as follows
 
 1. If command word is `macro`, return a `NewMacroCommand` (which will create a new `macro` when executed).
 2. Else if command word is an existing macro, call the `asCommandInstance` method in the `MacroRunner` class to create a `CommandExecutable` from the macro and return that.
-3. Else hand over to primitive command parser.
+3. Else if command word is a primitive command, pass control over to primitive command parser.
+4. Otherwise, a `ParseException` will be thrown.
 
 #### 7.5.2 Structure of the macro classes
 
 The main data objects for macros are the `Macro` and `MacroList` classes. These are stored in the `Model`.
 
-`Macro` is an immutable container containing data such as the name, arguments to and commands to execute in the macro as strings.
+`Macro` is an immutable container containing data such as the name, as well as arguments and commands that would be executed in the macro as strings.
 
 `MacroList` is an immutable container of `Macro`s.
 
@@ -423,9 +463,9 @@ Lastly, the `MacroRunner` utility class in the `Logic` component is responsible 
 #### 7.5.3 Execution of macros
 
 Here we detail what exactly happens in each macro's `toCommandExecutable` object.
-Throughout this section, we will use the following macro as an example: `macro test a;add -n \a breakfast 200`.
+Throughout this section, we will use the following macro as an example: `macro test a;add -n \a breakfast -c 200`.
 
-1. Parameters supplied by the user are substituted into the macro's lines using regular expressions. For the example if the user enters `test -a rice`, `rice` will be substituted into the `\a` part of `add -n \a breakfast 200` to obtain `add -n rice breakfast 200`;
+1. Parameters supplied by the user are substituted into the macro's lines using regular expressions. For the example if the user enters `test -a rice`, `rice` will be substituted into the `\a` part of `add -n \a breakfast -c 200` to obtain `add -n rice breakfast -c 200`;
 2. Pass the list of strings to a new instance of `PrimitiveCommandParser` to get a list of `Command`s. If a `ParseException` occurs, we recast it as a `CommandException` and re-throw it.
 3. Execute all these `Command`s in sequence, and return a new `CommandResult` created from concatenating the respective `CommandResults` returned by the `Command`s. If a `CommandException` occurs in this sequence, that exception is thrown with the added message listing the commands that have executed successfully, and commands that have yet to be executed.
 
@@ -433,11 +473,16 @@ Below is a sequence diagram summarizing the main interactions.
 
 ![Sequence diagram for macro](images/MacroSequenceDiagram.png)
 
-#### 7.5.3 Additional considerations for this implementation
-Alternatively could have done the parsing/compiling on creation of the macro so we don't need to use another parser during execution.
-That is, each macro instance could contain its own `ParameterSet` which could then be used by its callee functions.
-This implementation is considerably more involved hence we proceeded with the current implementation.
+##### 7.5.4 Aspect: Design alternatives
 
+* **Alternative 1:** 'Compile' a macro into a `Command` using the existing `ParameterSet` classes.
+    * Pros: Allows us to check for more potential errors in the macro's format.
+    * Cons: Harder to implement and more complicated.
+
+* **Alternative 2: (Current Choice)** Use string substitution along with another parser instance to run commands.
+    * Pros: Much simpler implementation and less prone to bugs.
+    * Cons: Some errors in the user's macro will only be detected when the macro is being run.
+ 
 --------------------------------------------------------------------------------------------------------------------
 
 ## 8. **Documentation, logging, testing, configuration, dev-ops**
@@ -476,16 +521,35 @@ This implementation is considerably more involved hence we proceeded with the cu
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a/an …​                                  | I want to …​                            | So that I can…​                                                         |
+| Priority | As a/an …​                              | I want to …​                        | So that I can…​                                                     |
 | -------- | ------------------------------------------ | -------------------------------------- | ---------------------------------------------------------------------- |
 | `* * *`  | new user                                   | see usage instructions                 | refer to instructions when I forget how to use the App                 |
 | `* * *`  | user                                       | track what I am eating                 |                                                                        |
 | `* * *`  | user                                       | delete a food item                     | remove food items that I no longer care of                             |
 | `* * *`  | user                                       | easily add food items/details          | keep track of my diet                                                  |
+| `* * *`  | organised user                             | easily filter my food items            | find food items based on criteria                                      |
+| `* * *`  | user                                       | easily export my data                  | transfer my old data to a new computer or as backup                    |
+| `* * *`  | user                                       | easily load my data                    | restore the previous backups i have made                               |
+| `* * *`  | user                                       | undo my functions                      | fix my accidental mistakes in my commands                              |
 | `* *`    | frequent user                              | perform tasks on a group of food items |                                                                        |
-| `* *`    | expert user                                | create shortcuts for tasks             | frequently performed tasks                                             |
+| `* *`    | organised user                             | be able to clear food items            | reduce excess clutter within the application                           |
+| `* *`    | expert user                                | create shortcuts for tasks             | do frequently performed tasks faster                                   |
+| `* *`    | expert user                                | easily view the shortcuts I created    | remember what they do if I forget                                      |
+| `* *`    | expert user                                | delete the shortcuts I created         | remove shortcuts I no longer use                                       |
+| `* *`    | user                                       | tag my items for identification        | so that I can find them easily                                         |
+| `* *`    | user                                       | untag my items                         | in case I made a mistake in tagging                                    |
+| `* *`    | user                                       | view detailed statistics               | better keep track of my diet                                           |
 | `*`      | programmer                                 | make use of the CLI like design        | get used to CLI in the future                                          |
-
+| `*`      | programmer                                 | be able to customise the application   | improve my workflow and make it faster                                 |
+| `*`      | programmer                                 | automate repetitive tasks              | save time and energy                                                   |
+| `*`      | programmer                                 | shorten my commands                    | remember them better                                                   |
+| `*`      | dietician                                  | view my client's diet                  | ensure that they are eating healthily                                  |
+| `*`      | an underweight individual                  | track my caloric count                 | ensure that I am eating at a surplus                                   |
+| `*`      | an overweight individual                   | track my caloric count                 | ensure that I am eating at a deficit                                   |
+| `*`      | an student athlete                         | track my protein intake                | ensure that my diet promotes recovery                                  |
+| `*`      | a diabetic individual                      | find trends of sugary food with tags   | track what I ate that spikes my insulin level                          |
+| `*`      | a careless user with typos                 | find food with wrong macro values      | correct inaccurate inputs                                              |
+| `*`      | a minimalistic user                        | find outdated food items               | clear them from the list                                               |
 
 ### 9.3 Use cases
 
@@ -495,108 +559,245 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Use case: UC01 List food**
 
 **MSS**
-1. User requests to list food (UC01)
-2. McGymmy shows a list of food that user has added (UC02)
-Use case ends
+1. User requests to list food (UC01).
+2. McGymmy shows a list of food that user has added (UC02).<br>
+Use case ends.
 
 **Use case: UC02 Add food**
 
 **MSS**
-1. User requests to add food into the list
-2. McGymmy adds the food item into the list
-
+1. User requests to add food into the list.
+2. McGymmy adds the food item into the list.<br>
 Use case ends.
 
 **Extensions**
-- 1a. The format of add method is invalid
-    1a1. McGymmy shows an error message
+- 1a. The format of add method is invalid.
+    - 1a1. McGymmy shows an error message.<br>
     Use case ends.
 
 **Use case: UC03 Delete food**
 
 **MSS**
-1. User requests to list food (UC01)
-2. McGymmy shows a list of food
-3. User request to delete a specific food on the list
-4. McGymmy deletes the food
-
-Use case ends
+1. User requests to list food. (UC01)
+2. McGymmy shows a list of food.
+3. User request to delete a specific food on the list.
+4. McGymmy deletes the food.<br>
+Use case ends.
 
 **Extensions**
-- 2a. The list is empty<br>
-
+- 2a. The list is empty.<br>
     Use case ends.
 
 - 3a. The given index is invalid.<br>
-   - 3a1. McGymmy shows an error message.
-
-    Use case resumes at step 2.
+   - 3a1. McGymmy shows an error message.<br>
+   Use case resumes at step 2.
 
 **Use case: UC04 Help**
 
 **MSS**
-1. User requests help
-2. McGymmy shows all commands and examples of command usages
-
-Use case ends
+1. User requests help.
+2. McGymmy shows all commands, and the usage of each command.<br>
+Use case ends.
 
 **Extensions**
-No extensions
+<br>
+- 1a. User passes a command as argument into help command.
+    - 1a1. Help will show the argument to the command, and the usage of the command.<br>
+    Use case end.<br>
+- 1b. User passes an invalid command as argument into help command.<br>
+    - 1b1. McGymmy will throw an error.<br>
+    Use case ends.<br>
 
-**Use case: UC05 Update food**
+**Use case: UC05 Edit food**
 
 **MSS**
-1. User requests to list food (UC01)
-2. McGymmy shows a list of food
-3. User request to update a specific food on the list
-4. McGymmy updates the food
-
-Use case ends
+1. User requests to list food (UC01).
+2. McGymmy shows a list of food.
+3. User request to edit a specific food on the list.
+4. McGymmy updates the food.
+Use case ends.
 
 **Extensions**
 - 2a. The list is empty<br>
-    Use case ends.
-- 3a. The given index is invalid.<br>
-   - 3a1. McGymmy shows an error message
-    Use case resumes at step 2.
+Use case ends.
 
-**Use case: UC06 Add a macro command**
+- 3a. The given index is invalid.<br>
+   - 3a1. McGymmy shows an error message.<br>
+   Use case resumes at step 2.
+
+- 3b. The format of edit method is invalid.
+   - 3b1. McGymmy shows an error message.<br>
+   Use case ends.
+    
+**Use case: UC06 Tag food**
+
+**MSS**
+1. User requests to list food (UC01).
+2. McGymmy shows a list of food.
+3. User request to tag a specific food on the list.
+4. McGymmy updates the food with the given tag.<br>
+Use case ends.
+
+**Extensions**
+- 2a. The list is empty.<br>
+   Use case ends.
+    
+- 3a. The given index is invalid.<br>
+   - 3a1. McGymmy shows an error message.<br>
+   Use case resumes at step 2.
+
+- 3b. The given tag already exists for the selected food.<br>
+   - 3a1. McGymmy shows an error message.<br>
+   Use case resumes at step 2.
+
+- 3c. The format of tag method is invalid.
+   - 3c1. McGymmy shows an error message.<br>
+   Use case ends.
+    
+**Use case: UC07 Untag food**
+
+**MSS**
+1. User requests to list food (UC01).
+2. McGymmy shows a list of food.
+3. User request to remove tag from a specific food on the list.
+4. McGymmy removes the tag from the food.<br>
+Use case ends
+
+**Extensions**
+- 2a. The list is empty.<br>
+   Use case ends.
+
+- 3a. The given index is invalid.<br>
+   - 3a1. McGymmy shows an error message.<br>
+   Use case resumes at step 2.
+
+- 3b. The given tag does not exist for the selected food.<br>
+   - 3a1. McGymmy shows an error message.<br>
+   Use case resumes at step 2.
+
+- 3c. The format of untag method is invalid.
+   - 3c1. McGymmy shows an error message.<br>
+   Use case ends.
+    
+**Use case: UC08 Find**
+
+**MSS**
+1. User requests to find (filter) food items based on certain criteria.
+2. McGymmy shows an updated list based on the filter criteria.
+Use case ends.
+
+**Extensions**
+- 1a. The format of find method is invalid.
+   - 1a1. McGymmy shows an error message.
+    Use case ends.
+    
+**Use case: UC09 Clear**
+
+**MSS**
+1. User filters list (UC06).
+2. User requests to clear the displayed list.
+3. McGymmy deletes all food items in the current displayed list.
+Use case ends.
+
+**Extensions**
+- 1a. The list is empty.<br>
+    Use case ends.
+
+**Use case: UC10 Import a McGymmy data file**
 
 **MSS**
 
-1. User creates a macro to execute two 'add' commands in sequence
-2. McGymmy adds the macro to the list of available commands
-3. User uses the newly added macro command
-4. McGymmy executes the two commands consecutively
+1. User imports McGymmy file to McGymmy.
+2. McGymmy overrides the old files with the new McGymmy files.<br>
+Use case ends.
 
-Use case ends
+**Extensions**
+ - 1a. The format for the save file is invalid.
+    - 1a1. McGymmy shows an error message.<br>
+    Use case ends.
+ - 1b. The path to the save file is invalid.
+    - 1b1. McGymmy shows an error message.<br>
+    Use case ends.
+    
+**Use case: UC11 Export a McGymmy data file**
+
+**MSS**
+
+1. User exports his McGymmy file.
+2. McGymmy creates a copy of his MyGymmy file in the selected directory.<br>
+Use case ends.
+
+**Extensions**
+ - 1a. The path to directory is invalid.
+    - 1a1. McGymmy shows an error message.<br>
+    Use case ends.
+    
+**Use case: UC12 Add a macro command**
+
+**MSS**
+
+1. User creates a macro to execute several commands in sequence.
+2. McGymmy adds the macro to the list of available commands.<br>
+Use case ends.
 
 **Extensions**
 
  - 1a. The format of the macro is invalid.
-    - 1a1. McGymmy shows an error message.
+   - 1a1. McGymmy shows an error message.<br>
+   Use case ends.
+    
+**Use case: UC13 Execute a macro command**
 
+**MSS**
+
+1. User executes a macro command.
+2. McGymmy executes the commands in the macro command as if the user entered them one by one.<br>
 Use case ends.
 
- - 4a. One of the executed commands encounter an error.
-    - 4a1. McGymmy shows the error message from that command, and displays the commands that successfully executed, and the commands that have yet to execute.
+**Extensions**
 
+ - 1a. The macro does not exist.
+    - 1a1. McGymmy shows the error message.<br>
+    Use case ends.
+
+ - 2a. One of the executed commands encounter an error.
+    - 2a1. McGymmy shows the error message from that command, and displays the commands that successfully executed, and the commands that have yet to execute.<br>
+    Use case ends.
+
+**Use case: UC14 Undo the last command**
+
+**MSS**
+
+1. User requests to undo the last command.
+2. McGymmy successfully undo the last command.<br>
 Use case ends.
 
-*{More to be added}*
+**Extensions**
+
+- 1a. McGymmy shows the error message that there is no command left to undo.<br>
+    Use case ends.
+
+**Use case: UC15 List all macro commands**
+
+ - Similar to **UC04** except McGymmy lists *macros* instead of *commands*.<br>
+
+**Use case: UC16 Remove a macro**
+
+ - Similar to **UC03** except the user requests to list *macros* instead of *food items*, and requests to delete a *macro* instead of a *food item*.<br>
 
 ### 9.4 Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
-2.  Should be able to hold up to 1000 food items without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4. The product should be for a single user i.e. (not a multi-user product).
-5. The data should be stored locally and should be in a human editable text file.
-6. The software should not depend on a private remote server.
-7. The size of the final compiled JAR file should be less than 100Mb.
-8. There should be CLI alternatives to every GUI input. (E.g. instead of clicking on a button I can type an equivalent command to achieve the same result.)
+1. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. There should be CLI alternatives to every GUI input. (E.g. instead of clicking on a button I can type an equivalent command to achieve the same result.)
+1. Should be able to hold up to 1000 food items without a noticeable sluggishness in performance for typical usage.
+1. Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
+1. The data should be stored locally and should be in a human editable text file.
+1. The product should be for a single user i.e. (not a multi-user product).
+1. Each Command entered by the user should be processed within 1 second.
+1. All numeric values must be accurate to within 5 significant figures.
+1. The size of the final compiled JAR file should be less than 100Mb.
+1. The software should not depend on a private remote server.
 
-*{More to be added}*
 
 ### 9.5 Glossary
 
@@ -604,7 +805,7 @@ Use case ends.
 * **Command Line Interface (CLI)**: A command-line interface (CLI) processes commands to a computer program in the form of lines of text.
 * **Flag**: A dash followed by a letter to denote the start of a parameter. For example, in `-n Chicken Rice`, `-n` is a flag for name and `Chicken Rice` is the input that will be processed by the application.
 * **Graphical User Interface (GUI)**: A visual way of interacting with a computer using items such as windows, icons, and menus, used by most modern operating systems.
-* **Macro command**: A command that allows you to execute multiple built-in commands sequentially with just one line of input
+* **Macro command**: A command that allows you to execute multiple built-in commands sequentially with just one line of input.
 * **Mainstream OS**: Windows, Linux, Unix, OS-X.
 * **McGymmy/MG**: The name of this application, can be used interchangeably in this guide.
 * **Parameter**: Inputs given to the flag. For example, in `-n Chicken Rice`, `Chicken Rice` is the parameter passed to the flag `-n`.
@@ -615,22 +816,24 @@ Use case ends.
 
 Given below are instructions to test the app manually.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
+<div markdown="span" class="alert alert-info">
+   
+:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
 </div>
 
 ### 10.1 Launch and shutdown
 
-1. Initial launch
+1. Initial launch.
 
-   1. Download the JAR file and copy into any folder
+   1. Download the JAR file and copy into any folder.
 
-   1. Double-click the JAR file
+   1. Double-click the JAR file.
       <br>
       Expected: Shows the GUI with a set of sample food items. The window size may not be optimum.
 
-1. Saving window preferences
+1. Saving window preferences.
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
@@ -644,25 +847,25 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all food items using the `list` command. Multiple food items in the list.
 
-   1. Test case: `delete 1`<br>
+   1. Test case: `delete 1`.<br>
       Expected: First food item is deleted from the list. Details of the deleted food item shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `delete 0`.<br>
       Expected: No food item is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size).<br>
       Expected: Similar to previous.
 
 
 ### 10.3 Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing/corrupted data files.
 
    1. Delete the 'data' file if any. Relaunch the app by double-clicking the JAR file.
    <br>
-   Expected: A new data file is generated
+   Expected: A new data file is generated.
 
-   1. Open the data file inside the `data` folder using any text editor and edit the file.
+   1. Open the data file inside the `data` folder using any text editor and edit the file to invalid values.
    <br>
    Expected: A new empty data file is generated which overwrites the old one.
 

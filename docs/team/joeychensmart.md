@@ -40,11 +40,11 @@ Given below are my contributions to the project.
 
 * **Project management**:
   * Created the github organization for the group and project repository.
-  * Created the issue label `code quality improvements` and several issues related to it (e.g. [214](https://github.com/AY2021S1-CS2103T-W17-3/tp/issues/214), [215](https://github.com/AY2021S1-CS2103T-W17-3/tp/issues/215).
+  * Created the issue label `code quality improvements` and several issues related to it (e.g. [\#214](https://github.com/AY2021S1-CS2103T-W17-3/tp/issues/214), [\#215](https://github.com/AY2021S1-CS2103T-W17-3/tp/issues/215).
   * Copied over draft UG from google docs to the repo. [\#22](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/22).
 
 * **Enhancements to existing features**:
-  * Fixed bug related to `RuntimeExceptions` with Jun Hua [216](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/216).
+  * Fixed bug related to `RuntimeExceptions` with Jun Hua [\#216](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/216).
 
 * **Documentation**:
   * User Guide:

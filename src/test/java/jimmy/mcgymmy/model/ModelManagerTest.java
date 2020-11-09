@@ -7,6 +7,7 @@ import static jimmy.mcgymmy.testutil.TypicalFoods.getNasiLemak;
 import static jimmy.mcgymmy.testutil.TypicalMacros.TEST_MACRO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
@@ -95,7 +96,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasFood_personNotInMcGymmy_returnsFalse() {
+    public void hasFood_foodNotInMcGymmy_returnsFalse() {
         assertFalse(modelManager.hasFood(getChickenRice()));
     }
 
@@ -345,24 +346,24 @@ public class ModelManagerTest {
         // same values -> returns true
         modelManager = new ModelManager(mcGymmy, userPrefs);
         ModelManager modelManagerCopy = new ModelManager(mcGymmy, userPrefs);
-        assertTrue(modelManager.equals(modelManagerCopy));
+        assertEquals(modelManagerCopy, modelManager);
 
         // same object -> returns true
-        assertTrue(modelManager.equals(modelManager));
+        assertEquals(modelManager, modelManager);
 
         // null -> returns false
-        assertFalse(modelManager.equals(null));
+        assertNotEquals(modelManager, null);
 
         // different types -> returns false
-        assertFalse(modelManager.equals(5));
+        assertNotEquals(modelManager, 5);
 
         // different mcGymmy -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentMcGymmy, userPrefs)));
+        assertNotEquals(new ModelManager(differentMcGymmy, userPrefs), modelManager);
 
         // different filteredList -> returns false
         String[] keywords = getChickenRice().getName().fullName.split("\\s+");
         modelManager.updateFilteredFoodList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(mcGymmy, userPrefs)));
+        assertNotEquals(new ModelManager(mcGymmy, userPrefs), modelManager);
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredFoodList(Model.PREDICATE_SHOW_ALL_FOODS);
@@ -370,6 +371,6 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setMcGymmyFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(mcGymmy, differentUserPrefs)));
+        assertNotEquals(new ModelManager(mcGymmy, differentUserPrefs), modelManager);
     }
 }

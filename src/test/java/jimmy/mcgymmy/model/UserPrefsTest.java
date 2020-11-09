@@ -2,7 +2,9 @@ package jimmy.mcgymmy.model;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,12 +26,21 @@ public class UserPrefsTest {
     @Test
     public void equals_returnsCorrectResult() {
         UserPrefs userPref = new UserPrefs();
-        // identical -> returns true
+        // identical -> equal
         assertEquals(userPref, userPref);
-        // not same type -> returns false
-        assertFalse(userPref.equals("123"));
-        // same value -> return true
-        assertEquals(new UserPrefs(userPref), new UserPrefs(userPref));
+
+        // same values different objects -> Equal
+        UserPrefs userPrefsCopy = new UserPrefs();
+        assertEquals(userPref, userPrefsCopy);
+
+        // not same type -> not equal
+        assertNotEquals(userPref, "123");
+
+        // different value -> not equal
+        UserPrefs userPrefs2 = new UserPrefs();
+        userPrefs2.setMcGymmyFilePath(Paths.get("testpath"));
+        assertNotEquals(userPrefs2, userPref);
+
     }
 
 }

@@ -32,6 +32,9 @@ public abstract class Macronutrient {
         // use this instead of assert because the amount < 0 error is more because of user input than developer's fault
         AppUtil.checkArgument(isValidAmount(amount), getMessageConstraint());
 
+        // add assertion for negative multiplier
+        assert isValidMultiplier(caloricMultiplier) : "Caloric multiplier is negative";
+
         // initialise variables
         this.amount = amount;
         this.caloricMultiplier = caloricMultiplier;
@@ -45,11 +48,16 @@ public abstract class Macronutrient {
      * @return if the String is valid.
      */
     public static boolean isValid(String value) {
-        return value.matches(VALIDATION_REGEX);
+        //Trim for defensive programming
+        return value.trim().matches(VALIDATION_REGEX);
     }
 
     private boolean isValidAmount(int amount) {
         return amount >= LOWER_BOUND && amount <= UPPER_BOUND;
+    }
+
+    private boolean isValidMultiplier(int amount) {
+        return amount > 0;
     }
 
     abstract String getMessageConstraint();
@@ -69,6 +77,7 @@ public abstract class Macronutrient {
         }
         Macronutrient otherMacronutrient = (Macronutrient) other;
         return this.getMacronutrientType().equals(otherMacronutrient.getMacronutrientType())
+                && this.getCaloricMultiplier() == otherMacronutrient.getCaloricMultiplier()
                 && this.getAmount() == otherMacronutrient.getAmount();
     }
 

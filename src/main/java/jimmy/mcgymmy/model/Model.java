@@ -21,12 +21,12 @@ public interface Model {
     /**
      * Returns the current MacroList
      */
-    public MacroList getMacroList();
+    MacroList getMacroList();
 
     /**
      * Replaces the current MacroList
      */
-    public void setMacroList(MacroList replacement);
+    void setMacroList(MacroList replacement);
 
     /**
      * Returns the user prefs.

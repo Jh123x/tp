@@ -11,10 +11,10 @@ participant ":PrimitiveCommandParser" as PrimitiveCommandParser LOGIC_COLOR
 participant ":Command" as Command LOGIC_COLOR
 end box
 
-[-> LogicManager : execute("delete 1")
+[-> LogicManager : execute("test -a rice")
 activate LogicManager
 
-LogicManager -> McGymmyParser : parseCommand("test -a banana")
+LogicManager -> McGymmyParser : parseCommand("test -a rice")
 activate McGymmyParser
 
 activate MacroList

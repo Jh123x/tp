@@ -18,12 +18,12 @@ import jimmy.mcgymmy.model.Model;
 import jimmy.mcgymmy.model.food.Food;
 
 /**
- * Finds and lists all persons in mcgymmy whose name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists all food items in McGymmy which fit the given parameters (criteria).
+ * Keyword and name matching is case insensitive, while tag matching is case sensitive.
  */
 public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
-    public static final String SHORT_DESCRIPTION = "Filter the displayed list by a given keyword.";
+    public static final String SHORT_DESCRIPTION = "Filters the food list by the provided parameters.";
     private static final Logger logger = LogsCenter.getLogger(FindCommand.class);
 
     private OptionalParameter<FoodContainsKeywordsPredicate> foodPredicateParameter = this.addOptionalParameter(
@@ -35,13 +35,13 @@ public class FindCommand extends Command {
     private OptionalParameter<NameContainsKeywordsPredicate> namePredicateParameter = this.addOptionalParameter(
             "name",
             "n",
-            "Name of the Food",
+            "Name of the Food (case-insensitive)",
             "Cereal", (s) -> new NameContainsKeywordsPredicate(Arrays.asList(s.split("\\s+")))
     );
     private OptionalParameter<TagContainsKeywordsPredicate> tagPredicateParameter = this.addOptionalParameter(
             "tag",
             "t",
-            "Tag associated with the Food",
+            "Tag associated with the Food (case-sensitive)",
             "Lunch", (s) -> new TagContainsKeywordsPredicate(Arrays.asList(s.split("\\s+")))
     );
     private OptionalParameter<DatePredicate> datePredicateParameter = this.addOptionalParameter(
@@ -65,15 +65,19 @@ public class FindCommand extends Command {
     public CommandResult execute(Model model) {
         logger.fine("Executing find command");
         requireNonNull(model);
+
+        // checks whether the optional parameters were called, else assign the value of null
         FoodContainsKeywordsPredicate foodPredicate = foodPredicateParameter.getValue().orElse(null);
         NameContainsKeywordsPredicate namePredicate = namePredicateParameter.getValue().orElse(null);
         TagContainsKeywordsPredicate tagPredicate = tagPredicateParameter.getValue().orElse(null);
         DatePredicate datePredicate = datePredicateParameter.getValue().orElse(null);
 
+        // create a combined predicate which by default returns true
         Predicate<Food> combinedPredicate = food -> true;
         ArrayList<Predicate<Food>> predicateList = new ArrayList<>(Arrays.asList(
                 foodPredicate, namePredicate, tagPredicate, datePredicate));
 
+        // combine the other predicates (parameters) to combinedPredicate if they are not null
         for (Predicate<Food> currentPredicate : predicateList) {
             if (currentPredicate != null) {
                 combinedPredicate = combinedPredicate.and(currentPredicate);

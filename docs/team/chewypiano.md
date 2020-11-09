@@ -22,7 +22,7 @@ Given below are my contributions to the project.
 * **Enhancement**: Major refactoring of codebase from AB3 to McGymmy. (Pull requests [\#56](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/56), [\#55](https://github.com/AY2021S1-CS2103T-W17-3/tp/pull/55))
   * What it does: sets up the core of the codebase for McGymmy and allows additional enhancements to be incorporated easily.
   * Highlights: Refactored entirety of AB3 to fit food items instead of contacts which involved changing
-  thousands of lines of code. Partook in pair programming with [Junhua](team/jh123x), as a live code reviewer for the refactoring of core commands and overall structure.
+  thousands of lines of code. Partook in pair programming with [Junhua](jh123x), as a live code reviewer for the refactoring of core commands and overall structure.
   Personally, I refactored all existing AB3 test classes to fit McGymmy which required extensive and exhaustive debugging in order to ensure the "updated"
   tests passed while ensuring the logic remained correct and relevant.
 

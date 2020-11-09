@@ -29,8 +29,10 @@ public class Date {
         "d MMM yyyy"
     };
 
-    public static final String MESSAGE_CONSTRAINTS = "Date string should be in one of the following formats:\n"
-            + String.join("\n", SUPPORTED_FORMATS);
+    public static final String MESSAGE_CONSTRAINTS = "Date string should be a valid date in one"
+            + " of the following formats:\n"
+            + String.join("\n", SUPPORTED_FORMATS)
+            + "\n";
 
     private static final String OUTPUT_FORMAT = "d MMM yyyy";
 

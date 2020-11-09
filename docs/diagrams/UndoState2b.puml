@@ -5,10 +5,10 @@ skinparam ClassBorderColor #000000
 
 title Command "add -n Rice ...", after adding
 
-package Stack {
-    class State1 as "__copy0:Pair<ReadOnlyMcGymmy, Predicate<Food>>__"
-    class State2 as "__copy1:Pair<ReadOnlyMcGymmy, Predicate<Food>>__"
-    class State3 as "__copy2:Pair<ReadOnlyMcGymmy, Predicate<Food>>__"
+package History {
+    class State1 as "__copy0:ModelManager**__"
+    class State2 as "__copy1:ModelManager**__"
+    class State3 as "__copy2:ModelManager**__"
 }
 
 

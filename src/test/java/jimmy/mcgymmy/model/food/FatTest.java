@@ -1,16 +1,23 @@
 package jimmy.mcgymmy.model.food;
 
 import static jimmy.mcgymmy.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import jimmy.mcgymmy.commons.exceptions.IllegalValueException;
+
 public class FatTest {
 
     @Test
-    public void newDefault_works() {
+    public void newDefault_works() throws IllegalValueException {
         // If it doesnt, the thrown runtime exception will break this test.
-        Fat.newDefault();
+        Fat fat = Fat.newDefault();
+
+        //Test for equivalence
+        Fat fat1 = new Fat(0);
+        assertEquals(fat, fat1);
     }
 
     @Test

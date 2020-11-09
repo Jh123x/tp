@@ -9,6 +9,9 @@ If you can type fast, McGymmy can log your food intake faster than traditional G
 This document aims to showcase all of McGymmy's commands.
 Open this document in a modern internet browser (Mozilla Firefox, Google Chrome, or Microsoft Edge).
 
+* Table of Contents
+{:toc}
+
 ##  1. Icon Legend
 <div markdown="span" class="alert alert-primary">
 
@@ -34,16 +37,13 @@ Thus, we recommend you to start by first understanding how McGymmy works at a hi
 
 </div>
 
-* Table of Contents
-{:toc}
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## 3. Quick start
 
 To get started, you can double-click on the jar file to open the GUI.
 You can type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
-Refer to the features below for details of each command.
+Refer to the [features](#5-features) below for details of each command.
 
 
 1. Please ensure that you have Java `11` or above installed in your Computer.
@@ -52,7 +52,10 @@ Refer to the features below for details of each command.
 
 1. Afterwards, copy the file to the folder you want to use as the _home folder_ for your McGymmy.
 
-1. Double-click the file to start the app. You should notice a GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+1. Double-click the file to start the app. You should notice a GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.
+<br>
+*Note* For Ubuntu users, you will need to set execution permissions on the application using `chmod` before double-clicking will work.
+<br>
 
    ![Ui](images/Ui.png)
 
@@ -67,7 +70,7 @@ Refer to the features below for details of each command.
 
    * **`exit`** : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+1. Refer to the [Features](#5-features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 ## 4. How to use this guide
@@ -147,6 +150,13 @@ Examples:
 * `help` - this will display all available commands.
 * `help add` - this will display a help message specific to the `add` command.
 
+<div markdown="block" class="alert alert-info">
+
+:information_source: Notes about the `help` Command.
+ * `help help` will flag as an invalid command.
+ * `help` will not work with created macros, the `listmacro` command should be used instead.
+</div>
+
 ![help message](images/CommandImagesForUG/Help.png)
 
 ### 5.2 Adding a food item: `add`
@@ -166,7 +176,7 @@ Examples:
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `add` Command.
  * The default value for `PROTEIN`, `FATS` and `CARBS` is 0. The default date is the day in which the food item is added.<br>
  * Values of `PROTEIN`, `FATS` and `CARBS` must be a non-negative integer, less than 1000g.<br>
  * To view the list of supported date formats, see *Appendix A*.<br>
@@ -187,12 +197,12 @@ Examples:
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `tag` command.
 
 * Tags `TAG_NAME` for food item at the specified `INDEX`.
 * `TAG_NAME` is case-sensitive.
 * The index refers to the index number shown in the displayed food list.
-* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31
+* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31 or the size of the list, whichever lower.
 * Tags for food items must be less than 20 characters.
 * The list will show all items after tagging
 
@@ -212,12 +222,12 @@ Examples:
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `untag` command.
 
 * Untags `TAG_NAME` for food item at the specified `INDEX`.
 * `TAG_NAME` is case-sensitive.
 * The index refers to the index number shown in the displayed food list.
-* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31
+* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31 or the size of the list, whichever lower.
 * The list will show all items after untagging
 
 </div>
@@ -234,7 +244,7 @@ Format: `find [KEYWORDS] [-n WORDS_IN_NAME] [-t WORDS_IN_TAG] [-d DATE]`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `find` command.
 
 * Filters the displayed list of food items to only include food items corresponding to the provided parameters.
 * The `[KEYWORDS]`, `[WORDS_IN_NAME]` and `[WORDS_IN_TAG]` parameters will only find food items that contain at least one of the complete words specified.<br>
@@ -259,11 +269,11 @@ all entries in the current displayed list, preventing your food list from gettin
 Format: `clear`
 
 Examples:
-* `clear` - clears food items
+* `clear` - clears food items in the currently displayed screen.
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `clear` command.
 
 * Clears all food item that is shown on the list.
 * You can clear specific groups of item by using find then clear.
@@ -280,7 +290,7 @@ Format: `list`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `list` command.
 
 * Lists all food items in McGymmy
 * All additional input after the *command word* `list` will be ignored. E.g. `list` and `list 123` will have the same effect.
@@ -298,14 +308,15 @@ Format: `edit INDEX [-n NAME] [-p PROTEIN] [-c CARBS] [-f FATS] [-d DATE]`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `edit` command.
 
 * Edits the food item at the specified `INDEX`. The index refers to the index number shown in the displayed food list.
-* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31
+* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31 or the size of the list, whichever lower.
  * Values of `PROTEIN`, `FATS` and `CARBS` must be a non-negative integer, less than 1000g.<br>
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * To view the list of supported date formats, see *Appendix A*.
+* To edit tag, use tag and untag command instead.
 
 </div>
 
@@ -323,11 +334,11 @@ Format: `delete INDEX`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `delete` command.
 
 * Deletes the food at the specified `INDEX`.
 * The index refers to the index number shown in the displayed food list.
-* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31
+* The index **must be a positive integer** 1, 2, 3, …​ that is smaller than 2^31 or the size of the list, whichever lower.
 
 </div>
 
@@ -345,7 +356,7 @@ Format: `import FILEPATH`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `import` command.
 
 * Imports the saved file at `FILEPATH`
 * Both relative and absolute paths work for the import feature.
@@ -362,9 +373,10 @@ Examples:
 <div markdown="span" class="alert alert-primary">
 
 :bulb: **Tip:** For those who are more inclined to use a gui to import:
-* Click on file
-* Click on Import
-* Navigate using the GUI to the save file
+
+1. Click on file
+1. Click on Import
+1. Navigate using the GUI to the save file
 
 </div>
 
@@ -380,7 +392,7 @@ Format: `export DIRPATH [-o FILENAME]`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `export` command.
 
 * Exports the saved file to `DIRPATH` with `FILENAME`
 * Default filename is `mcgymmy.json`
@@ -390,18 +402,19 @@ Format: `export DIRPATH [-o FILENAME]`
 </div>
 
 Examples:
-* `export c:/mcgymmy` exports the save file as `mcgymmy.json` to `c:/mcgymmy`
-* `export c:/mcgymmy -o save_file` exports the save file as `save_file.json` to `c:/mcgymmy`
-
+* For Windows users:`export c:/mcgymmy` exports the save file as `mcgymmy.json` to `c:/mcgymmy`
+* For Windows users:`export c:/mcgymmy -o save_file` exports the save file as `save_file.json` to `c:/mcgymmy`
+* For Mac users: `export /Users/mcgymmy -o save_file` exports the save file as `save_file.json` to `/Users/mcgymmy`
 ![Export command example](images/CommandImagesForUG/Export.png)
 
 <div markdown="span" class="alert alert-primary">
 
-:bulb: **Tip:** For those who are more inclined to use a gui to export:
-* Click on `file` option in the menubar above the command box
-* Click on `Export` button to open the directory selector
-* Navigate using the GUI to the save file
-* Click on `Select Folder` when done
+:bulb: **Tip:** For those who are more inclined to use a gui to export.
+
+1. Click on `file` option in the menubar above the command box
+1. Click on `Export` button to open the directory selector
+1. Navigate using the GUI to the save file
+1. Click on `Select Folder` when done
 
 </div>
 
@@ -416,7 +429,7 @@ Format: `undo`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `undo` command.
 
 * Undo command can be called multiple times.
 * Help command will be ignored when undoing. 
@@ -435,15 +448,20 @@ commands by combining multiple commands together. This is a powerful tool that r
 repetitive long-winded command execution. The `macro` command specifically stores a new macro into
 your McGymmy system.
 
-*__WARNING:__* this is an advanced feature!
+<div markdown="block" class="alert alert-danger">
+
+
+:warning: *__WARNING:__* this is an advanced feature!
+
+</div>
 
 Format: `macro MACRONAME FLAG_1 FLAG_2 ... ; COMMAND_1 PARAMETERS_TO_COMMAND_1; [COMMAND_2 PARAMETERS_TO_COMMAND_2; ...]` <br>
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `macro` command.
 
-* If any of the jargon below seem unclear, refer to *How to intepret the each command's format* under section *5. Features* above.
+* If any of the jargon below seem unclear, refer to *How to intepret the each command's format* under section *[5. Features](#5-features)* above.
 
 * Creates a macro with name `MACRONAME` which takes in parameters `FLAG_1 FLAG_2...` which executes `COMMAND_1; COMMAND_2; ...`.
 
@@ -453,13 +471,16 @@ Format: `macro MACRONAME FLAG_1 FLAG_2 ... ; COMMAND_1 PARAMETERS_TO_COMMAND_1; 
 
 * Using `undo` after creating a macro using this command will remove it.
 
+* Using `exit` in a macro will close McGymmy, and subsequent commands will be ignored. E.g. if `macro ex; add -n one; exit; add -n two` is executed,
+McGymmy will add a food item named `one` and then exit, but will not create a food item named `two`.
+
 * Read the examples below for more information.
 
 </div>
 
 Examples:
-* `macro addWith100cal p ; add -n \$ -c 100 -p \p`
-    * Example usage of this macro: `addWith100cal Banana -p 200`
+* `macro addWith100carbs p ; add -n \$ -c 100 -p \p`
+    * Example usage of this macro: `addWith100carbs Banana -p 200`
     * The following command will be executed by the macro: `add -n Banana -c 100 -p 200`
     * i.e. in `add -n \$ -c 100 -p \p`, `\$` and `\p` will be substituted with Banana and 200 respectively.
 
@@ -470,9 +491,9 @@ Examples:
 <div markdown="span" class="alert alert-primary">
 
 :bulb: **Tip:** Be careful when creating a macro!
-* It is possible to create a macro with errors!
-* The commands in the macro will only be checked for errors when you run the macro itself.
-* e.g. Entering `macro test; add` will create a new macro, but every time you execute the macro `test`, the error message from `add` telling you it requires the name parameter will be shown.
+- It is possible to create a macro with errors!
+- The commands in the macro will only be checked for errors when you run the macro itself.
+- e.g. Entering `macro test; add` will create a new macro, but every time you execute the macro `test`, the error message from `add` telling you it requires the name parameter will be shown.
 
 </div>
 
@@ -484,7 +505,7 @@ Examples:
 
 </div>
 
-### 5.14 List all macros : `listmacro`
+### 5.14 Listing all macros : `listmacro`
 
 The `listmacro` command displays information on the available macros in the terminal, which allows you to keep track of
 all macros currently in the McGymmy system.
@@ -497,6 +518,14 @@ Examples:
 
 ![List Macro command example](images/CommandImagesForUG/Listmacro.png)
 
+When using `listmacro` with a name of a `macro` it will show the details of the macro
+Details include:
+* Parameters
+* Declaration details
+<br>
+
+![List_Macro_command_with_optional_parameters_example](images/CommandImagesForUG/ListmacroCommand.png)
+
 ### 5.15 Deleting a macro: `remmacro`
 
 The `remmacro` command allows you to remove an existing macro from your McGymmy system.
@@ -505,7 +534,7 @@ Format: `remmacro MACRONAME`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `remmacro` command.
 
 * Deletes the macro with the name `MACRONAME`.
 * If you accidentally delete a macro you need, `undo` can revert it.
@@ -522,7 +551,7 @@ Format: `exit`
 
 <div markdown="block" class="alert alert-info">
 
-:information_source:
+:information_source: Notes about the `exit` command.
 
 * Exits McGymmy and closes the McGymmy window.
 * Data will be automatically saved (see also section on *Saving the data* below).
@@ -542,20 +571,20 @@ McGymmy's data is saved in the hard disk automatically after any command that ch
 **A1**:  
 1. Install the app in the other computer.
 1. Export your save file from your previous McGymmy using the `export` function in section `5.11`.
-1. Use the `import` function in section `5.10` to import the save file to your McGymmy.
+1. Use the `import` function in section [`5.10`](#510-importing-another-save-file-import) to import the save file to your McGymmy.
 <br><br>
 
 **Q2**: How do I backup my current version of McGymmy?<br>
 **A2**: 
-1. Use the `export` function in section `5.11` to export the save file to a directory of your choice.
+1. Use the `export` function in section [`5.11`](#511-exporting-your-save-file-to-a-folder-export) to export the save file to a directory of your choice.
 1. A Copy of your save file will be created at the location.
 
 **Q3**: How do I find out what I ate on a particular day?<br>
 **A3**: 
 For those who prefer typing:
-1. Use the find command in section `5.5` and add the `-d` tag before specifying a date
+1. Use the find command in section [`5.5`](#55-finding-a-food-item-find) and add the `-d` tag before specifying a date
 1. You will see the food you ate on that day
-<br>
+<br><br>
 For those who prefer clicking:
 1. Click on `date` button at the file menu
 1. Click on the calendar icon
@@ -567,27 +596,27 @@ For those who prefer clicking:
 --------------------------------------------------------------------------------------------------------------------
 
 ## 7. Command summary
-
-Action       | Format, Examples
--------------|------------------
-**Add**      | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE] [-t TAG]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23 -d 02/09/2020 -t Lunch`
-**Clear**    | `clear`
-**Delete**   | `delete INDEX`<br> e.g., `delete 3`
-**Edit**     | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60 -d 02/09/2020`
-**Exit**     | `exit`
-**Export**   | `export DIRPATH [-o FILENAME]` <br> e.g., `export c:/mcgymmy -o save_file`
-**Find**     | `find [KEYWORDS] [-n WORDS_IN_NAME] [-t WORDS_IN_TAG] [-d DATE]` <br> e.g., `find chicken -t Dinner -d 28-10-2020`
-**Help**     | `help [COMMAND]` <br> e.g., `help add`
-**Import**   | `import [FILEPATH]​` <br> e.g., `import c:/mcgymmy/save_file.json`
-**List**     | `list`
-**Macro**    | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​` <br> e.g., `macro lunch; add Chicken`
-**RemMacro** | `remmacro MACRONAME` <br> e.g., `remmacro lunch`
-**ListMacro**| `listmacro [macro]` <br> e.g., `listmacro kfc`
-**Tag**      | `tag INDEX -t TAG_NAME` <br> e.g., `tag 1 -t Lunch`
-**UnTag**    | `untag INDEX -t TAG_NAME` <br> e.g., `untag 1 -t Lunch`
+Action                                                           | Format, Examples                                                                                                                         |
+-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+[**Add**](#52-adding-a-food-item-add)                            | `add -n NAME [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE] [-t TAG]` <br> e.g., `add Chicken Rice -p 10 -f 5 -c 23 -d 02/09/2020 -t Lunch` |
+[**Clear**](#56-clearing-food-items-clear)                       | `clear`                                                                                                                                  |
+[**Delete**](#59-deleting-a-food-item-delete)                    | `delete INDEX`<br> e.g., `delete 3`                                                                                                      |
+[**Edit**](#58-editing-a-food-item--edit)                        | `edit INDEX [-n NAME] [-p PROTEIN] [-f FATS] [-c CARBS] [-d DATE]`<br> e.g.,`edit 2 -n Chicken Rice -p 30 -f 50 -c 60 -d 02/09/2020`     |
+[**Exit**](#516-exiting-the-program--exit)                       | `exit`                                                                                                                                   |
+[**Export**](#511-exporting-your-save-file-to-a-folder-export)   | `export DIRPATH [-o FILENAME]` <br> e.g., `export c:/mcgymmy -o save_file`                                                               |
+[**Find**](#55-finding-a-food-item-find)                         | `find [KEYWORDS] [-n WORDS_IN_NAME] [-t WORDS_IN_TAG] [-d DATE]` <br> e.g., `find chicken -t Dinner -d 28-10-2020`                       |
+[**Help**](#51-viewing-help--help)                               | `help [COMMAND]` <br> e.g., `help add`                                                                                                   |
+[**Import**](#510-importing-another-save-file-import)            | `import [FILEPATH]​` <br> e.g., `import c:/mcgymmy/save_file.json`                                                                    |
+[**List**](#57-listing-all-food-items--list)                     | `list`                                                                                                                                   |
+[**Macro**](#513-creating-a-macro-command--macro)                | `macro SHORTCUT; COMMAND_1; [COMMAND_2;] …​` <br> e.g., `macro lunch; add Chicken`                                                    |
+[**RemMacro**](#515-deleting-a-macro-remmacro)                   | `remmacro MACRONAME` <br> e.g., `remmacro lunch`                                                                                         |
+[**ListMacro**](#514-listing-all-macros--listmacro)                 | `listmacro [macro]` <br> e.g., `listmacro kfc`                                                                                        |
+[**Tag**](#53-tagging-food-items--tag)                           | `tag INDEX -t TAG_NAME` <br> e.g., `tag 1 -t Lunch`                                                                                      |
+[**UnTag**](#54-untagging-food-items--untag)                     | `untag INDEX -t TAG_NAME` <br> e.g., `untag 1 -t Lunch`                                                                                  |
+[**Undo**](#512-undoing-the-previous-command--undo)              | `undo`                                                                                                                                   |
 
 ## 8. Appendix A
-List of supported input date formats, sorted from highest parsing priority to lowest parsing priority
+List of supported input date formats, sorted from the highest parsing priority to the lowest parsing priority
 
 Format       | Example
 ------------ | --------

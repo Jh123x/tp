@@ -377,7 +377,9 @@ chart-pie-label-line {
     -fx-alignment: CENTER;
 }
 
-/* DatePicker CSS Design */
+/* DatePicker CSS Design
+Credits to: https://stackoverflow.com/questions/46659660/date-picker-popup-window
+*/
 
 .date-picker-popup {
     -fx-padding: 1;
@@ -477,4 +479,3 @@ chart-pie-label-line {
 .date-picker-popup > * > .next-month > .secondary-text {
     -fx-fill: #aaaaaa;
 }
-

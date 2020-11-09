@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.ObservableList;
 import jimmy.mcgymmy.commons.core.Messages;
 import jimmy.mcgymmy.logic.parser.CommandParserTestUtil;
 import jimmy.mcgymmy.logic.parser.exceptions.ParseException;
@@ -44,7 +43,6 @@ public class FindCommandTest {
                 new CommandParserTestUtil.OptionalParameterStub<>("t"),
                 new CommandParserTestUtil.OptionalParameterStub<>("d"));
         expectedModel.updateFilteredFoodList(predicate);
-        ObservableList<Food> curr = expectedModel.getFilteredFoodList();
         CommandTestUtil.assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredFoodList());
     }
